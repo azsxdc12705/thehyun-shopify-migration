@@ -1,0 +1,34 @@
+{% render 'hyun-nav' %}
+<section class="section-35">
+  <div class="w-layout-blockcontainer container-17 w-container">
+    <h1 class="heading-12">Search</h1>
+  </div>
+</section>
+<section style="padding: 0 5% 10vh;">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <form action="{{ routes.search_url }}" method="get" role="search" style="display:flex;gap:10px;max-width:480px;margin-bottom:40px;">
+      <input class="text-field-2 w-input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search"/>
+      <input type="submit" class="submit-button-2 w-button" value="Search"/>
+    </form>
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <div class="body-copy">No results for &#8220;{{ search.terms | escape }}&#8221;.</div>
+      {%- else -%}
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;">
+          {%- for item in search.results -%}
+            <a href="{{ item.url }}" style="text-decoration:none;color:inherit;">
+              {%- if item.featured_image -%}
+                <img src="{{ item.featured_image | image_url: width: 440 }}" alt="{{ item.featured_image.alt | escape }}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:10px;"/>
+              {%- endif -%}
+              <div class="body-copy">{{ item.title }}</div>
+              {%- if item.price -%}
+                <div class="body-copy">{{ item.price | money }}</div>
+              {%- endif -%}
+            </a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+{% render 'hyun-footer' %}

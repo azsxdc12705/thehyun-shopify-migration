@@ -1,0 +1,24 @@
+{%- comment -%}
+Styled 404 so unported URLs (most of the old Webflow site) don't fall back to
+Shopify's bare default page. Old paths are kept identical in the port, so at
+full migration these links start resolving without redirects.
+{%- endcomment -%}
+{% render 'hyun-nav' %}
+<section class="section-35">
+  <div class="w-layout-blockcontainer container-17 w-container">
+    <div class="title-upper-text">This page isn&#8217;t ported yet</div>
+    <h1 class="heading-12">Page not found</h1>
+  </div>
+</section>
+<section style="padding: 0 5% 10vh; text-align: center;">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="body-copy" style="margin-bottom: 32px;">
+      The option B demo covers two templates. The rest of the site is still served by Webflow.
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px; align-items: center;">
+      <a href="/products/curated-collection" class="primary-button w-button">Curated Collection</a>
+      <a href="/pages/subscription-builder" class="primary-button tertiarybtn w-button">Subscription Builder</a>
+    </div>
+  </div>
+</section>
+{% render 'hyun-footer' %}

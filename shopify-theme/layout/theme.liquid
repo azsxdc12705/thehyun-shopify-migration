@@ -60,7 +60,7 @@
     .hyun-buy-block .hyun-buy-error:empty { display: none; }
   </style>
 </head>
-<body>
+<body class="{% if template contains 'subscription-builder' %}body-17{% else %}body-9{% endif %}">
   {{ content_for_layout }}
 
   <!-- Site navigation and interactions -->

@@ -1,0 +1,21 @@
+{%- comment -%}
+Generic page template. A page whose handle is `subscription-builder` renders
+the quiz directly — no template assignment or ?view= parameter needed; just
+creating the page in admin is enough.
+{%- endcomment -%}
+{% render 'hyun-nav' %}
+{%- if page.handle == 'subscription-builder' -%}
+  {% render 'hyun-quiz' %}
+{%- else -%}
+  <section class="section-35">
+    <div class="w-layout-blockcontainer container-17 w-container">
+      <h1 class="heading-12">{{ page.title }}</h1>
+    </div>
+  </section>
+  <section style="padding: 0 5% 10vh;">
+    <div class="w-layout-blockcontainer main-container w-container">
+      <div class="body-copy">{{ page.content }}</div>
+    </div>
+  </section>
+{%- endif -%}
+{% render 'hyun-footer' %}

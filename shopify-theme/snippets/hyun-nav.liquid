@@ -1,0 +1,57 @@
+{%- comment -%}
+Site navigation, 1:1 from the Webflow port (theme-port/*.html). Dropdowns and
+the mobile hamburger are driven by assets/site.js against the same
+w--open / data-nav-menu-open CSS contract. Cart icon links to the Shopify cart.
+{%- endcomment -%}
+<div id="nav" class="navbar-logo-center">
+  <div data-animation="over-left" class="navbar-logo-center-container shadow-three w-nav" data-easing2="ease-out" data-easing="ease-in" data-collapse="medium" role="banner" data-no-scroll="1" data-duration="400" data-doc-height="1">
+    <div class="container-2">
+      <div class="menu-button w-nav-button" role="button" tabindex="0" aria-label="menu" aria-expanded="false">
+        <div class="icon-2 w-icon-nav-menu"></div>
+        <img src="{{ 'thburg.svg' | asset_url }}" loading="lazy" width="22" height="22" alt=""/>
+      </div>
+      <nav role="navigation" class="nav-menu-wrapper-three w-nav-menu">
+        <div class="nav-menu-three">
+          <ul role="list" class="nav-menu-block w-list-unstyled">
+            <li class="list-item-4">
+              <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+                <div class="dropdown-toggle w-dropdown-toggle" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+                  <div class="text-block-20">About</div>
+                </div>
+                <nav class="dropdown-list w-dropdown-list">
+                  <a href="/our-story" class="dropdown-link w-dropdown-link">Our Story</a>
+                  <a href="/brand-philosophy" class="dropdown-link w-dropdown-link">Brand Philosophy</a>
+                  <a href="/design-philosophy" class="dropdown-link w-dropdown-link">Design Philosophy</a>
+                </nav>
+              </div>
+              <a href="/japanese-wagyu" class="nav-link">Japanase Wagyu</a>
+              <a href="/bundles" class="nav-link">Bundles</a>
+              <a href="/subscription" class="nav-link">Subscription</a>
+              <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+                <div class="dropdown-toggle w-dropdown-toggle" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+                  <div class="text-block-20">Gifts</div>
+                </div>
+                <nav class="dropdown-list w-dropdown-list">
+                  <a href="/gift-sets-list" class="dropdown-link w-dropdown-link">Gift Sets</a>
+                  <a href="/corporate-gifts" class="dropdown-link w-dropdown-link">Corporate Gifts</a>
+                  <a href="/bojagi" class="dropdown-link w-dropdown-link">Bojagi Wrapping</a>
+                </nav>
+              </div>
+              <a href="/local-delivery" class="nav-link">Local Delivery</a>
+              <a href="/store" class="nav-link">Store</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <a href="/" class="navbar-brand-three w-nav-brand">
+        <img src="{{ 'thehyun.svg' | asset_url }}" loading="lazy" width="105" alt="" class="image-9"/>
+      </a>
+      <div class="w-commerce-commercecartwrapper">
+        <a class="w-commerce-commercecartopenlink cart-button w-inline-block" role="button" aria-label="Open cart" href="{{ routes.cart_url }}">
+          <img src="{{ 'cartsq.svg' | asset_url }}" loading="lazy" width="16" alt=""/>
+          <div class="w-commerce-commercecartopenlinkcount cart-quantity">{{ cart.item_count }}</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

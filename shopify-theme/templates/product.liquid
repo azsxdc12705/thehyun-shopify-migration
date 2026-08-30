@@ -1,63 +1,9 @@
 {%- comment -%}
-THE HYUN — /product/curated-collection, ported off Webflow.
-Curated Collection product page with Storefront API buy widget.
+THE HYUN — product page, ported 1:1 from /product/curated-collection
+(theme-port/index.html). The buy area is the Storefront API widget: one
+Frequency choice drives both the variant and the selling plan.
 {%- endcomment -%}
-
-<div id="nav" class="navbar-logo-center">
-  <div data-animation="over-left" class="navbar-logo-center-container shadow-three w-nav" data-easing2="ease-out" data-easing="ease-in" data-collapse="medium" role="banner" data-no-scroll="1" data-duration="400" data-doc-height="1">
-    <div class="container-2">
-      <div class="menu-button w-nav-button" role="button" tabindex="0" aria-label="menu" aria-expanded="false">
-        <div class="icon-2 w-icon-nav-menu"></div>
-        <img src="{{ 'thburg.svg' | asset_url }}" loading="lazy" width="22" height="22" alt=""/>
-      </div>
-      <nav role="navigation" class="nav-menu-wrapper-three w-nav-menu">
-        <div class="nav-menu-three">
-          <ul role="list" class="nav-menu-block w-list-unstyled">
-            <li class="list-item-4">
-              <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
-                <div class="dropdown-toggle w-dropdown-toggle" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
-                  <div class="text-block-20">About</div>
-                </div>
-                <nav class="dropdown-list w-dropdown-list">
-                  <a href="/our-story" class="dropdown-link w-dropdown-link">Our Story</a>
-                  <a href="/brand-philosophy" class="dropdown-link w-dropdown-link">Brand Philosophy</a>
-                  <a href="/design-philosophy" class="dropdown-link w-dropdown-link">Design Philosophy</a>
-                </nav>
-              </div>
-              <a href="/japanese-wagyu" class="nav-link">Japanase Wagyu</a>
-              <a href="/bundles" class="nav-link">Bundles</a>
-              <a href="/subscription" class="nav-link">Subscription</a>
-              <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
-                <div class="dropdown-toggle w-dropdown-toggle" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
-                  <div class="text-block-20">Gifts</div>
-                </div>
-                <nav class="dropdown-list w-dropdown-list">
-                  <a href="/gift-sets-list" class="dropdown-link w-dropdown-link">Gift Sets</a>
-                  <a href="/corporate-gifts" class="dropdown-link w-dropdown-link">Corporate Gifts</a>
-                  <a href="/bojagi" class="dropdown-link w-dropdown-link">Bojagi Wrapping</a>
-                </nav>
-              </div>
-              <a href="/local-delivery" class="nav-link">Local Delivery</a>
-              <a href="/store" class="nav-link">Store</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <a href="/" class="navbar-brand-three w-nav-brand">
-        <img src="{{ 'thehyun.svg' | asset_url }}" loading="lazy" width="105" alt="" class="image-9"/>
-      </a>
-      {%- comment -%}
-      Cart lives on Shopify; the icon links to the Shopify cart.
-      {%- endcomment -%}
-      <div class="w-commerce-commercecartwrapper">
-        <a class="w-commerce-commercecartopenlink cart-button w-inline-block" role="button" aria-label="Open cart" href="/cart">
-          <img src="{{ 'cartsq.svg' | asset_url }}" loading="lazy" width="16" alt=""/>
-          <div class="w-commerce-commercecartopenlinkcount cart-quantity">{{ cart.item_count }}</div>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
+{% render 'hyun-nav' %}
 
 <section class="section-26">
   <div class="w-layout-blockcontainer main-container w-container">
@@ -65,7 +11,7 @@ Curated Collection product page with Storefront API buy widget.
       <div class="column-49 w-col w-col-6">
         <div class="div-block-14">
           {%- if product.featured_image -%}
-            <img loading="lazy" width="550" alt="{{ product.featured_image.alt | escape }}" src="{{ product.featured_image | image_url: width: 550 }}" class="image-11"/>
+            <img loading="lazy" width="550" alt="{{ product.featured_image.alt | escape }}" src="{{ product.featured_image | image_url: width: 1100 }}" class="image-11"/>
           {%- else -%}
             <img loading="lazy" width="550" alt="" src="{{ 'subth.jpg' | asset_url }}" class="image-11"/>
           {%- endif -%}
@@ -77,7 +23,11 @@ Curated Collection product page with Storefront API buy widget.
           <div class="text-block-36">{{ product.title }}</div>
           <div class="text-block-43 w-dyn-bind-empty"></div>
         </div>
-        <p class="paragraph-19">{{ product.description | strip_html | truncatewords: 50 }}</p>
+        {%- if product.description != blank -%}
+          <p class="paragraph-19">{{ product.description | strip_html | truncatewords: 60 }}</p>
+        {%- else -%}
+          <p class="paragraph-19 w-dyn-bind-empty"></p>
+        {%- endif -%}
         <div class="rich-text-block-3 w-dyn-bind-empty w-richtext"></div>
         {%- comment -%}
         Price placeholder block: the widget renders the real price.
@@ -85,12 +35,41 @@ Curated Collection product page with Storefront API buy widget.
         {%- endcomment -%}
         <div class="div-block-18"></div>
         <div class="hyun-buy-block">
-          {%- comment -%}
-          Storefront API buy widget. Configure with Shopify credentials
-          (data-shop and data-token) for production mode.
-          In demo mode (no data-token), uses mock-storefront.js.
-          {%- endcomment -%}
-          <div data-hyun-buy="curated-collection" data-shop="{{ shop.permanent_domain }}" data-token=""></div>
+          {%- if product.handle == 'curated-collection' -%}
+            {%- comment -%}
+            Storefront API buy widget — pairs the Frequency variant with the
+            matching selling plan so they can never mismatch. Demo mode: empty
+            data-token switches mock-storefront.js on. Real mode: put a
+            Storefront API token in data-token.
+            {%- endcomment -%}
+            <div data-hyun-buy="{{ product.handle }}" data-shop="{{ shop.permanent_domain }}" data-token=""></div>
+          {%- else -%}
+            {%- comment -%}
+            Every other product: Shopify's native cart form — no Storefront
+            token needed, works as-is on the dev store.
+            {%- endcomment -%}
+            <div class="hyun-buy">
+              {%- form 'product', product -%}
+                {%- unless product.has_only_default_variant -%}
+                  <select name="id" class="option-select-field hyun-buy-select">
+                    {%- for variant in product.variants -%}
+                      <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                        {{ variant.title }} — {{ variant.price | money }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                {%- else -%}
+                  <input type="hidden" name="id" value="{{ product.first_available_variant.id | default: product.variants.first.id }}"/>
+                {%- endunless -%}
+                <div class="product-price hyun-buy-price">{{ product.price_min | money }}{% if product.price_varies %}+{% endif %}</div>
+                {%- if product.available -%}
+                  <button type="submit" class="hyun-buy-button" style="border:0;">Add to Cart</button>
+                {%- else -%}
+                  <div class="hyun-buy-error">Sold out</div>
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+          {%- endif -%}
         </div>
       </div>
     </div>
@@ -101,64 +80,10 @@ Curated Collection product page with Storefront API buy widget.
   <div class="w-layout-blockcontainer main-container w-container">
     <div class="div-block-15">
       <p class="paragraph-20">Wrap your genuine emotions within the Bojagi enriched with THE HYUN&#x27;s artistry, offering a heartfelt expression of your sincerity</p>
-      <p class="paragraph-21">We're pleasured to offer gift wrapping with a traditional Korean wrapping cloth, Bojagi.<br/>This exquisite material, graced by the masterful hands of HYUN, surpasses its practical purpose; it encapsulates the heartfelt wish for the recipient to sense genuine warmth and admiration.</p>
+      <p class="paragraph-21">We&#8217;re pleasured to offer gift wrapping with a traditional Korean wrapping cloth, Bojagi.<br/>This exquisite material, graced by the masterful hands of HYUN, surpasses its practical purpose; it encapsulates the heartfelt wish for the recipient to sense genuine warmth and admiration.</p>
       <a href="/bojagi" class="primary-button tertiarybtn w-button">Learn more</a>
     </div>
   </div>
 </section>
 
-<section class="section-11 section-56">
-  <div class="w-layout-blockcontainer container-15 w-container">
-    <a href="#nav" class="link-block w-inline-block"><div class="text-block-7">BACK TO TOP</div></a>
-  </div>
-  <div class="div-block-3">
-    <div class="columns-4 w-row">
-      <div class="column-4 w-col w-col-3">
-        <img src="{{ 'thlogowhite.svg' | asset_url }}" loading="lazy" width="125" alt="" class="image"/>
-        <div class="div-block-26">
-          <a href="/our-story" class="link">Our Story</a>
-          <a href="/brand-philosophy" class="link">Brand philosophy</a>
-          <a href="/design-philosophy" class="link">Design philosophy</a>
-        </div>
-        <div class="div-block-26">
-          <a href="/bojagi" class="link">Bojagi Wrapping</a>
-          <a href="/gift-sets" class="link">Gift Sets</a>
-          <a href="/corporate-gifts" class="link">Corporate Gifts</a>
-          <a href="/contact" class="link">Contact</a>
-        </div>
-      </div>
-      <div class="column-6 w-col w-col-3">
-        <div class="div-block-52">
-          <img src="{{ 'asset-33.svg' | asset_url }}" loading="lazy" width="527" alt="" class="image-2"/>
-        </div>
-        <div class="text-block-8">253 Third Ave<br/>New York, NY 10001</div>
-        <div class="text-block-8">000.000.0000<br/>info@thehyun.com</div>
-      </div>
-      <div class="column-5 w-col w-col-3">
-        <a href="/shipping-delivery" class="link">Shipping and Returns</a>
-        <a href="/wholesale-inquiry" class="link">Wholesale inquiry</a>
-        <a href="/corporate-gifts-inquiry" class="link">Corporate Gifts inquiry</a>
-        <div class="div-block-17">
-          <div class="text-block-42">Social Media</div>
-          <a href="#" class="link">Instagram</a>
-        </div>
-        <div class="div-block-53">
-          <div class="text-block-42">Family site</div>
-          <a href="https://www.hyunnyc.com" target="_blank" class="link">HYUN</a>
-        </div>
-      </div>
-      <div class="column-7 w-col w-col-3">
-        <div class="form-block-4 w-form">
-          <form id="email-form" name="email-form" method="post" action="/pages/newsletter">
-            <div class="text-block-9">Subscribe to<br/>THE HYUN</div>
-            <input class="text-field-2 w-input" maxlength="256" name="email" placeholder="Email address" type="email" id="email-2" required=""/>
-            <input type="submit" data-wait="Please wait..." class="submit-button-2 w-button" value="Submit"/>
-          </form>
-          <div class="success-message-2 w-form-done"><div class="text-block-54">Thank you! Your submission has been received!</div></div>
-          <div class="error-message-3 w-form-fail"><div class="text-block-55">Oops! Something went wrong while submitting the form.</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+{% render 'hyun-footer' %}

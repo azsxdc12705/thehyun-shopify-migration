@@ -1,0 +1,64 @@
+{%- comment -%}
+Site footer, 1:1 from the Webflow port. Phone number stays redacted
+(000.000.0000) per repo policy — restore at deploy. Newsletter form posts to
+Shopify's customer capture (contact form with customer[] fields), replacing the
+deleted Webflow form backend.
+{%- endcomment -%}
+<section class="section-11 section-56">
+  <div class="w-layout-blockcontainer container-15 w-container">
+    <a href="#nav" class="link-block w-inline-block"><div class="text-block-7">BACK TO TOP</div></a>
+  </div>
+  <div class="div-block-3">
+    <div class="columns-4 w-row">
+      <div class="column-4 w-col w-col-3">
+        <img src="{{ 'thlogowhite.svg' | asset_url }}" loading="lazy" width="125" alt="" class="image"/>
+        <div class="div-block-26">
+          <a href="/our-story" class="link">Our Story</a>
+          <a href="/brand-philosophy" class="link">Brand philosophy</a>
+          <a href="/design-philosophy" class="link">Design philosophy</a>
+        </div>
+        <div class="div-block-26">
+          <a href="/bojagi" class="link">Bojagi Wrapping</a>
+          <a href="/gift-sets" class="link">Gift Sets</a>
+          <a href="/corporate-gifts" class="link">Corporate Gifts</a>
+          <a href="/contact" class="link">Contact</a>
+        </div>
+      </div>
+      <div class="column-6 w-col w-col-3">
+        <div class="div-block-52">
+          <img src="{{ 'asset-33.svg' | asset_url }}" loading="lazy" width="527" alt="" class="image-2"/>
+        </div>
+        <div class="text-block-8">253 Third Ave<br/>New York, NY 10001</div>
+        <div class="text-block-8">000.000.0000<br/>info@thehyun.com</div>
+      </div>
+      <div class="column-5 w-col w-col-3">
+        <a href="/shipping-delivery" class="link">Shipping and Returns</a>
+        <a href="/wholesale-inquiry" class="link">Wholesale inquiry</a>
+        <a href="/corporate-gifts-inquiry" class="link">Corporate Gifts inquiry</a>
+        <div class="div-block-17">
+          <div class="text-block-42">Social Media</div>
+          <a href="#" class="link">Instagram</a>
+        </div>
+        <div class="div-block-53">
+          <div class="text-block-42">Family site</div>
+          <a href="https://www.hyunnyc.com" target="_blank" class="link">HYUN</a>
+        </div>
+      </div>
+      <div class="column-7 w-col w-col-3">
+        <div class="form-block-4 w-form">
+          {%- form 'customer', class: 'hyun-newsletter-form' -%}
+            <div class="text-block-9">Subscribe to<br/>THE HYUN</div>
+            <input type="hidden" name="contact[tags]" value="newsletter"/>
+            <input class="text-field-2 w-input" maxlength="256" name="contact[email]" placeholder="Email address" type="email" required=""/>
+            <input type="submit" data-wait="Please wait..." class="submit-button-2 w-button" value="Submit"/>
+            {%- if form.posted_successfully? -%}
+              <div class="text-block-54" style="margin-top:12px;">Thank you! Your submission has been received!</div>
+            {%- elsif form.errors -%}
+              <div class="text-block-55" style="margin-top:12px;">Oops! Something went wrong while submitting the form.</div>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

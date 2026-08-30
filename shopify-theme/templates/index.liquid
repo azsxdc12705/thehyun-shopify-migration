@@ -5,15 +5,15 @@ site is not ported yet, so the homepage is a plain index of what exists.
 Also satisfies Shopify's requirement that a publishable theme has an index
 template.
 {%- endcomment -%}
-<section style="min-height:70vh;display:flex;align-items:center;justify-content:center;background:var(--white,#fbf9ee);">
-  <div style="text-align:center;padding:40px 24px;">
-    <img src="{{ 'thehyun.svg' | asset_url }}" width="160" alt="THE HYUN" style="margin-bottom:40px;"/>
-    <div style="font-family:var(--kr,sans-serif);font-weight:300;letter-spacing:1px;margin-bottom:28px;color:var(--black,#212222);">
-      Option B demo — two templates ported off Webflow
-    </div>
+{% render 'hyun-nav' %}
+<section style="min-height:60vh;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;padding:60px 24px;">
+    <div class="title-upper-text" style="margin-bottom:16px;">Option B demo</div>
+    <h1 class="heading-12" style="margin-bottom:40px;">Two templates, zero Webflow</h1>
     <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
       <a href="/products/curated-collection" class="primary-button w-button">Curated Collection (product page)</a>
-      <a href="/pages/subscription-builder?view=subscription-builder" class="primary-button tertiarybtn w-button">Subscription Builder (quiz)</a>
+      <a href="/pages/subscription-builder" class="primary-button tertiarybtn w-button">Subscription Builder (quiz)</a>
     </div>
   </div>
 </section>
+{% render 'hyun-footer' %}

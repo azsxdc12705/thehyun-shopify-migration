@@ -1,0 +1,228 @@
+{%- comment -%}
+The subscription-builder quiz (6 steps + review), 1:1 from the Webflow port
+(theme-port/subscription-builder.html). Driven by assets/quiz.js — the Shopify
+Storefront port of the legacy Webflow quiz script: one cartCreate with the
+selling plan and the preferences as cart line attributes.
+
+Included from templates/page.subscription-builder.liquid and, by page handle,
+from templates/page.liquid — so the quiz renders as soon as a page with handle
+`subscription-builder` exists, before any template assignment.
+{%- endcomment -%}
+
+<style>
+  /* Quiz state styles, carried over from the live page's inline head block. */
+  .curated-step,
+  .curated-review { display: none; }
+  .curated-step.is-active,
+  .curated-review.is-active { display: block; }
+  .curated-option-card {
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+  }
+  .curated-option-card:hover { background-color: rgba(0, 0, 0, 0.035); }
+  .curated-option-card.is-selected {
+    background-color: rgba(0, 0, 0, 0.055);
+    border-color: #111111;
+  }
+  .curated-add-to-cart { cursor: pointer; }
+</style>
+
+<section class="section-35">
+  <div class="w-layout-blockcontainer container-17 w-container">
+    <div class="title-upper-text">Embrace joy as part of your routine</div>
+    <h1 class="heading-12">Subscription</h1>
+  </div>
+</section>
+
+<section class="section-36">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="body-copy half-left subscription-body">
+      New to Japanese Wagyu?<br/>
+      Share a few preferences, and we&#8217;ll curate a collection tailored to your taste.
+    </div>
+
+    <div class="curated-flow-wrap">
+      <div class="curated-step is-active">
+        <div class="curated-step-number">01 Delivery Frequency</div>
+        <div class="curated-step-title">The more often, the better — but we&#x27;ll let you decide</div>
+        <div class="curated-option-grid">
+          <div data-value="Every Two Weeks" data-question="frequency" class="curated-option-card">
+            <div class="curated-option-title">Every Two Weeks</div>
+          </div>
+          <div data-value="Every Month" data-question="frequency" class="curated-option-card">
+            <div class="curated-option-title">Every Month</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="curated-step">
+        <div class="curated-step-number">02 Collection Size</div>
+        <div class="curated-step-title">Choose the collection size that best fits your table</div>
+        <div class="curated-option-grid collection-size">
+          <div data-value="Discovery Collection" data-question="collection-size" class="curated-option-card">
+            <div class="curated-option-title">Discovery Collection</div>
+            <div class="curated-option-body">2lbs per shipment<br/></div>
+          </div>
+          <div data-value="Signature Collection" data-question="collection-size" class="curated-option-card">
+            <div class="curated-option-title">Signature Collection</div>
+            <div class="curated-option-body">3lbs per shipment</div>
+          </div>
+          <div data-value="Grand Collection" data-question="collection-size" class="curated-option-card">
+            <div class="curated-option-title">Grand Collection</div>
+            <div class="curated-option-body">6lbs per shipment<br/></div>
+          </div>
+        </div>
+        <div class="curated-step-subtitle">* Collections are curated by value, not exact weight. Actual weight may vary slightly based on cut selection, seasonal availability, and natural butchering yield</div>
+      </div>
+
+      <div class="curated-step">
+        <div class="curated-step-number">03 Experience</div>
+        <div class="curated-step-title">Bring THE HYUN experience beyond your home<br/>Add dining credit to enjoy THE HYUN in person</div>
+        <div class="curated-option-grid">
+          <div data-value="Delivery Only" data-question="experience" class="curated-option-card">
+            <div class="curated-option-title">Delivery Only</div>
+          </div>
+          <div data-value="Delivery + Dining at HYUN" data-question="experience" class="curated-option-card">
+            <div class="curated-option-title">Delivery + Dining Credit at HYUN</div>
+          </div>
+        </div>
+        <div class="curated-step-subtitle">$200 dining credit may be applied toward food and beverage purchases at HYUN. Reservations must be made separately and are subject to availability</div>
+      </div>
+
+      <div class="curated-step">
+        <div class="curated-step-number">04 Preferred Style</div>
+        <div class="curated-step-title">How would you like to enjoy your collection?<br/>Select up to four styles to help us curate cuts that best suit your table</div>
+        <div class="curated-option-grid">
+          <div data-value="Steak" data-question="cooking-style" class="curated-option-card">
+            <div class="curated-option-title">Steak</div>
+          </div>
+          <div data-value="Barbecue" data-question="cooking-style" class="curated-option-card">
+            <div class="curated-option-title">Korean BBQ</div>
+          </div>
+          <div data-value="Stew" data-question="cooking-style" class="curated-option-card">
+            <div class="curated-option-title">Stew</div>
+          </div>
+          <div data-value="Shabu Shabu" data-question="cooking-style" class="curated-option-card">
+            <div class="curated-option-title">Shabu-Shabu</div>
+          </div>
+        </div>
+        <div class="curated-step-subtitle">* Your selections help guide our curation, but may not be included in every shipment</div>
+      </div>
+
+      <div class="curated-step custom-preferences-step">
+        <div class="curated-step-number">05 Preferred Cuts</div>
+        <div class="curated-step-title">Prefer specific cuts? Select your favorites and we&#x27;ll tailor your collection accordingly</div>
+        <div class="curated-option-grid preferred-cuts">
+          <div data-value="Forequarter" data-question="preferred-cuts" class="curated-option-card">
+            <div class="curated-option-title">Forequarter</div>
+            <div class="curated-option-body">- brisket<br/>- chuck roll<br/>- clod<br/>- shank<br/></div>
+          </div>
+          <div data-value="Loin" data-question="preferred-cuts" class="curated-option-card">
+            <div class="curated-option-title">Loin</div>
+            <div class="curated-option-body">- ribloin<br/>- striploin<br/>- tenderloin</div>
+          </div>
+          <div data-value="Plate" data-question="preferred-cuts" class="curated-option-card">
+            <div class="curated-option-title">Plate</div>
+            <div class="curated-option-body">- short plate<br/>- short rib<br/></div>
+          </div>
+          <div data-value="Round" data-question="preferred-cuts" class="curated-option-card">
+            <div class="curated-option-title">Round</div>
+            <div class="curated-option-body">- gooseneck round<br/>- knuckle<br/>- rump<br/>- top Round<br/></div>
+          </div>
+        </div>
+        <div class="curated-option-grid preferred-cuts2">
+          <div data-value="Chef&#8217;s Recommendation" data-question="preferred-cuts" class="curated-option-card">
+            <div class="curated-option-title">Chef&#8217;s Recommendation</div>
+          </div>
+        </div>
+        <div class="curated-step-subtitle">* These selections guide our curation, but final cuts may vary depending on availability</div>
+      </div>
+
+      <div class="curated-step custom-preferences-step">
+        <div class="curated-step-number">06 Avoid</div>
+        <div class="curated-step-title">Anything you&#8217;d prefer to avoid?<br/>Choose one, or select No Avoidance</div>
+        <div class="curated-option-grid avoid">
+          <div data-value="Fatty Cuts" data-question="avoid" class="curated-option-card">
+            <div class="curated-option-title">Fatty Cuts</div>
+          </div>
+          <div data-value="Lean Cuts" data-question="avoid" class="curated-option-card">
+            <div class="curated-option-title">Lean Cuts</div>
+          </div>
+          <div data-value="Rich Texture" data-question="avoid" class="curated-option-card">
+            <div class="curated-option-title">Rich Texture</div>
+          </div>
+          <div data-value="No Avoidance" data-question="avoid" class="curated-option-card">
+            <div class="curated-option-title">No Avoidance</div>
+          </div>
+        </div>
+        <div class="curated-step-subtitle">* We&#x27;ll make every effort to accommodate your preferences, subject to availability</div>
+      </div>
+
+      <div class="curated-review">
+        <div class="curated-step-number review-number">07</div>
+        <div class="curated-step-title review-title">Review Your Collection</div>
+        <div class="curated-review-list">
+          <div class="curated-review-item is-frequency">Frequency: —</div>
+          <div class="curated-review-item is-occasion">Occasion: —</div>
+          <div class="curated-review-item is-cooking-style">Cooking Style: —</div>
+          <div class="curated-review-item is-experience">Experience: —</div>
+          <div class="curated-review-item is-selection-style">Selection Style: —</div>
+        </div>
+        <a href="{{ routes.cart_url }}" class="curated-add-to-cart w-button">Continue to Checkout</a>
+      </div>
+    </div>
+
+    <div class="collection-list-wrapper-7 w-dyn-list">
+      <div role="list" class="w-dyn-items">
+        <div role="listitem" class="w-dyn-item">
+          <div class="columns-25 w-row">
+            <div class="column-41 w-col w-col-4"></div>
+            <div class="w-col w-col-8">
+              <div class="columns-23 w-row">
+                <div class="w-col w-col-6">
+                  <div class="div-block-27">
+                    <h4 class="heading-31">Steak &amp; Barbecue</h4>
+                    <div class="text-block-49">I steer clear of meat bathing in broth</div>
+                    <img src="{{ 'asset-14.svg' | asset_url }}" loading="lazy" width="150" alt="" class="image-10"/>
+                  </div>
+                </div>
+                <div class="w-col w-col-6">
+                  <div class="div-block-27">
+                    <h4 class="heading-31">Steak &amp; Stew</h4>
+                    <div class="text-block-50">Sometimes I go for classic, other times it&#x27;s all about soul-warming broth</div>
+                    <img src="{{ 'asset-13.svg' | asset_url }}" loading="lazy" width="150" alt="" class="image-10"/>
+                  </div>
+                </div>
+              </div>
+              <div class="columns-23 w-row">
+                <div class="w-col w-col-6">
+                  <div class="div-block-27">
+                    <h4 class="heading-31">Barbecue &amp; Stew</h4>
+                    <div class="text-block-51">I&#8217;m all about meat sizzling over fire, but a hint of broth on occasion is needed.</div>
+                    <img src="{{ 'asset-15.svg' | asset_url }}" loading="lazy" width="150" alt="" class="image-10"/>
+                  </div>
+                </div>
+                <div class="w-col w-col-6">
+                  <div class="div-block-27">
+                    <h4 class="heading-31">Steak, Barbecue &amp; Stew</h4>
+                    <div class="text-block-52">True meat lovers don&#x27;t fuss over cooking methods.</div>
+                    <img src="{{ 'asset-16.svg' | asset_url }}" loading="lazy" width="251" alt="" class="image-10"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%}
+Quiz config + script. Demo mode: empty token switches mock-storefront.js on.
+Real mode: put a Storefront API token in `token`.
+{%- endcomment -%}
+<script>
+  window.HYUN_QUIZ = { shop: '{{ shop.permanent_domain }}', token: '' };
+</script>
+<script src="{{ 'quiz.js' | asset_url }}" defer="defer"></script>

@@ -1,0 +1,48 @@
+{%- comment -%}
+Minimal styled cart. The demo's buy paths go straight to checkout via
+cartCreate, but the nav cart icon lands here — it must not fall back to
+Shopify's bare default.
+{%- endcomment -%}
+{% render 'hyun-nav' %}
+<section class="section-35">
+  <div class="w-layout-blockcontainer container-17 w-container">
+    <h1 class="heading-12">Cart</h1>
+  </div>
+</section>
+<section style="padding: 0 5% 10vh;">
+  <div class="w-layout-blockcontainer main-container w-container">
+    {%- if cart.item_count == 0 -%}
+      <div class="body-copy" style="margin-bottom: 32px;">Your cart is empty.</div>
+      <a href="/products/curated-collection" class="primary-button w-button">Curated Collection</a>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        {%- for item in cart.items -%}
+          <div style="display:flex;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid #e5e2d8;">
+            {%- if item.image -%}
+              <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.image.alt | escape }}" width="80" style="object-fit:cover;"/>
+            {%- endif -%}
+            <div style="flex:1;">
+              <div class="body-copy">{{ item.product.title }}</div>
+              {%- unless item.variant.title == 'Default Title' -%}
+                <div class="body-copy" style="opacity:.65;">{{ item.variant.title }}</div>
+              {%- endunless -%}
+              {%- if item.selling_plan_allocation -%}
+                <div class="body-copy" style="opacity:.65;">{{ item.selling_plan_allocation.selling_plan.name }}</div>
+              {%- endif -%}
+              {%- for property in item.properties -%}
+                <div class="body-copy" style="opacity:.65;font-size:.85em;">{{ property.first }}: {{ property.last }}</div>
+              {%- endfor -%}
+            </div>
+            <div class="body-copy">{{ item.quantity }} × {{ item.final_price | money }}</div>
+            <a href="{{ item.url_to_remove }}" class="link" style="color:inherit;">Remove</a>
+          </div>
+        {%- endfor -%}
+        <div style="display:flex;justify-content:flex-end;align-items:center;gap:24px;margin-top:28px;">
+          <div class="body-copy">Subtotal: {{ cart.total_price | money }}</div>
+          <button type="submit" name="checkout" class="primary-button w-button" style="border:0;">Checkout</button>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+{% render 'hyun-footer' %}

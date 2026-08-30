@@ -1,0 +1,24 @@
+{% render 'hyun-nav' %}
+<section class="section-35">
+  <div class="w-layout-blockcontainer container-17 w-container">
+    <h1 class="heading-12">{{ collection.title }}</h1>
+  </div>
+</section>
+<section style="padding: 0 5% 10vh;">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;">
+      {%- for product in collection.products -%}
+        <a href="{{ product.url }}" style="text-decoration:none;color:inherit;">
+          {%- if product.featured_image -%}
+            <img src="{{ product.featured_image | image_url: width: 440 }}" alt="{{ product.featured_image.alt | escape }}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:10px;"/>
+          {%- endif -%}
+          <div class="body-copy">{{ product.title }}</div>
+          <div class="body-copy">{{ product.price_min | money }}{% if product.price_varies %}+{% endif %}</div>
+        </a>
+      {%- else -%}
+        <div class="body-copy">No products in this collection yet.</div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% render 'hyun-footer' %}
