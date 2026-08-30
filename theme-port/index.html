@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!-- THE HYUN — /product/curated-collection, ported off Webflow (option B demo).
+     Source: https://www.thehyun.com/product/curated-collection (crawled 2026-08-30).
+     No Webflow runtime, no Webflow-hosted assets except licensed font files
+     (see theme-port/README.md). Buy area is the Storefront API widget in mock mode. -->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>THE HYUN</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="assets/thyun.css" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/>
+<!-- Google fonts: same families the site loaded via webfont.js -->
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,500,500italic,700,700italic|Droid+Sans:400,700|IBM+Plex+Sans+KR:300,400,500,600,700|Noto+Sans+KR:300,400,500,600,700|Yeon+Sung:400&display=swap" rel="stylesheet"/>
+<!-- Adobe Fonts kit (classico-urw, neue-haas-grotesk-text). Licence is tied to
+     allowed domains in the Adobe account; localhost is allowed by default,
+     the production Shopify domain must be added at cutover. -->
+<link href="https://use.typekit.net/ixk3mkf.css" rel="stylesheet"/>
+<script>/* Webflow's touch/js modifier classes, minus Webflow */
+!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+<link href="assets/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+<link href="assets/apple-touch-icon.png" rel="apple-touch-icon"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "THE HYUN",
+  "url": "https://www.thehyun.com/"
+}
+</script>
+<style>
+  /* Fit the buy widget into the original product-column design.
+     (two-class selectors outweigh the widget's own injected rules) */
+  .hyun-buy-block .hyun-buy { gap: 0; }
+  .hyun-buy-block .hyun-buy-select {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    margin-bottom: 10px;
+    padding: 0 12px 3px;
+    font-family: var(--kr);
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.428571429;
+  }
+  /* no reserved space for the (empty) error line — the live page has none */
+  .hyun-buy-block .hyun-buy-error { min-height: 0; }
+  .hyun-buy-block .hyun-buy-error:empty { display: none; }
+  /* the live page keeps quantity hidden (.quantity-5 { display: none }) */
+  .hyun-buy .hyun-buy-qty { display: none; }
+  /* price sits above the pickers on the live page (.text-block-37.product-price) */
+  .hyun-buy .hyun-buy-price {
+    order: -1;
+    font-family: var(--title-font);
+    color: var(--black);
+    margin-bottom: 30px;
+    font-size: 1.4em;
+    font-weight: 400;
+  }
+  /* Buy button styled like the original Add to Cart (.secondary-button) */
+  .hyun-buy .hyun-buy-button {
+    border: 1px solid var(--black);
+    background-color: var(--black);
+    font-family: var(--copy);
+    color: var(--white);
+    text-align: center;
+    letter-spacing: 1px;
+    border-radius: 0;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    padding: 15px 25px;
+    font-size: .9em;
+    font-weight: 400;
+    text-decoration: none;
+    transition: all .2s;
+    display: block;
+    align-self: flex-start;
+  }
+  .hyun-buy .hyun-buy-button:hover { color: #fff; background-color: #32343a; }
+  .hyun-buy .hyun-buy-button:active { background-color: #43464d; }
+  /* the live Add to Cart goes full-width on phones */
+  @media screen and (max-width: 479px) {
+    .hyun-buy .hyun-buy-button { align-self: stretch; }
+  }
+</style>
+</head>
+<body class="body-9">
+<div id="nav" class="navbar-logo-center">
+  <div data-animation="over-left" class="navbar-logo-center-container shadow-three w-nav" data-easing2="ease-out" data-easing="ease-in" data-collapse="medium" role="banner" data-no-scroll="1" data-duration="400" data-doc-height="1">
+    <div class="container-2">
+      <div class="menu-button w-nav-button" role="button" tabindex="0" aria-label="menu" aria-expanded="false">
+        <div class="icon-2 w-icon-nav-menu"></div>
+        <img src="assets/thburg.svg" loading="lazy" width="22" height="22" alt=""/>
+      </div>
+      <nav role="navigation" class="nav-menu-wrapper-three w-nav-menu">
+        <div class="nav-menu-three">
+          <ul role="list" class="nav-menu-block w-list-unstyled">
+            <li class="list-item-4">
+              <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+                <div class="dropdown-toggle w-dropdown-toggle" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+                  <div class="text-block-20">About</div>
+                </div>
+                <nav class="dropdown-list w-dropdown-list">
+                  <a href="/our-story" class="dropdown-link w-dropdown-link">Our Story</a>
+                  <a href="/brand-philosophy" class="dropdown-link w-dropdown-link">Brand Philosophy</a>
+                  <a href="/design-philosophy" class="dropdown-link w-dropdown-link">Design Philosophy</a>
+                </nav>
+              </div>
+              <a href="/japanese-wagyu" class="nav-link">Japanase Wagyu</a>
+              <a href="/bundles" class="nav-link">Bundles</a>
+              <a href="/subscription" class="nav-link">Subscription</a>
+              <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+                <div class="dropdown-toggle w-dropdown-toggle" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+                  <div class="text-block-20">Gifts</div>
+                </div>
+                <nav class="dropdown-list w-dropdown-list">
+                  <a href="/gift-sets-list" class="dropdown-link w-dropdown-link">Gift Sets</a>
+                  <a href="/corporate-gifts" class="dropdown-link w-dropdown-link">Corporate Gifts</a>
+                  <a href="/bojagi" class="dropdown-link w-dropdown-link">Bojagi Wrapping</a>
+                </nav>
+              </div>
+              <a href="/local-delivery" class="nav-link">Local Delivery</a>
+              <a href="/store" class="nav-link">Store</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <a href="/" class="navbar-brand-three w-nav-brand">
+        <img src="assets/thehyun.svg" loading="lazy" width="105" alt="" class="image-9"/>
+      </a>
+      <!-- Cart lives on Shopify under option B; the icon is kept for the design.
+           In the real theme this links to the Shopify cart. -->
+      <div class="w-commerce-commercecartwrapper">
+        <a class="w-commerce-commercecartopenlink cart-button w-inline-block" role="button" aria-label="Open cart" href="#">
+          <img src="assets/cartsq.svg" loading="lazy" width="16" alt=""/>
+          <div class="w-commerce-commercecartopenlinkcount cart-quantity">0</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="section-26">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="columns-24 w-row">
+      <div class="column-49 w-col w-col-6">
+        <div class="div-block-14">
+          <img loading="lazy" width="550" alt="" src="assets/subth.jpg" class="image-11"/>
+        </div>
+      </div>
+      <div class="column-24 w-col w-col-6">
+        <div class="text-block-39 w-dyn-bind-empty"></div>
+        <div class="div-block-19">
+          <div class="text-block-36">Curated Collection</div>
+          <div class="text-block-43 w-dyn-bind-empty"></div>
+        </div>
+        <p class="paragraph-19 w-dyn-bind-empty"></p>
+        <div class="rich-text-block-3 w-dyn-bind-empty w-richtext"></div>
+        <!-- price placeholder block: on the live page this holds the (initially
+             hidden) static price; the widget renders the real price. Keeping the
+             empty block preserves the original spacing. -->
+        <div class="div-block-18"></div>
+        <div class="hyun-buy-block">
+          <!-- Storefront API buy widget (mock mode: no data-token).
+               Real mode: set data-shop / data-token. One Frequency choice drives
+               both the variant and the selling plan — see webflow-embed/buy-widget.js -->
+          <div data-hyun-buy="curated-collection" data-shop="" data-token=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="cream-section">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="div-block-15">
+      <p class="paragraph-20">Wrap your genuine emotions within the Bojagi enriched with THE HYUN&#x27;s artistry, offering a heartfelt expression of your sincerity</p>
+      <p class="paragraph-21">We’re pleasured to offer gift wrapping with a traditional Korean wrapping cloth, Bojagi.<br/>This exquisite material, graced by the masterful hands of HYUN, surpasses its practical purpose; it encapsulates the heartfelt wish for the recipient to sense genuine warmth and admiration.</p>
+      <a href="/bojagi" class="primary-button tertiarybtn w-button">Learn more</a>
+    </div>
+  </div>
+</section>
+<section class="section-11 section-56">
+  <div class="w-layout-blockcontainer container-15 w-container">
+    <a href="#nav" class="link-block w-inline-block"><div class="text-block-7">BACK TO TOP</div></a>
+  </div>
+  <div class="div-block-3">
+    <div class="columns-4 w-row">
+      <div class="column-4 w-col w-col-3">
+        <img src="assets/thlogowhite.svg" loading="lazy" width="125" alt="" class="image"/>
+        <div class="div-block-26">
+          <a href="/our-story" class="link">Our Story</a>
+          <a href="/brand-philosophy" class="link">Brand philosophy</a>
+          <a href="/design-philosophy" class="link">Design philosophy</a>
+        </div>
+        <div class="div-block-26">
+          <a href="/bojagi" class="link">Bojagi Wrapping</a>
+          <a href="/gift-sets" class="link">Gift Sets</a>
+          <a href="/corporate-gifts" class="link">Corporate Gifts</a>
+          <a href="/contact" class="link">Contact</a>
+        </div>
+      </div>
+      <div class="column-6 w-col w-col-3">
+        <div class="div-block-52">
+          <img src="assets/asset-33.svg" loading="lazy" width="527" alt="" class="image-2"/>
+        </div>
+        <div class="text-block-8">253 Third Ave<br/>New York, NY 10001</div>
+        <!-- phone number redacted for the public repo -->
+        <div class="text-block-8">000.000.0000<br/>info@thehyun.com</div>
+      </div>
+      <div class="column-5 w-col w-col-3">
+        <a href="/shipping-delivery" class="link">Shipping and Returns</a>
+        <a href="/wholesale-inquiry" class="link">Wholesale inquiry</a>
+        <a href="/corporate-gifts-inquiry" class="link">Corporate Gifts inquiry</a>
+        <div class="div-block-17">
+          <div class="text-block-42">Social Media</div>
+          <a href="#" class="link">Instagram</a>
+        </div>
+        <div class="div-block-53">
+          <div class="text-block-42">Family site</div>
+          <a href="https://www.hyunnyc.com" target="_blank" class="link">HYUN</a>
+        </div>
+      </div>
+      <div class="column-7 w-col w-col-3">
+        <div class="form-block-4 w-form">
+          <form id="email-form" name="email-form" method="get">
+            <div class="text-block-9">Subscribe to<br/>THE HYUN</div>
+            <input class="text-field-2 w-input" maxlength="256" name="email-2" placeholder="Email address" type="email" id="email-2" required=""/>
+            <input type="submit" data-wait="Please wait..." class="submit-button-2 w-button" value="Submit"/>
+          </form>
+          <div class="success-message-2 w-form-done"><div class="text-block-54">Thank you! Your submission has been received!</div></div>
+          <div class="error-message-3 w-form-fail"><div class="text-block-55">Oops! Something went wrong while submitting the form.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="assets/site.js"></script>
+<script src="assets/mock-storefront.js"></script>
+<script src="assets/buy-widget.js"></script>
+</body>
+</html>

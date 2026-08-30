@@ -24,6 +24,7 @@ stock to Shopify over the Admin API.
 | `docs/` | Audit findings, migration plan |
 | `scripts/` | Webflow → Shopify migration tooling |
 | `webflow-embed/` | JS embedded into Webflow (Storefront API buy widget) |
+| `theme-port/` | Option B demo: the Curated Collection product page ported off Webflow entirely (local CSS/assets, vanilla-JS nav, buy widget in mock mode) — proof the design survives a full Shopify theme migration |
 
 ## Status
 
