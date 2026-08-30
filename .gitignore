@@ -1,0 +1,10 @@
+.env*
+node_modules/
+.DS_Store
+# internal working notes — not for the public repo
+docs/CONTEXT.md
+webflow-embed/demo.html
+webflow-embed/embed-snippet.html
+webflow-embed/staging-footer.html
+webflow-embed/quiz-demo.html
+webflow-embed/staging-quiz.html

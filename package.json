@@ -1,0 +1,25 @@
+{
+  "name": "thehyun-shopify-migration",
+  "version": "1.0.0",
+  "description": "Migration of thehyun.com's commerce from Webflow Ecommerce to Shopify, keeping the Webflow front end (design untouched) and moving cart, checkout and subscriptions to Shopify.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azsxdc12705/thehyun-shopify-migration.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/azsxdc12705/thehyun-shopify-migration/issues"
+  },
+  "homepage": "https://github.com/azsxdc12705/thehyun-shopify-migration#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}
