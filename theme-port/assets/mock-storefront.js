@@ -1,11 +1,14 @@
-/* Mock Storefront API for the buy widget — demo mode only.
- * Active when the [data-hyun-buy] mount has no data-token (same contract as
- * webflow-embed/test.html). IDs and prices are the real dev-store values
+/* Mock Storefront API for the buy widget and the subscription-builder quiz —
+ * demo mode only. Active when the [data-hyun-buy] mount has no data-token
+ * (same contract as webflow-embed/test.html), or when window.HYUN_QUIZ is
+ * configured without a token. IDs and prices are the real dev-store values
  * (verified via Admin API, 2026-08-25).
  */
 (function () {
   const mount = document.querySelector('[data-hyun-buy]');
-  if (!mount || mount.dataset.token) return;
+  const widgetMock = mount && !mount.dataset.token;
+  const quizMock = window.HYUN_QUIZ && !window.HYUN_QUIZ.token;
+  if (!widgetMock && !quizMock) return;
 
   const PLAN = {
     month: { id: 'gid://shopify/SellingPlan/7879033078', name: 'Deliver every month' },

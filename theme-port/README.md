@@ -1,15 +1,21 @@
-# theme-port/ — option B demo: the product template with zero Webflow
+# theme-port/ — option B demo: two templates with zero Webflow
 
-A 1:1 port of the live [`/product/curated-collection`](https://www.thehyun.com/product/curated-collection)
-page (crawled 2026-08-30) proving that a **full Shopify migration (option B —
-no Webflow at all)** keeps the design intact. Everything Webflow served at
-runtime is gone; the page renders from this directory alone plus fonts.
+1:1 ports of live pages (crawled 2026-08-30) proving that a **full Shopify
+migration (option B — no Webflow at all)** keeps the design intact. Everything
+Webflow served at runtime is gone; the pages render from this directory alone
+plus fonts.
+
+| page | port | buy path |
+| --- | --- | --- |
+| [`/product/curated-collection`](https://www.thehyun.com/product/curated-collection) | `index.html` | `buy-widget.js` (mock mode) |
+| [`/subscription-builder`](https://www.thehyun.com/subscription-builder) | `subscription-builder.html` | `quiz.js` (mock mode) |
 
 Run it:
 
 ```
 python3 -m http.server 8123        # repo root (matches .claude/launch.json)
 open http://localhost:8123/theme-port/
+open http://localhost:8123/theme-port/subscription-builder.html
 ```
 
 ## What was removed (vs. the live page)
@@ -36,6 +42,30 @@ open http://localhost:8123/theme-port/
 
 Real mode: set `data-shop` / `data-token` on the `[data-hyun-buy]` mount in
 `index.html` and drop `mock-storefront.js`.
+
+## The subscription-builder page
+
+The quiz (6 steps + review) is the Webflow-designed DOM verbatim; the state
+CSS from the live page's inline head block is carried over (steps hidden until
+`.is-active`, cards highlight via `.is-selected`). Driving it is
+`assets/quiz.js` — a copy of `webflow-embed/quiz.js`, the 5.7KB Shopify port
+of the legacy 11.3KB quiz script. What the legacy script spent its bytes on
+(syncing a hidden Webflow add-to-cart form, a second preferences form,
+localStorage one-subscription-per-cart guards, cart-popup suppression) Shopify
+does natively: one `cartCreate` with the selling plan and the preferences as
+cart line attributes. The deleted machinery: the hidden Webflow commerce form,
+the off-screen preferences form, both patch scripts, Stripe, the cart
+dropdown.
+
+Real mode: fill in `window.HYUN_QUIZ = { shop, token }` in
+`subscription-builder.html`.
+
+**Live-site bug the port fixes**: on the live page, choosing *Delivery +
+Dining Credit at HYUN* and continuing fails with "Cart connection is not
+ready yet." — the quiz card's value (`Delivery + Dining at HYUN`) never
+matches the Webflow select option (`Delivery + HYUN Dining`), so the hidden
+form sync aborts and the dining-credit path cannot be purchased. `quiz.js`
+maps the values explicitly, so the same click-through checks out.
 
 ## Deliberately not in the repo
 
@@ -65,6 +95,13 @@ Real mode: set `data-shop` / `data-token` on the `[data-hyun-buy]` mount in
    of the site is ported; paths are kept identical so URLs survive migration.
 7. **Quantity input hidden** to match the live page (which hides it via
    `.quantity-5`); the widget always buys quantity 1.
+8. **Quiz back-navigation reset**: the live page blanks the quiz to step 01 on
+   `pageshow` (bfcache restore from cart/checkout); `quiz.js` doesn't — a
+   plain reload gives the same fresh state. Only visible when navigating back
+   from checkout.
+9. **Quiz review placeholders**: the five "Frequency: — …" lines stay as
+   dashes after completing the quiz — identical to live, where the legacy
+   script never fills them either. Left as-is deliberately.
 
 Comparison screenshots (live vs. port, desktop 1440 / mobile 390, menu-open
 state) are generated with Playwright; they are kept out of the repo because

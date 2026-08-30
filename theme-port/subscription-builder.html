@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!-- THE HYUN — /subscription-builder, ported off Webflow (option B demo).
+     Source: https://www.thehyun.com/subscription-builder (crawled 2026-08-30).
+     Same conventions as index.html; the quiz runs webflow-embed/quiz.js
+     (Shopify Storefront port of the legacy 11.3KB Webflow quiz script)
+     against a mock Storefront API. See theme-port/README.md. -->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Subscription Builder</title>
+<meta content="Subscription Builder" property="og:title"/>
+<meta content="Subscription Builder" name="twitter:title"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="assets/thyun.css" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/>
+<!-- Google fonts: same families the site loaded via webfont.js -->
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,500,500italic,700,700italic|Droid+Sans:400,700|IBM+Plex+Sans+KR:300,400,500,600,700|Noto+Sans+KR:300,400,500,600,700|Yeon+Sung:400&display=swap" rel="stylesheet"/>
+<!-- Adobe Fonts kit (classico-urw, neue-haas-grotesk-text) — see index.html note -->
+<link href="https://use.typekit.net/ixk3mkf.css" rel="stylesheet"/>
+<script>/* Webflow's touch/js modifier classes, minus Webflow */
+!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+<link href="assets/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+<link href="assets/apple-touch-icon.png" rel="apple-touch-icon"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "THE HYUN",
+  "url": "https://www.thehyun.com/"
+}
+</script>
+<style>
+  /* Quiz state styles, carried over from the live page's inline head block.
+     (Rules for the deleted hidden Webflow form/cart machinery are dropped.) */
+  .curated-step,
+  .curated-review {
+    display: none;
+  }
+
+  .curated-step.is-active,
+  .curated-review.is-active {
+    display: block;
+  }
+
+  .curated-option-card {
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+  }
+
+  .curated-option-card:hover {
+    background-color: rgba(0, 0, 0, 0.035);
+  }
+
+  .curated-option-card.is-selected {
+    background-color: rgba(0, 0, 0, 0.055);
+    border-color: #111111;
+  }
+
+  .curated-add-to-cart {
+    cursor: pointer;
+  }
+</style>
+</head>
+<body class="body-17">
+<div id="nav" class="navbar-logo-center">
+  <div data-animation="over-left" class="navbar-logo-center-container shadow-three w-nav" data-easing2="ease-out" data-easing="ease-in" data-collapse="medium" role="banner" data-no-scroll="1" data-duration="400" data-doc-height="1">
+    <div class="container-2">
+      <div class="menu-button w-nav-button" role="button" tabindex="0" aria-label="menu" aria-expanded="false">
+        <div class="icon-2 w-icon-nav-menu"></div>
+        <img src="assets/thburg.svg" loading="lazy" width="22" height="22" alt=""/>
+      </div>
+      <nav role="navigation" class="nav-menu-wrapper-three w-nav-menu">
+        <div class="nav-menu-three">
+          <ul role="list" class="nav-menu-block w-list-unstyled">
+            <li class="list-item-4">
+              <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+                <div class="dropdown-toggle w-dropdown-toggle" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+                  <div class="text-block-20">About</div>
+                </div>
+                <nav class="dropdown-list w-dropdown-list">
+                  <a href="/our-story" class="dropdown-link w-dropdown-link">Our Story</a>
+                  <a href="/brand-philosophy" class="dropdown-link w-dropdown-link">Brand Philosophy</a>
+                  <a href="/design-philosophy" class="dropdown-link w-dropdown-link">Design Philosophy</a>
+                </nav>
+              </div>
+              <a href="/japanese-wagyu" class="nav-link">Japanase Wagyu</a>
+              <a href="/bundles" class="nav-link">Bundles</a>
+              <a href="/subscription" class="nav-link">Subscription</a>
+              <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+                <div class="dropdown-toggle w-dropdown-toggle" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+                  <div class="text-block-20">Gifts</div>
+                </div>
+                <nav class="dropdown-list w-dropdown-list">
+                  <a href="/gift-sets-list" class="dropdown-link w-dropdown-link">Gift Sets</a>
+                  <a href="/corporate-gifts" class="dropdown-link w-dropdown-link">Corporate Gifts</a>
+                  <a href="/bojagi" class="dropdown-link w-dropdown-link">Bojagi Wrapping</a>
+                </nav>
+              </div>
+              <a href="/local-delivery" class="nav-link">Local Delivery</a>
+              <a href="/store" class="nav-link">Store</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <a href="/" class="navbar-brand-three w-nav-brand">
+        <img src="assets/thehyun.svg" loading="lazy" width="105" alt="" class="image-9"/>
+      </a>
+      <!-- Cart lives on Shopify under option B; the icon is kept for the design.
+           In the real theme this links to the Shopify cart. -->
+      <div class="w-commerce-commercecartwrapper">
+        <a class="w-commerce-commercecartopenlink cart-button w-inline-block" role="button" aria-label="Open cart" href="#">
+          <img src="assets/cartsq.svg" loading="lazy" width="16" alt=""/>
+          <div class="w-commerce-commercecartopenlinkcount cart-quantity">0</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="section-35"><div class="w-layout-blockcontainer container-17 w-container"><div class="title-upper-text">Embrace joy as part of your routine</div><h1 class="heading-12">Subscription</h1></div></section><section class="section-36"><div class="w-layout-blockcontainer main-container w-container"><div class="body-copy half-left subscription-body">New to Japanese Wagyu?<br/>Share a few preferences, and we’ll curate a collection tailored to your taste.</div><div class="curated-flow-wrap"><div class="curated-step is-active"><div class="curated-step-number">01 Delivery Frequency</div><div class="curated-step-title">The more often, the better — but we&#x27;ll let you decide</div><div class="curated-option-grid"><div data-value="Every Two Weeks" data-question="frequency" class="curated-option-card"><div class="curated-option-title">Every Two Weeks</div></div><div data-value="Every Month" data-question="frequency" class="curated-option-card"><div class="curated-option-title">Every Month</div></div></div></div><div class="curated-step"><div class="curated-step-number">02 Collection Size</div><div class="curated-step-title">Choose the collection size that best fits your table</div><div class="curated-option-grid collection-size"><div data-value="Discovery Collection" data-question="collection-size" id="w-node-_1754c2fb-6b93-761b-374a-a56524408bd3-a0c652f3" class="curated-option-card"><div class="curated-option-title">Discovery Collection</div><div class="curated-option-body">2lbs per shipment<br/></div></div><div data-value="Signature Collection" data-question="collection-size" class="curated-option-card"><div class="curated-option-title">Signature Collection</div><div class="curated-option-body">3lbs per shipment</div></div><div data-value="Grand Collection" data-question="collection-size" class="curated-option-card"><div class="curated-option-title">Grand Collection</div><div class="curated-option-body">6lbs per shipment<br/></div></div></div><div class="curated-step-subtitle">* Collections are curated by value, not exact weight. Actual weight may vary slightly based on cut selection, seasonal availability, and natural butchering yield</div></div><div class="curated-step"><div class="curated-step-number">03 Experience</div><div class="curated-step-title">Bring THE HYUN experience beyond your home<br/>Add dining credit to enjoy THE HYUN in person</div><div class="curated-option-grid"><div data-value="Delivery Only" data-question="experience" class="curated-option-card"><div class="curated-option-title">Delivery Only</div></div><div data-value="Delivery + Dining at HYUN" data-question="experience" class="curated-option-card"><div class="curated-option-title">Delivery + Dining Credit at HYUN</div></div></div><div class="curated-step-subtitle">$200 dining credit may be applied toward food and beverage purchases at HYUN. Reservations must be made separately and are subject to availability</div></div><div class="curated-step"><div class="curated-step-number">04 Preferred Style</div><div class="curated-step-title">How would you like to enjoy your collection?<br/>Select up to four styles to help us curate cuts that best suit your table</div><div class="curated-option-grid"><div data-value="Steak" data-question="cooking-style" class="curated-option-card"><div class="curated-option-title">Steak</div></div><div data-value="Barbecue" data-question="cooking-style" class="curated-option-card"><div class="curated-option-title">Korean BBQ</div></div><div data-value="Stew" data-question="cooking-style" class="curated-option-card"><div class="curated-option-title">Stew</div></div><div data-value="Shabu Shabu" data-question="cooking-style" class="curated-option-card"><div class="curated-option-title">Shabu-Shabu</div></div></div><div class="curated-step-subtitle">* Your selections help guide our curation, but may not be included in every shipment</div></div><div class="curated-step custom-preferences-step"><div class="curated-step-number">05 Preferred Cuts</div><div class="curated-step-title">Prefer specific cuts? Select your favorites and we&#x27;ll tailor your collection accordingly</div><div class="curated-option-grid preferred-cuts"><div data-value="Forequarter" data-question="preferred-cuts" id="w-node-_38aadd7b-9df8-5ff2-1d73-2542202f957c-a0c652f3" class="curated-option-card"><div class="curated-option-title">Forequarter</div><div class="curated-option-body">- brisket<br/>- chuck roll<br/>- clod<br/>- shank<br/></div></div><div data-value="Loin" data-question="preferred-cuts" class="curated-option-card"><div class="curated-option-title">Loin</div><div class="curated-option-body">- ribloin<br/>- striploin<br/>- tenderloin</div></div><div data-value="Plate" data-question="preferred-cuts" class="curated-option-card"><div class="curated-option-title">Plate</div><div class="curated-option-body">- short plate<br/>- short rib<br/></div></div><div data-value="Round" data-question="preferred-cuts" class="curated-option-card"><div class="curated-option-title">Round</div><div class="curated-option-body">- gooseneck round<br/>- knuckle<br/>- rump<br/>- top Round<br/></div></div></div><div class="curated-option-grid preferred-cuts2"><div data-value="Chef’s Recommendation" data-question="preferred-cuts" class="curated-option-card"><div class="curated-option-title">Chef’s Recommendation</div></div></div><div class="curated-step-subtitle">* These selections guide our curation, but final cuts may vary depending on availability</div></div><div class="curated-step custom-preferences-step"><div class="curated-step-number">06 Avoid</div><div class="curated-step-title">Anything you’d prefer to avoid?<br/>Choose one, or select No Avoidance</div><div class="curated-option-grid avoid"><div data-value="Fatty Cuts" data-question="avoid" class="curated-option-card"><div class="curated-option-title">Fatty Cuts</div></div><div data-value="Lean Cuts" data-question="avoid" class="curated-option-card"><div class="curated-option-title">Lean Cuts</div></div><div data-value="Rich Texture" data-question="avoid" class="curated-option-card"><div class="curated-option-title">Rich Texture</div></div><div data-value="No Avoidance" data-question="avoid" class="curated-option-card"><div class="curated-option-title">No Avoidance</div></div></div><div class="curated-step-subtitle">* We&#x27;ll make every effort to accommodate your preferences, subject to availability</div></div><div class="curated-review"><div class="curated-step-number review-number">07</div><div class="curated-step-title review-title">Review Your Collection</div><div class="curated-review-list"><div class="curated-review-item is-frequency">Frequency: —</div><div class="curated-review-item is-occasion">Occasion: —</div><div class="curated-review-item is-cooking-style">Cooking Style: —</div><div class="curated-review-item is-experience">Experience: —</div><div class="curated-review-item is-selection-style">Selection Style: —</div></div><a href="/cart" class="curated-add-to-cart w-button">Continue to Checkout</a></div></div></div><div class="collection-list-wrapper-7 w-dyn-list"><div role="list" class="w-dyn-items"><div role="listitem" class="w-dyn-item"><div class="columns-25 w-row"><div class="column-41 w-col w-col-4"></div><div class="w-col w-col-8"><div class="columns-23 w-row"><div class="w-col w-col-6"><div class="div-block-27"><h4 class="heading-31">Steak &amp; Barbecue							</h4><div class="text-block-49">I steer clear of meat bathing in broth														</div><img src="assets/asset-14.svg" loading="lazy" width="150" alt="" class="image-10"/></div></div><div class="w-col w-col-6"><div class="div-block-27"><h4 class="heading-31">Steak &amp; Stew							</h4><div class="text-block-50">Sometimes I go for classic, other times it&#x27;s all about soul-warming broth														</div><img src="assets/asset-13.svg" loading="lazy" width="150" alt="" class="image-10"/></div></div></div><div class="columns-23 w-row"><div class="w-col w-col-6"><div class="div-block-27"><h4 class="heading-31">Barbecue &amp; Stew							</h4><div class="text-block-51">I’m all about meat sizzling over fire, but a hint of broth on occasion is needed.																												</div><img src="assets/asset-15.svg" loading="lazy" width="150" alt="" class="image-10"/></div></div><div class="w-col w-col-6"><div class="div-block-27"><h4 class="heading-31">Steak, Barbecue &amp; Stew							</h4><div class="text-block-52">True meat lovers don&#x27;t fuss over cooking methods.														</div><img src="assets/asset-16.svg" loading="lazy" width="251" alt="" class="image-10"/></div></div></div></div></div></div></div></div></section><section class="section-11 section-56">
+  <div class="w-layout-blockcontainer container-15 w-container">
+    <a href="#nav" class="link-block w-inline-block"><div class="text-block-7">BACK TO TOP</div></a>
+  </div>
+  <div class="div-block-3">
+    <div class="columns-4 w-row">
+      <div class="column-4 w-col w-col-3">
+        <img src="assets/thlogowhite.svg" loading="lazy" width="125" alt="" class="image"/>
+        <div class="div-block-26">
+          <a href="/our-story" class="link">Our Story</a>
+          <a href="/brand-philosophy" class="link">Brand philosophy</a>
+          <a href="/design-philosophy" class="link">Design philosophy</a>
+        </div>
+        <div class="div-block-26">
+          <a href="/bojagi" class="link">Bojagi Wrapping</a>
+          <a href="/gift-sets" class="link">Gift Sets</a>
+          <a href="/corporate-gifts" class="link">Corporate Gifts</a>
+          <a href="/contact" class="link">Contact</a>
+        </div>
+      </div>
+      <div class="column-6 w-col w-col-3">
+        <div class="div-block-52">
+          <img src="assets/asset-33.svg" loading="lazy" width="527" alt="" class="image-2"/>
+        </div>
+        <div class="text-block-8">253 Third Ave<br/>New York, NY 10001</div>
+        <!-- phone number redacted for the public repo -->
+        <div class="text-block-8">000.000.0000<br/>info@thehyun.com</div>
+      </div>
+      <div class="column-5 w-col w-col-3">
+        <a href="/shipping-delivery" class="link">Shipping and Returns</a>
+        <a href="/wholesale-inquiry" class="link">Wholesale inquiry</a>
+        <a href="/corporate-gifts-inquiry" class="link">Corporate Gifts inquiry</a>
+        <div class="div-block-17">
+          <div class="text-block-42">Social Media</div>
+          <a href="#" class="link">Instagram</a>
+        </div>
+        <div class="div-block-53">
+          <div class="text-block-42">Family site</div>
+          <a href="https://www.hyunnyc.com" target="_blank" class="link">HYUN</a>
+        </div>
+      </div>
+      <div class="column-7 w-col w-col-3">
+        <div class="form-block-4 w-form">
+          <form id="email-form" name="email-form" method="get">
+            <div class="text-block-9">Subscribe to<br/>THE HYUN</div>
+            <input class="text-field-2 w-input" maxlength="256" name="email-2" placeholder="Email address" type="email" id="email-2" required=""/>
+            <input type="submit" data-wait="Please wait..." class="submit-button-2 w-button" value="Submit"/>
+          </form>
+          <div class="success-message-2 w-form-done"><div class="text-block-54">Thank you! Your submission has been received!</div></div>
+          <div class="error-message-3 w-form-fail"><div class="text-block-55">Oops! Something went wrong while submitting the form.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="assets/site.js"></script>
+<script>
+  /* Quiz config. Demo: empty token switches mock-storefront.js on.
+     Real mode: fill in the dev store + Storefront API token. */
+  window.HYUN_QUIZ = { shop: 'demo.myshopify.com', token: '' };
+</script>
+<script src="assets/mock-storefront.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>
