@@ -25,6 +25,7 @@ stock to Shopify over the Admin API.
 | `scripts/` | Webflow → Shopify migration tooling |
 | `webflow-embed/` | JS embedded into Webflow (Storefront API buy widget) |
 | `theme-port/` | Option B demo: the Curated Collection product page and the subscription-builder quiz ported off Webflow entirely (local CSS/assets, vanilla-JS nav, buy widget + quiz in mock mode) — proof the design survives a full Shopify theme migration |
+| `shopify-theme/` | Production-ready Shopify theme (Liquid templates) for the Curated Collection and subscription builder; ready to push to a Shopify dev store or production domain |
 
 ## Status
 
@@ -35,6 +36,12 @@ stock to Shopify over the Admin API.
       $576) produced a real recurring contract — *"Recurring subtotal $576.00
       every 2 weeks"*, first + recurring shipments scheduled. One checkout, one
       form. This is the thing Webflow could not do at all.
+- [x] HTML/CSS port (option B demo): `theme-port/` — Curated Collection and
+      subscription-builder quiz pages running off Webflow entirely, live at
+      http://localhost:8123/theme-port/
+- [x] **Shopify Liquid theme**: `shopify-theme/` — production-ready theme with
+      Liquid templates, asset pipeline, and configuration. Ready to deploy to
+      dev store or production domain. See `DEPLOYMENT_GUIDE.md`
 - [ ] Buy widget in Webflow, checkout on Shopify — widget must pair the
       Frequency variant with the matching selling plan, so the mismatch
       possible on the Shopify product page cannot happen in front of customers
