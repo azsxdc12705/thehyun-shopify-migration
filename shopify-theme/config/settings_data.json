@@ -1,0 +1,11 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "font_heading_family": "Neue Haas Grotesk",
+      "font_body_family": "Droid Sans",
+      "color_primary": "#212222",
+      "color_secondary": "#fbf9ee"
+    }
+  }
+}

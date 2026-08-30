@@ -1,0 +1,39 @@
+[
+  {
+    "name": "Theme Settings",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "text",
+        "id": "font_heading_family",
+        "label": "Heading font",
+        "default": "Neue Haas Grotesk"
+      },
+      {
+        "type": "text",
+        "id": "font_body_family",
+        "label": "Body font",
+        "default": "Droid Sans"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary color",
+        "default": "#212222"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary color",
+        "default": "#fbf9ee"
+      }
+    ]
+  }
+]

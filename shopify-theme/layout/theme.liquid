@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>{{ page_title }}</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  {{ content_for_header }}
+
+  {%- if request.page_type == 'product' -%}
+    <meta name="description" content="{{ product.description | strip_html | truncatewords: 20 }}"/>
+  {%- else -%}
+    <meta name="description" content="THE HYUN Curated Collection"/>
+  {%- endif -%}
+
+  <link href="{{ 'thyun.css' | asset_url }}" rel="stylesheet" type="text/css"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/>
+
+  <!-- Google fonts: same families the site loaded via webfont.js -->
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,500,500italic,700,700italic|Droid+Sans:400,700|IBM+Plex+Sans+KR:300,400,500,600,700|Noto+Sans+KR:300,400,500,600,700|Yeon+Sung:400&display=swap" rel="stylesheet"/>
+
+  <!-- Adobe Fonts kit (classico-urw, neue-haas-grotesk-text). Licence is tied to
+       allowed domains in the Adobe account; localhost is allowed by default,
+       the production Shopify domain must be added at cutover. -->
+  <link href="https://use.typekit.net/ixk3mkf.css" rel="stylesheet"/>
+
+  <script>/* Webflow's touch/js modifier classes, minus Webflow */
+  !function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+
+  <link href="{{ 'favicon.png' | asset_url }}" rel="shortcut icon" type="image/x-icon"/>
+  <link href="{{ 'apple-touch-icon.png' | asset_url }}" rel="apple-touch-icon"/>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "THE HYUN",
+    "url": "https://www.thehyun.com/"
+  }
+  </script>
+
+  <style>
+    /* Fit the buy widget into the original product-column design.
+       (two-class selectors outweigh the widget's own injected rules) */
+    .hyun-buy-block .hyun-buy { gap: 0; }
+    .hyun-buy-block .hyun-buy-select {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      height: 38px;
+      margin-bottom: 10px;
+      padding: 0 12px 3px;
+      font-family: var(--kr);
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.428571429;
+    }
+    /* no reserved space for the (empty) error line — the live page has none */
+    .hyun-buy-block .hyun-buy-error { min-height: 0; }
+    .hyun-buy-block .hyun-buy-error:empty { display: none; }
+  </style>
+</head>
+<body>
+  {{ content_for_layout }}
+
+  <!-- Site navigation and interactions -->
+  <script src="{{ 'site.js' | asset_url }}" defer="defer"></script>
+
+  <!-- Storefront API: buy widget and quiz -->
+  <script src="{{ 'mock-storefront.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'buy-widget.js' | asset_url }}" defer="defer"></script>
+</body>
+</html>
