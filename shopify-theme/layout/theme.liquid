@@ -58,6 +58,42 @@
     /* no reserved space for the (empty) error line — the live page has none */
     .hyun-buy-block .hyun-buy-error { min-height: 0; }
     .hyun-buy-block .hyun-buy-error:empty { display: none; }
+    /* the live page keeps quantity hidden (.quantity-5 { display: none }) */
+    .hyun-buy .hyun-buy-qty { display: none; }
+    /* price sits above the pickers on the live page (.text-block-37.product-price) */
+    .hyun-buy .hyun-buy-price {
+      order: -1;
+      font-family: var(--title-font);
+      color: var(--black);
+      margin-bottom: 30px;
+      font-size: 1.4em;
+      font-weight: 400;
+    }
+    /* Buy button styled like the original Add to Cart (.secondary-button) */
+    .hyun-buy .hyun-buy-button {
+      border: 1px solid var(--black);
+      background-color: var(--black);
+      font-family: var(--copy);
+      color: var(--white);
+      text-align: center;
+      letter-spacing: 1px;
+      border-radius: 0;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      padding: 15px 25px;
+      font-size: .9em;
+      font-weight: 400;
+      text-decoration: none;
+      transition: all .2s;
+      display: block;
+      align-self: flex-start;
+    }
+    .hyun-buy .hyun-buy-button:hover { color: #fff; background-color: #32343a; }
+    .hyun-buy .hyun-buy-button:active { background-color: #43464d; }
+    /* the live Add to Cart goes full-width on phones */
+    @media screen and (max-width: 479px) {
+      .hyun-buy .hyun-buy-button { align-self: stretch; }
+    }
   </style>
 </head>
 <body class="{% if template contains 'subscription-builder' %}body-17{% else %}body-9{% endif %}">
