@@ -1,0 +1,46 @@
+{%- comment -%}
+Renders a product's variants + selling plans as JSON in the same shape as the
+Storefront API product query the buy widget and quiz were built against —
+so on-theme they need no API call and no token. IDs are numeric, ready for
+the native Cart AJAX API (/cart/add.js with selling_plan).
+
+Usage: {% render 'hyun-product-json', for_product: product %}
+{%- endcomment -%}
+<script type="application/json" id="hyun-product-json">
+{
+  "title": {{ for_product.title | json }},
+  "options": [
+    {%- for opt in for_product.options_with_values -%}
+      {"name": {{ opt.name | json }}, "optionValues": [
+        {%- for v in opt.values -%}
+          {%- comment -%} opt.values items are strings on older stores, product_option_value drops on newer ones {%- endcomment -%}
+          {"name": {% if v.name %}{{ v.name | json }}{% else %}{{ v | json }}{% endif %}}{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "variants": {"nodes": [
+    {%- for v in for_product.variants -%}
+      {
+        "id": {{ v.id }},
+        "availableForSale": {{ v.available }},
+        "price": {"amount": {{ v.price | divided_by: 100.0 | json }}, "currencyCode": {{ shop.currency | json }}},
+        "selectedOptions": [
+          {%- for opt in for_product.options_with_values -%}
+            {"name": {{ opt.name | json }}, "value": {{ v.options[forloop.index0] | json }}}{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]},
+  "sellingPlanGroups": {"nodes": [
+    {%- for g in for_product.selling_plan_groups -%}
+      {"sellingPlans": {"nodes": [
+        {%- for sp in g.selling_plans -%}
+          {"id": {{ sp.id }}, "name": {{ sp.name | json }}}{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]}}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]}
+}
+</script>

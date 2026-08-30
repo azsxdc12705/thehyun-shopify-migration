@@ -145,12 +145,61 @@
       return null;
     }
 
+    // Native mode (on-theme): product data is Liquid-rendered into
+    // #hyun-product-json and checkout goes through the Cart AJAX API with the
+    // selling plan and the preferences as line item properties — no token.
+    function nativeCheckout(wanted) {
+      var blob = document.getElementById('hyun-product-json');
+      var product = JSON.parse(blob.textContent);
+      var variant = product.variants.nodes.find(function (v) {
+        return v.selectedOptions.every(function (o) { return wanted[o.name] === o.value; });
+      });
+      var plan = product.sellingPlanGroups.nodes
+        .flatMap(function (g) { return g.sellingPlans.nodes; })
+        .find(function (p) { return p.name === PLAN_BY_FREQUENCY[wanted['Frequency']]; });
+      if (!variant || !plan) {
+        return Promise.reject(new Error('no variant/plan for ' + JSON.stringify(wanted)));
+      }
+      return fetch('/cart/clear.js', { method: 'POST' })
+        .then(function () {
+          return fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: [{
+              id: variant.id,
+              quantity: 1,
+              selling_plan: plan.id,
+              properties: {
+                'Preferred Style': answers['cooking-style'].join(', '),
+                'Preferred Cuts': answers['preferred-cuts'].join(', '),
+                'Avoid': answers.avoid.join(', '),
+              },
+            }] }),
+          });
+        })
+        .then(function (r) {
+          return r.json().then(function (data) {
+            if (!r.ok) throw new Error(data.description || data.message || 'cart add failed');
+            window.location.href = '/checkout';
+          });
+        });
+    }
+
     function checkout() {
       var wanted = {
         'Frequency': mapped(answers.frequency),
         'Collection Size': mapped(answers['collection-size']),
         'Experience': mapped(answers.experience),
       };
+
+      if (document.getElementById('hyun-product-json')) {
+        nativeCheckout(wanted).catch(function (err) {
+          delete addButton.dataset.busy;
+          alert('Checkout could not be started. Please try again.');
+          console.error('[hyun-quiz]', err);
+        });
+        return;
+      }
 
       gql(
         'query ($handle: String!) { product(handle: $handle) {' +

@@ -70,25 +70,21 @@ shopify theme dev --store=yourstore.myshopify.com
 
 ## Configuration
 
-### Buy Widget
+### Buy Widget — native mode, no token
 
-The Storefront API buy widget (`assets/buy-widget.js`) drives both product variants and selling plans. To enable real Shopify checkout:
+On-theme, the buy widget and quiz run in **native mode**: `snippets/
+hyun-product-json.liquid` Liquid-renders the product's variant and selling
+plan IDs into the page, and checkout goes through Shopify's Cart AJAX API
+(`/cart/add.js` with `selling_plan` and the quiz preferences as line item
+properties, then `/checkout`). **No Storefront API token, no app, no
+configuration** — it works as soon as the theme is on the store, and the IDs
+are always current because Liquid renders them per request.
 
-1. In `templates/product.liquid`, update the `data-hyun-buy` mount:
-   ```liquid
-   <div data-hyun-buy="curated-collection" 
-        data-shop="{{ shop.permanent_domain }}" 
-        data-token="YOUR_STOREFRONT_TOKEN">
-   </div>
-   ```
-
-2. In `templates/page.subscription-builder.liquid`, set the quiz config:
-   ```javascript
-   window.HYUN_QUIZ = { 
-     shop: '{{ shop.permanent_domain }}', 
-     token: 'YOUR_STOREFRONT_TOKEN' 
-   };
-   ```
+The Storefront-API + token code paths in `assets/buy-widget.js` and
+`assets/quiz.js` are still there (they activate when no
+`#hyun-product-json` blob is on the page) — they exist for the option A
+architecture, where the same scripts are embedded on Webflow and must reach
+Shopify cross-origin. See `webflow-embed/`.
 
 ### Fonts
 

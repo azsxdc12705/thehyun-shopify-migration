@@ -37,12 +37,13 @@ Frequency choice drives both the variant and the selling plan.
         <div class="hyun-buy-block">
           {%- if product.handle == 'curated-collection' -%}
             {%- comment -%}
-            Storefront API buy widget — pairs the Frequency variant with the
-            matching selling plan so they can never mismatch. Demo mode: empty
-            data-token switches mock-storefront.js on. Real mode: put a
-            Storefront API token in data-token.
+            Buy widget in native mode — pairs the Frequency variant with the
+            matching selling plan so they can never mismatch. Variant/plan IDs
+            are Liquid-rendered below; checkout goes through the Cart AJAX
+            API. No Storefront token needed on-theme.
             {%- endcomment -%}
-            <div data-hyun-buy="{{ product.handle }}" data-shop="{{ shop.permanent_domain }}" data-token=""></div>
+            {% render 'hyun-product-json', for_product: product %}
+            <div data-hyun-buy="{{ product.handle }}"></div>
           {%- else -%}
             {%- comment -%}
             Every other product: Shopify's native cart form — no Storefront

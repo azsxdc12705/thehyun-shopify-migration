@@ -58,7 +58,42 @@
     }).then((r) => r.json());
   }
 
+  // Native mode (on-theme): product data is Liquid-rendered into
+  // #hyun-product-json (same shape as the Storefront query) and checkout goes
+  // through the Cart AJAX API — no Storefront token needed. A fresh cart per
+  // buy mirrors cartCreate semantics.
+  function nativeCreateCart(lines) {
+    const line = lines[0];
+    const item = { id: line.merchandiseId, quantity: line.quantity };
+    if (line.sellingPlanId) item.selling_plan = line.sellingPlanId;
+    if (line.attributes) {
+      item.properties = {};
+      line.attributes.forEach((a) => { item.properties[a.key] = a.value; });
+    }
+    return fetch('/cart/clear.js', { method: 'POST' })
+      .then(() => fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: [item] }),
+      }))
+      .then((r) => r.json().then((data) => {
+        if (!r.ok) throw new Error(data.description || data.message || 'cart add failed');
+        return { data: { cartCreate: { cart: { checkoutUrl: '/checkout' }, userErrors: [] } } };
+      }));
+  }
+
   function init(mount) {
+    const blob = document.getElementById('hyun-product-json');
+    if (blob) {
+      try {
+        render(mount, JSON.parse(blob.textContent), nativeCreateCart);
+      } catch (err) {
+        mount.textContent = 'Unable to load product.';
+        console.error('[hyun-buy]', err);
+      }
+      return;
+    }
+
     const shop = mount.dataset.shop;
     const token = mount.dataset.token;
     const handle = mount.dataset.hyunBuy;

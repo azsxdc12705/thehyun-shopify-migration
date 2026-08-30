@@ -219,10 +219,11 @@ from templates/page.liquid — so the quiz renders as soon as a page with handle
 </section>
 
 {%- comment -%}
-Quiz config + script. Demo mode: empty token switches mock-storefront.js on.
-Real mode: put a Storefront API token in `token`.
+Quiz config + script, native mode: variant/plan IDs are Liquid-rendered
+below and checkout goes through the Cart AJAX API — no Storefront token.
 {%- endcomment -%}
+{% render 'hyun-product-json', for_product: all_products['curated-collection'] %}
 <script>
-  window.HYUN_QUIZ = { shop: '{{ shop.permanent_domain }}', token: '' };
+  window.HYUN_QUIZ = { native: true };
 </script>
 <script src="{{ 'quiz.js' | asset_url }}" defer="defer"></script>
