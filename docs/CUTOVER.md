@@ -47,6 +47,12 @@ optional for the Curated Collection.
       subscription-compatible payment methods
 - [ ] Taxes (NY nexus), shipping zones/rates, local delivery + pickup
       (Store POS stays Square; `TheHyunInventory` syncs stock)
+- [ ] **Enable Local Pickup** for the Gramercy store. This replaces the live
+      site's `/checkout-method` interstitial ("Deliver to Your Doorstep" vs
+      "In-Store Pickup"), which is deliberately not ported: Shopify's checkout
+      picks the delivery method itself, so a pre-checkout page asking the same
+      question cannot drive it and would only add a step. `/checkout-method`
+      redirects to `/cart`.
 - [ ] Customer notification emails (order, shipping, subscription billing)
 - [ ] Newsletter: the footer form posts to Shopify customer capture
       (tagged `newsletter`); connect Klaviyo/em ail tool if wanted
