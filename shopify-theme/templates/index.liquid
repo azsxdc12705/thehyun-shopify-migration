@@ -1,19 +1,95 @@
 {%- comment -%}
-Minimal homepage for the option B demo theme. The demo covers two templates
-(Curated Collection product page, subscription-builder quiz); the rest of the
-site is not ported yet, so the homepage is a plain index of what exists.
-Also satisfies Shopify's requirement that a publishable theme has an index
-template.
+THE HYUN — home page, ported 1:1 from https://www.thehyun.com/ (crawled
+2026-08-30). Webflow runtime removed; the category slider is driven by the
+vanilla implementation in assets/site.js against the same w-slider CSS
+contract. Images rehosted from the Webflow CDN (srcset variants dropped —
+the base file is the largest).
 {%- endcomment -%}
+<section class="section-54"><div class="text-block-98">Free delivery on all orders over $250 in the contiguous united States. Limited offer! Use code &quot;<span class="text-span-6">FREESHIPPING</span>&quot; 📦</div></section>
 {% render 'hyun-nav' %}
-<section style="min-height:60vh;display:flex;align-items:center;justify-content:center;">
-  <div style="text-align:center;padding:60px 24px;">
-    <div class="title-upper-text" style="margin-bottom:16px;">Option B demo</div>
-    <h1 class="heading-12" style="margin-bottom:40px;">Two templates, zero Webflow</h1>
-    <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
-      <a href="/products/curated-collection" class="primary-button w-button">Curated Collection (product page)</a>
-      <a href="/pages/subscription-builder" class="primary-button tertiarybtn w-button">Subscription Builder (quiz)</a>
+<section class="section-4">
+  <div class="w-layout-blockcontainer hero-container w-container">
+    <div class="div-block-21">
+      <h1 class="heading-2">THE COLLECTION</h1>
+      <p class="body-copy center">Where Japanese Wagyu Meet Butcher&#x27;s Artistry</p>
+      <a href="/brand-philosophy" class="primary-button w-button">Read our Philosophy</a>
     </div>
+  </div>
+</section>
+<section class="section-6">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="columns w-row">
+      <div class="column-46 w-col w-col-7">
+        <h1 class="heading-3 center">Nature&#x27;s perfection</h1>
+        <p class="body-copy">Nature embodies perfection.<br/>Choosing the finest Japanese Wagyu crafted by this perfection requires the artistry of a seasoned connoisseur. Unmatched by any, we stand as The First and The Pioneer, in this pursuit.</p>
+        <a href="/japanese-wagyu" class="primary-button w-button">Savor the finest Japanese Wagyu</a>
+      </div>
+      <div class="column-27 w-col w-col-5">
+        <img src="{{ 'maestro-gift-sets.jpg' | asset_url }}" loading="lazy" width="2240" sizes="(max-width: 767px) 96vw, (max-width: 991px) 292px, 380px" alt="" class="image-28"/>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section-7">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <h1 class="heading-3">Details Matter: Gratitude Needs A Difference</h1>
+    <p class="body-copy left-align copycenter">Enrich your gratitude with a unique touch. Unforgettable gifts are all about the details														</p>
+    <div class="columns-2 w-row">
+      <div class="column-2 w-col w-col-7">
+        <img src="{{ 'gift-square.png' | asset_url }}" loading="lazy" width="446" sizes="(max-width: 479px) 93vw, (max-width: 767px) 446px, (max-width: 991px) 416px, 446px" alt="" class="image-18"/>
+      </div>
+      <div class="column w-col w-col-5">
+        <p class="body-copy center">당신이 느낀 감사의 마음에 작은 차이를 더해 선물하세요. 디테일이 남다른 선물은 오래도록 기억됩니다</p>
+        <a href="/corporate-gifts" class="primary-button tertiarybtn w-button">Discover Gifts</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section-8">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="columns-3 w-row">
+      <div class="column-32 w-col w-col-5">
+        <img src="{{ 'innards-icon.png' | asset_url }}" loading="lazy" width="94" alt="" class="image-7"/>
+      </div>
+      <div class="column-3 w-col w-col-7">
+        <h1 class="heading-4">																		THE HYUN&#x27;s Innards: <br/>Jpanese Wagyu&#x27;s hidden delights														</h1>
+        <p class="paragraph-3">We source offal cuts of Japanese Wagyu the very first in the states														</p>
+        <a href="/subcategories/offal" class="button w-button">Explore THE HYUN&#x27;s Innards Selection</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section-9">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="text-block-4">Small Nuances, Big Echoes in The Symphony of Life														</div>
+  </div>
+</section>
+<section class="section-10">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="w-row">
+      <div class="w-col w-col-4">
+        <div class="text-block-5">A new standard for<br/>premium Japanese Wagyu</div>
+      </div>
+      <div class="column-37 w-col w-col-8">
+        <div data-delay="4000" data-animation="slide" class="slider w-slider" data-autoplay="true" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="true">
+          <div class="w-slider-mask">
+            <div class="slide w-slide"><a href="/forequarter" class="w-inline-block"><img width="315" height="Auto" alt="" src="{{ 'slide-forequarter.png' | asset_url }}" loading="lazy" sizes="(max-width: 479px) 92vw, 315px" class="image-20"/></a></div>
+            <div class="slide-2 w-slide"><a href="/loin" class="w-inline-block"><img width="315" height="Auto" alt="" src="{{ 'slide-loin.png' | asset_url }}" loading="lazy" sizes="(max-width: 479px) 92vw, 315px"/></a></div>
+            <div class="slide-3 w-slide"><a href="/plate" class="w-inline-block"><img width="315" height="Auto" alt="" src="{{ 'slide-plate.png' | asset_url }}" loading="lazy" sizes="(max-width: 479px) 92vw, 315px"/></a></div>
+            <div class="slide-5 w-slide"><a href="#" class="w-inline-block"><img width="315" height="Auto" alt="" src="{{ 'slide-round.png' | asset_url }}" loading="lazy" sizes="(max-width: 479px) 92vw, 315px"/></a></div>
+            <div class="slide-4 w-slide"><a href="/offal" class="w-inline-block"><img width="315" height="Auto" alt="" src="{{ 'slide-offal.png' | asset_url }}" loading="lazy" sizes="(max-width: 479px) 92vw, 315px"/></a></div>
+          </div>
+          <div class="left-arrow w-slider-arrow-left"><div class="icon-4 w-icon-slider-left"></div></div>
+          <div class="right-arrow w-slider-arrow-right"><div class="icon-3 w-icon-slider-right"></div></div>
+          <div class="slide-nav w-slider-nav w-round w-num"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section-9">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="text-block-6">Life&#x27;s richness lies in the subtleties, not grand gestures. With discerning eyes and moments to savor, discover the art of &#x27;Small Differences. &#x27;It&#x27;s time to relish the nuances curated by THE HYUN<br/>- indulge in the extraordinary within the ordinary.														</div>
   </div>
 </section>
 {% render 'hyun-footer' %}

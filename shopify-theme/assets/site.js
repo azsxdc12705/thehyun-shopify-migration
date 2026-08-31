@@ -131,3 +131,65 @@
     if (mq.matches && open) closeNav();
   });
 })();
+
+/* ---------------- w-slider (home category carousel) ----------------
+ * Same contract as webflow.js: slides shift together via translateX, the
+ * nav renders numbered dots (.w-num), autoplay/delay/duration come from the
+ * slider's data attributes. */
+(function () {
+  'use strict';
+  document.querySelectorAll('.w-slider').forEach(function (slider) {
+    var mask = slider.querySelector('.w-slider-mask');
+    if (!mask) return;
+    var slides = Array.prototype.slice.call(mask.querySelectorAll('.w-slide'));
+    if (slides.length < 2) return;
+    var nav = slider.querySelector('.w-slider-nav');
+    var duration = parseInt(slider.getAttribute('data-duration'), 10) || 500;
+    var delay = parseInt(slider.getAttribute('data-delay'), 10) || 4000;
+    var autoplay = slider.getAttribute('data-autoplay') === 'true';
+    var index = 0;
+    var timer = null;
+
+    var dots = slides.map(function (_, i) {
+      var d = document.createElement('div');
+      d.className = 'w-slider-dot';
+      d.setAttribute('role', 'button');
+      d.setAttribute('aria-label', 'Show slide ' + (i + 1) + ' of ' + slides.length);
+      if (nav && nav.classList.contains('w-num')) d.textContent = i + 1;
+      d.addEventListener('click', function () { go(i); restart(); });
+      if (nav) nav.appendChild(d);
+      return d;
+    });
+
+    function go(i) {
+      index = (i + slides.length) % slides.length;
+      slides.forEach(function (s) {
+        s.style.transition = 'transform ' + duration + 'ms ease';
+        s.style.transform = 'translateX(' + (-index * 100) + '%)';
+      });
+      dots.forEach(function (d, j) { d.classList.toggle('w-active', j === index); });
+    }
+    function restart() {
+      if (!autoplay) return;
+      clearInterval(timer);
+      timer = setInterval(function () { go(index + 1); }, delay);
+    }
+
+    var left = slider.querySelector('.w-slider-arrow-left');
+    var right = slider.querySelector('.w-slider-arrow-right');
+    if (left) left.addEventListener('click', function () { go(index - 1); restart(); });
+    if (right) right.addEventListener('click', function () { go(index + 1); restart(); });
+
+    var startX = null;
+    mask.addEventListener('pointerdown', function (e) { startX = e.clientX; });
+    mask.addEventListener('pointerup', function (e) {
+      if (startX == null) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 40) { go(index + (dx < 0 ? 1 : -1)); restart(); }
+      startX = null;
+    });
+
+    go(0);
+    restart();
+  });
+})();
