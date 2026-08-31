@@ -7,6 +7,7 @@ descriptions come from the frozen CMS snapshot (audit/cms.json) and the
 crawled pages. Everything else falls back to a plain grid.
 {%- endcomment -%}
 {% render 'hyun-nav' %}
+{%- assign sp_handles = 'brisket,chuck-roll,clod,shank,ribloin,striploin,tenderloin,short-plate,short-rib,gooseneck-round,knuckle,rump,top-round' | split: ',' -%}
 
 {%- if collection.handle == 'forequarter' -%}
   {% render 'hyun-cuts-tabs', current: 1 %}
@@ -63,6 +64,8 @@ crawled pages. Everything else falls back to a plain grid.
     {% render 'hyun-cut-group', anchor: 'offal-section', title: 'Offal', handle: 'offal', wrap_class: 'columns-32', item_class: 'collection-item-3 w-dyn-item w-col w-col-4', description: 'Delve into bovine treasures—tongues, stomachs, intestines, and tails. Explore the offal kingdom, from Mountain Chain Tripe, Honey Comb Tripe, Omasum, and Abomasum, each revealing a unique gastronomic tale.' %}
     </div>
   </section>
+{%- elsif sp_handles contains collection.handle -%}
+  {% render 'hyun-subprimal-page' %}
 {%- elsif collection.handle == 'bundles' -%}
   <section class="section-21">
     <div class="w-layout-blockcontainer main-container w-container">

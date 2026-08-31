@@ -1,0 +1,90 @@
+{%- comment -%}
+Sub-primal collection pages (live /sub-primal/<slug>), one template for all
+13: the cuts tab bar (parent primal tab open, this sub-primal current) and
+the jp_header section — name, description from the frozen CMS snapshot, and
+this collection's product cards.
+{%- endcomment -%}
+{%- if collection.handle == 'chuck-roll' -%}
+  {% render 'hyun-cuts-tabs', current: 1, current_sub: 'chuck-roll' %}
+  {%- assign sp_title = 'Chuck Roll' -%}
+  {%- assign sp_desc = 'Chuck roll is renowned for its high protein content, rich juiciness, and robust beefy aroma. Its distinct flavor intensifies with each chew, delivering a savory and satisfying taste.' -%}
+{%- elsif collection.handle == 'tenderloin' -%}
+  {% render 'hyun-cuts-tabs', current: 2, current_sub: 'tenderloin' %}
+  {%- assign sp_title = 'Tenderloin' -%}
+  {%- assign sp_desc = 'Tenderloin, the most tender cut, is distinguished by its velvety texture and minimal connective tissue. Obtained in small quantities from a single Japanese Wagyu, it epitomizes tenderness.' -%}
+{%- elsif collection.handle == 'short-plate' -%}
+  {% render 'hyun-cuts-tabs', current: 3, current_sub: 'short-plate' %}
+  {%- assign sp_title = 'Short Plate' -%}
+  {%- assign sp_desc = 'Short Plate, characterized by alternating layers of fat and muscle, showcases a coarse but marbled texture. The intramuscular fat acts as marbling, resulting in unparalleled juiciness among beef cuts.' -%}
+{%- elsif collection.handle == 'top-round' -%}
+  {% render 'hyun-cuts-tabs', current: 4, current_sub: 'top-round' %}
+  {%- assign sp_title = 'Top Round' -%}
+  {%- assign sp_desc = 'Top round, with low intramuscular fat and a high protein-to-fat ratio, offers a lean and subtly flavorful profile. Among hindquarter cuts, it stands out for its tenderness and clean taste.' -%}
+{%- elsif collection.handle == 'short-rib' -%}
+  {% render 'hyun-cuts-tabs', current: 3, current_sub: 'short-rib' %}
+  {%- assign sp_title = 'Short Rib' -%}
+  {%- assign sp_desc = 'Short Rib, renowned for its rich juiciness and intense beefy aroma, complements marbling for a superbly flavorful experience. Its tenderness and chewy texture make it a favorite, especially in skirt steak cuts.' -%}
+{%- elsif collection.handle == 'striploin' -%}
+  {% render 'hyun-cuts-tabs', current: 2, current_sub: 'striploin' %}
+  {%- assign sp_title = 'Striploin' -%}
+  {%- assign sp_desc = 'Striploin offers a delightful combination of tender beef protein and the savory aroma of intramuscular fat. Comprising a single muscle, it boasts a fine and tender texture.' -%}
+{%- elsif collection.handle == 'ribloin' -%}
+  {% render 'hyun-cuts-tabs', current: 2, current_sub: 'ribloin' %}
+  {%- assign sp_title = 'Ribloin' -%}
+  {%- assign sp_desc = 'Ribloin features finely marbled, tender meat with a deep beefy juiciness and the delightful flavor of marbling. It stands out among Wagyu cuts for its rich and savory taste.' -%}
+{%- elsif collection.handle == 'shank' -%}
+  {% render 'hyun-cuts-tabs', current: 1, current_sub: 'shank' %}
+  {%- assign sp_title = 'Shank' -%}
+  {%- assign sp_desc = 'Known for its high collagen and elastin content, Shank presents a dense concentration of beefy aroma and a subtly rich flavor. Its characteristic chewiness enhances the overall dining experience.' -%}
+{%- elsif collection.handle == 'rump' -%}
+  {% render 'hyun-cuts-tabs', current: 4, current_sub: 'rump' %}
+  {%- assign sp_title = 'Rump' -%}
+  {%- assign sp_desc = 'Rump, with its deep color and rich beefy aroma, exhibits a surprisingly tender and flavorful texture. Despite its robust appearance, the meat is tender and juicy.' -%}
+{%- elsif collection.handle == 'knuckle' -%}
+  {% render 'hyun-cuts-tabs', current: 4, current_sub: 'knuckle' %}
+  {%- assign sp_title = 'Knuckle' -%}
+  {%- assign sp_desc = 'Knuckle, featuring the highest protein content and a beefy aroma, boasts thin and tender muscle fibers. Its fine texture and tenderness make it a delightful choice for those seeking a flavorful Wagyu beef experience.' -%}
+{%- elsif collection.handle == 'gooseneck-round' -%}
+  {% render 'hyun-cuts-tabs', current: 4, current_sub: 'gooseneck-round' %}
+  {%- assign sp_title = 'Gooseneck Round' -%}
+  {%- assign sp_desc = 'Gooseneck round, nearly devoid of fat, boasts intense juiciness and a robust flavor profile. Its lean composition contributes to an excellent chewy texture.' -%}
+{%- elsif collection.handle == 'clod' -%}
+  {% render 'hyun-cuts-tabs', current: 1, current_sub: 'clod' %}
+  {%- assign sp_title = 'Clod' -%}
+  {%- assign sp_desc = 'Clod is characterized by lower fat content but abundant juiciness, providing a robust beefy aroma. Its excellent chewability makes it an ideal cut to savor the taste of beef protein.' -%}
+{%- elsif collection.handle == 'brisket' -%}
+  {% render 'hyun-cuts-tabs', current: 1, current_sub: 'brisket' %}
+  {%- assign sp_title = 'Brisket' -%}
+  {%- assign sp_desc = 'Brisket, with its strong umami from the abundant marbling and thick layer of fat, boasts a rich juiciness and exceptionally savory fat flavor. It offers a unique texture - tender yet satisfyingly chewy.' -%}
+{%- endif -%}
+<section id="headsection" class="header-section jp_header">
+  <section class="w-layout-blockcontainer main-container w-container">
+    <div class="w-row">
+      <div class="w-col w-col-4">
+        <h3 class="heading-35">{{ sp_title | default: collection.title }}</h3>
+        <div class="div-block-38"><p class="body-copy left-align">{{ sp_desc }}</p></div>
+      </div>
+      <div class="column-64 w-col w-col-8">
+        <div class="collection-list-wrapper-8 w-dyn-list">
+          <div role="list" class="collection-list-6 w-dyn-items w-row">
+            {%- for product in collection.products -%}
+              <div role="listitem" class="w-dyn-item w-col w-col-4">
+                <div class="label_wrap">
+                  <a href="{{ product.url }}" class="bundlecardlink w-inline-block">
+                    {%- if product.featured_image -%}
+                      <img loading="lazy" width="628" alt="{{ product.title | escape }}" src="{{ product.featured_image | image_url: width: 628 }}" sizes="(max-width: 479px) 96vw, (max-width: 767px) 97vw, (max-width: 991px) 160px, 207px"/>
+                    {%- endif -%}
+                    <div>{{ product.title }}</div>
+                    {%- unless product.available -%}
+                      <div class="soldout"><div class="text-block-206">sold out</div></div>
+                    {%- endunless -%}
+                  </a>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
