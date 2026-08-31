@@ -21,14 +21,22 @@ Frequency choice drives both the variant and the selling plan.
         <div class="text-block-39 w-dyn-bind-empty"></div>
         <div class="div-block-19">
           <div class="text-block-36">{{ product.title }}</div>
-          <div class="text-block-43 w-dyn-bind-empty"></div>
+          {%- if product.metafields.webflow.korean_name != blank -%}
+            <div class="text-block-43">{{ product.metafields.webflow.korean_name }}</div>
+          {%- else -%}
+            <div class="text-block-43 w-dyn-bind-empty"></div>
+          {%- endif -%}
         </div>
         {%- if product.description != blank -%}
-          <p class="paragraph-19">{{ product.description | strip_html | truncatewords: 60 }}</p>
+          <p class="paragraph-19">{{ product.description | strip_html }}</p>
         {%- else -%}
           <p class="paragraph-19 w-dyn-bind-empty"></p>
         {%- endif -%}
-        <div class="rich-text-block-3 w-dyn-bind-empty w-richtext"></div>
+        {%- if product.metafields.webflow.contents != blank -%}
+          <div class="rich-text-block-3 w-richtext">{{ product.metafields.webflow.contents }}</div>
+        {%- else -%}
+          <div class="rich-text-block-3 w-dyn-bind-empty w-richtext"></div>
+        {%- endif -%}
         {%- comment -%}
         Price placeholder block: the widget renders the real price.
         Keeping the empty block preserves the original spacing.
@@ -49,8 +57,18 @@ Frequency choice drives both the variant and the selling plan.
             Every other product: Shopify's native cart form — no Storefront
             token needed, works as-is on the dev store.
             {%- endcomment -%}
-            <div class="hyun-buy">
-              {%- form 'product', product -%}
+            {%- comment -%}
+            Same classes as the live Webflow commerce form so thyun.css keeps
+            styling it (quantity-5 stays hidden, secondary-button look).
+            {%- endcomment -%}
+            {%- comment -%}
+            Zero price means "not sold online" in the source catalog — the
+            live template hides the price and form for those, so do we.
+            {%- endcomment -%}
+            {%- if product.price_min > 0 -%}
+            <div class="text-block-37 product-price">{{ product.price_min | money_without_trailing_zeros | replace: '$', '$ ' }} </div>
+            {%- if product.available -%}
+              {%- form 'product', product, class: 'w-commerce-commerceaddtocartform default-state-3' -%}
                 {%- unless product.has_only_default_variant -%}
                   <select name="id" class="option-select-field hyun-buy-select">
                     {%- for variant in product.variants -%}
@@ -62,14 +80,13 @@ Frequency choice drives both the variant and the selling plan.
                 {%- else -%}
                   <input type="hidden" name="id" value="{{ product.first_available_variant.id | default: product.variants.first.id }}"/>
                 {%- endunless -%}
-                <div class="product-price hyun-buy-price">{{ product.price_min | money }}{% if product.price_varies %}+{% endif %}</div>
-                {%- if product.available -%}
-                  <button type="submit" class="hyun-buy-button" style="border:0;">Add to Cart</button>
-                {%- else -%}
-                  <div class="hyun-buy-error">Sold out</div>
-                {%- endif -%}
+                <input type="number" pattern="^[0-9]+$" inputmode="numeric" name="quantity" min="1" class="w-commerce-commerceaddtocartquantityinput quantity-5" value="1"/>
+                <input type="submit" class="w-commerce-commerceaddtocartbutton secondary-button" value="Add to Cart"/>
               {%- endform -%}
-            </div>
+            {%- else -%}
+              <div class="w-commerce-commerceaddtocartoutofstock out-of-stock-state" tabindex="0"><div class="text-block-100">This cut is currently unavailable</div></div>
+            {%- endif -%}
+            {%- endif -%}
           {%- endif -%}
         </div>
       </div>
