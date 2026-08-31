@@ -3,8 +3,13 @@ One cut group on a category page: heading + description on the left,
 product cards from the named collection on the right. 1:1 with the live
 category templates' .columns-33 / .columns-32 rows.
 
+A cut is purchasable when it is in stock AND priced: the source catalog uses
+a zero price for "not sold online", and the live product template hides the
+price and form for those too. Non-purchasable cuts get the sold-out badge.
+
 Params: anchor, title, description, handle (collection), wrap_class,
-item_class.
+item_class, only_available (omit the non-purchasable cuts entirely — used by
+the Available Cuts page).
 {%- endcomment -%}
 <div id="{{ anchor }}" class="{{ wrap_class }} w-row">
   <div class="column-59 w-col w-col-4">
@@ -14,7 +19,12 @@ item_class.
   <div class="column-54 w-col w-col-8">
     <div class="w-dyn-list">
       <div role="list" class="w-dyn-items w-row">
+        {%- assign shown_count = 0 -%}
         {%- for product in collections[handle].products -%}
+          {%- assign purchasable = false -%}
+          {%- if product.available and product.price > 0 -%}{%- assign purchasable = true -%}{%- endif -%}
+          {%- if only_available and purchasable == false -%}{%- continue -%}{%- endif -%}
+          {%- assign shown_count = shown_count | plus: 1 -%}
           <div role="listitem" class="{{ item_class }}">
             <div class="label_wrap">
               <a href="{{ product.url }}" class="bundlecardlink w-inline-block">
@@ -22,15 +32,16 @@ item_class.
                   <img loading="lazy" width="628" alt="{{ product.title | escape }}" src="{{ product.featured_image | image_url: width: 628 }}" sizes="(max-width: 479px) 96vw, (max-width: 767px) 97vw, (max-width: 991px) 160px, 207px"/>
                 {%- endif -%}
                 <div>{{ product.title }}</div>
-                {%- unless product.available -%}
+                {%- unless purchasable -%}
                   <div class="soldout"><div class="text-block-206">sold out</div></div>
                 {%- endunless -%}
               </a>
             </div>
           </div>
-        {%- else -%}
-          <div class="body-copy">Coming soon.</div>
         {%- endfor -%}
+        {%- if shown_count == 0 -%}
+          <div class="body-copy">Nothing available in this group right now.</div>
+        {%- endif -%}
       </div>
     </div>
   </div>

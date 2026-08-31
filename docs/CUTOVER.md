@@ -43,6 +43,21 @@ and the redirects send them to `/account*`. This theme has no
 Subscribers need an account to manage their subscription, so this is not
 optional for the Curated Collection.
 
+### Stock has to be loaded before the storefront is honest
+
+The Webflow CMS export carries no stock numbers, so every variant imported
+with no quantity. The import now sets variants to track inventory and deny
+oversell, but until real quantities land — from the `TheHyunInventory` sync or
+a one-off stock import — Shopify believes everything is in stock.
+
+Concretely, today: **41 of the 54 cuts are sold out on the live site**, while
+the ported store treats 46 as buyable. The only cuts it currently marks
+unavailable are the 8 with no price, which the source catalog uses to mean
+"not sold online".
+
+Until stock is loaded, `/pages/available-cuts` and the sold-out badges on the
+category grids are structurally right but numerically wrong.
+
 ## 2. Commerce configuration (owner)
 
 - [ ] Pick a Shopify plan (also unlocks removing the storefront password)

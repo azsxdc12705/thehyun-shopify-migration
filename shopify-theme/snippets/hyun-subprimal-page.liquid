@@ -68,6 +68,8 @@ this collection's product cards.
         <div class="collection-list-wrapper-8 w-dyn-list">
           <div role="list" class="collection-list-6 w-dyn-items w-row">
             {%- for product in collection.products -%}
+              {%- assign purchasable = false -%}
+              {%- if product.available and product.price > 0 -%}{%- assign purchasable = true -%}{%- endif -%}
               <div role="listitem" class="w-dyn-item w-col w-col-4">
                 <div class="label_wrap">
                   <a href="{{ product.url }}" class="bundlecardlink w-inline-block">
@@ -75,7 +77,7 @@ this collection's product cards.
                       <img loading="lazy" width="628" alt="{{ product.title | escape }}" src="{{ product.featured_image | image_url: width: 628 }}" sizes="(max-width: 479px) 96vw, (max-width: 767px) 97vw, (max-width: 991px) 160px, 207px"/>
                     {%- endif -%}
                     <div>{{ product.title }}</div>
-                    {%- unless product.available -%}
+                    {%- unless purchasable -%}
                       <div class="soldout"><div class="text-block-206">sold out</div></div>
                     {%- endunless -%}
                   </a>
