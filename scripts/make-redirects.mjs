@@ -41,11 +41,11 @@ for (const c of ['forequarter', 'loin', 'plate', 'round', 'offal']) {
   redirects.set(`/${c}`, `/collections/${c}`);
 }
 redirects.set('/all-japanese-wagyu', '/collections/all');
-redirects.set('/available-cuts', '/collections/all');
+redirects.set('/available-cuts', '/pages/available-cuts');
 redirects.set('/subcategories/offal', '/collections/offal');
 redirects.set('/bundles', '/collections/bundles');
 redirects.set('/gift-sets-list', '/collections/gift-sets');
-redirects.set('/gift-sets', '/collections/gift-sets');
+redirects.set('/gift-sets', '/pages/gift-sets');
 // static pages
 for (const h of ['subscription-builder', 'japanese-wagyu', 'our-story',
   'brand-philosophy', 'design-philosophy', 'bojagi', 'local-delivery',
@@ -56,6 +56,15 @@ for (const h of ['subscription-builder', 'japanese-wagyu', 'our-story',
 // Webflow account/checkout machinery -> Shopify equivalents
 redirects.set('/user-account', '/account');
 redirects.set('/checkout-method', '/cart');
+redirects.set('/log-in', '/account/login');
+redirects.set('/sign-up', '/account/register');
+
+// Typo'd sub-primal links on the live /loin and /offal pages (all three 404
+// on Webflow today). Redirecting them means any link already out in the wild
+// lands somewhere real after the move.
+redirects.set('/s/sub-primal/offal', '/collections/offal');
+redirects.set('/sub/sub-primal/rump', '/collections/rump');
+redirects.set('/subc/sub-primal/rump', '/collections/rump');
 
 const existing = new Set();
 let cursor = null;

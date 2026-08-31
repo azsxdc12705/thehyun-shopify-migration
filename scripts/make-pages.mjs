@@ -38,6 +38,8 @@ const PAGES = [
   ['Corporate Gifts', 'corporate-gifts'],
   ['Corporate Gifts Inquiry', 'corporate-gifts-inquiry'],
   ['Subscription', 'subscription'],
+  ['Available Cuts', 'available-cuts'],
+  ['Gift Sets', 'gift-sets'],
 ];
 
 const existing = new Set();

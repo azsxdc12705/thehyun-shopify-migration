@@ -25,10 +25,13 @@ const gql = async (query, variables = {}) => {
 };
 
 const cms = JSON.parse(fs.readFileSync('audit/cms.json')).collections;
-const wanted = [
+// "Offal" is both a Category and a Sub Primal, so dedupe: without this the
+// same title is created twice and Shopify hands the second one the handle
+// `offal-1`, which nothing links to.
+const wanted = [...new Set([
   ...cms['Categories'].items.map((c) => c.fieldData.name),
   ...cms['Sub Primals'].items.map((c) => c.fieldData.name),
-];
+])];
 
 const { collections } = await gql(`{ collections(first: 100) { nodes { title } } }`);
 const existing = new Set(collections.nodes.map((c) => c.title));

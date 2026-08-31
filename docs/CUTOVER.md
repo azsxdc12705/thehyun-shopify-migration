@@ -23,6 +23,22 @@ node scripts/make-redirects.mjs --apply   # ~100 legacy-path redirects
   and SEO.
 - Optional: set each smart collection's sort to "Manually" in admin if the
   live site's curated product order within groups matters.
+- Delete the duplicate **`offal-1`** collection in admin. "Offal" is both a
+  Category and a Sub Primal in the Webflow CMS, and the first run of
+  `make-collections.mjs` created it twice; the script now dedupes, but the
+  extra collection is already on the dev store.
+
+### Customer accounts — decide before cutover
+
+The live site has real account pages (`/log-in`, `/sign-up`, `/user-account`)
+and the redirects send them to `/account*`. This theme has no
+`templates/customers/*`, so either:
+- turn on Shopify's **hosted customer accounts** (no theme templates needed —
+  recommended, and it is where Shopify is heading), or
+- write the `customers/*` templates if you want them styled in-theme.
+
+Subscribers need an account to manage their subscription, so this is not
+optional for the Curated Collection.
 
 ## 2. Commerce configuration (owner)
 
