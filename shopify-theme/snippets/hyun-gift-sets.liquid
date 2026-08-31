@@ -1,0 +1,54 @@
+{%- comment -%}
+The Gift Sets listing, ported 1:1 from the live /gift-sets-list page:
+header, the three gift-set rows, the signature-box hero, the bojagi closer.
+The live page's text-reveal inline transforms (driven by webflow.js IX2)
+are dropped so the heading is simply visible.
+{%- endcomment -%}
+<section class="section-21">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="title-upper-text">THE HYUN: Gift for those who recognize the exceptional</div>
+    <h1 class="heading-12">Gift Sets</h1>
+  </div>
+</section>
+
+{% render 'hyun-gift-set-row',
+  section_class: 'section-58', item_class: 'w-dyn-item',
+  image: 'giftset-primordial.png', image_width: 435,
+  handle: 'primordial-collection', title: 'Primordial Collection',
+  blurb: 'Collection that preserves the primal taste of unprecedented textures, a feast of sensations never experienced before',
+  details: '- presented in THE HYUN signature gift box<br/>- six individually packed selections<br/>- bojagi wrapping and wooden box upgrades are available at checkout' %}
+
+{% render 'hyun-gift-set-row',
+  section_class: 'section-30', item_class: 'w-dyn-item',
+  image: 'giftset-epicurean.png', image_width: 405,
+  handle: 'epicurean-collection', title: 'Epicurean Collection',
+  blurb: 'Collection that effortlessly guides any cooking method to the pinnacle of joy, making every recipe a delightful masterpiece',
+  contents: 'Rib Cap,Chuck Eye Log,Chuck Flap Tail,Striploin,Ribeye,Flat Iron Cap', contents_position: 'before',
+  details: '- presented in THE HYUN signature gift box<br/>- six individually packed selections<br/>- bojagi wrapping and wooden box upgrades are available at checkout' %}
+
+{% render 'hyun-gift-set-row',
+  section_class: 'section-53', item_class: 'collection-item-6 w-dyn-item',
+  image: 'giftset-maestro.png', image_width: 393,
+  handle: 'maestro-collection', title: 'Maestro Collection',
+  blurb: 'Collection that unveils the entire universe of Wagyu, where the classic meets the extraordinary in a captivating exploration through our exceptional offerings.',
+  contents: 'Ribeye,Brisket Point,Flap Meat,Chuck Flap Tail,Striploin,Tenderloin', contents_position: 'after',
+  details: '- presented in THE HYUN signature gift box<br/>- six individually packed selections<br/>- bojagi wrapping and wooden box upgrades are available at checkout' %}
+
+<section class="section-4 complimentary">
+  <div class="div-block-67">
+    <img src="{{ 'giftset-signature-box.png' | asset_url }}" loading="lazy" sizes="(max-width: 1448px) 100vw, 1448px" alt="" class="image-29"/>
+  </div>
+  <div class="w-layout-blockcontainer hero-container w-container">
+    <div class="div-block-21 text-reveal-mask">
+      <h1 class="heading-2 signature_box text-reveal">THE HYUN Signature Gift Box<br/> - A refined presentation that begins before the box is opened</h1>
+    </div>
+  </div>
+</section>
+
+<section class="section-32">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <p class="paragraph-29">Wrap your genuine emotions within the bojagi enriched with THE HYUN&#x27;s artistry, offering a heartfelt expression of your sincerity														</p>
+    <p class="paragraph-28">We&#8217;re pleasured to offer gift wrapping with a traditional Korean wrapping cloth, bojagi. This exquisite material, graced by the masterful hands of HYUN, surpasses its practical purpose; it encapsulates the heartfelt wish for the recipient to sense genuine warmth and admiration.</p>
+    <div class="div-block-25"><a href="/bojagi" class="primary-button w-button">Learn More</a></div>
+  </div>
+</section>

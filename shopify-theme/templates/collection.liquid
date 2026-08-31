@@ -63,6 +63,53 @@ crawled pages. Everything else falls back to a plain grid.
     {% render 'hyun-cut-group', anchor: 'offal-section', title: 'Offal', handle: 'offal', wrap_class: 'columns-32', item_class: 'collection-item-3 w-dyn-item w-col w-col-4', description: 'Delve into bovine treasures—tongues, stomachs, intestines, and tails. Explore the offal kingdom, from Mountain Chain Tripe, Honey Comb Tripe, Omasum, and Abomasum, each revealing a unique gastronomic tale.' %}
     </div>
   </section>
+{%- elsif collection.handle == 'bundles' -%}
+  <section class="section-21">
+    <div class="w-layout-blockcontainer main-container w-container">
+      <div class="title-upper-text">																		Explore THE HYUN&#8217;s curated Japanese Wagyu symphony														</div>
+      <h1 class="heading-12">Bundles</h1>
+    </div>
+  </section>
+  <section>
+    <div class="w-layout-blockcontainer main-container w-container">
+      <div class="columns-6 w-row">
+        <div class="column-15 w-col w-col-4">
+          <div class="text-block-16">																		Expert suggestions can redefine our standards														</div>
+        </div>
+        <div class="column-69 w-col w-col-4">
+          <div class="w-dyn-list"><div role="list" class="w-dyn-items"><div role="listitem" class="w-dyn-item">
+            {%- assign b = all_products['the-hyuns-special-cuts'] -%}
+            <a href="{{ b.url }}" class="bundlecardlink w-inline-block"><img loading="lazy" sizes="(max-width: 767px) 96vw, (max-width: 991px) 229px, 300px" alt="" src="{{ b.featured_image | image_url: width: 569 }}" width="569"/><div class="text-block-17">{{ b.title }}</div></a>
+          </div></div></div>
+        </div>
+        <div class="column-70 w-col w-col-4">
+          <div class="w-dyn-list"><div role="list" class="w-dyn-items"><div role="listitem" class="w-dyn-item">
+            {%- assign b = all_products['prime-bbq-collection'] -%}
+            <a href="{{ b.url }}" class="bundlecardlink w-inline-block"><img loading="lazy" sizes="(max-width: 767px) 96vw, (max-width: 991px) 229px, 300px" alt="" src="{{ b.featured_image | image_url: width: 569 }}" width="569"/><div class="text-block-17">{{ b.title }}</div></a>
+          </div></div></div>
+        </div>
+      </div>
+      <div class="columns-6 w-row">
+        <div class="column-71 w-col w-col-4">
+          <div class="w-dyn-list"><div role="list" class="w-dyn-items"><div role="listitem" class="w-dyn-item">
+            {%- assign b = all_products['babys-first-bites'] -%}
+            <a href="{{ b.url }}" class="bundlecardlink w-inline-block"><img loading="lazy" sizes="(max-width: 767px) 96vw, (max-width: 991px) 229px, 300px" alt="" src="{{ b.featured_image | image_url: width: 569 }}" width="569"/><div class="text-block-17">{{ b.title }}</div></a>
+          </div></div></div>
+        </div>
+        <div class="column-72 w-col w-col-4">
+          <div class="w-dyn-list"><div role="list" class="w-dyn-items"><div role="listitem" class="w-dyn-item">
+            {%- assign b = all_products['innards-selection'] -%}
+            <a href="{{ b.url }}" class="bundlecardlink blkbg w-inline-block"><img loading="lazy" sizes="(max-width: 767px) 96vw, (max-width: 991px) 229px, 300px" alt="" src="{{ b.featured_image | image_url: width: 569 }}" width="569"/><div class="text-block-17">{{ b.title }}</div></a>
+          </div></div></div>
+        </div>
+        <div class="column-12 w-col w-col-4">
+          <div class="text-block-16">																		In Korean tradition, there&#x27;s a saying: &quot;He who has tasted meat knows what&#x27;s good.&quot; Why not lean in to listen to the curation of those who&#x27;ve passionately explored, researched, and pondered? Our thoughtfully selected choices, guided by experienced enthusiasts, hold the power to elevate your expectations, offering a taste that transcends the ordinary.														</div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- elsif collection.handle == 'gift-sets' -%}
+  {% render 'hyun-gift-sets' %}
 {%- else -%}
   <section class="section-35">
     <div class="w-layout-blockcontainer container-17 w-container">

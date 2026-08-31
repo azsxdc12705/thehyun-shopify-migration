@@ -1,0 +1,54 @@
+{%- comment -%}
+One gift-set row on the Gift Sets page (live /gift-sets-list): invitation
+artwork left; title, blurb, contents, price and a native cart form right.
+The Webflow commerce form is replaced by Shopify's product form — same
+w-commerce classes so thyun.css keeps styling it.
+
+Params: section_class, item_class, image (asset name), image_width,
+handle, title, blurb, details, contents (comma-joined lines, optional),
+contents_position ('before' or 'after' the details block).
+{%- endcomment -%}
+{%- assign gs = all_products[handle] -%}
+<section class="{{ section_class }}">
+  <div class="w-layout-blockcontainer main-container{% if section_class == 'section-58' %} gift_sets{% endif %} w-container">
+    <div class="collection-list-wrapper w-dyn-list">
+      <div role="list" class="collection-list w-dyn-items">
+        <div style="background-color:transparent" role="listitem" class="{{ item_class | default: 'w-dyn-item' }}">
+          <div class="columns-22 main-container w-row">
+            <div class="w-col w-col-6">
+              <img loading="lazy" width="{{ image_width | default: 435 }}" alt="{{ title }}" src="{{ image | asset_url }}"/>
+            </div>
+            <div class="column-40 w-col w-col-6">
+              <h1 class="heading-28">{{ title }}</h1>
+              <p class="paragraph-27">{{ blurb }}</p>
+              <div class="div-block-24"></div>
+              {%- if contents and contents_position == 'before' -%}
+                <div class="rich-text-block w-richtext">{% assign lines = contents | split: ',' %}{% for line in lines %}<p>{{ line | strip }}</p>{% endfor %}</div>
+              {%- endif -%}
+              <div class="text-block-213">{{ details }}</div>
+              {%- if contents and contents_position == 'after' -%}
+                <div class="rich-text-block w-richtext">{% assign lines = contents | split: ',' %}{% for line in lines %}<p>{{ line | strip }}</p>{% endfor %}</div>
+              {%- endif -%}
+              <div class="div-block-24"></div>
+              {%- if gs -%}
+                <div class="text-block-45">{{ gs.price | money_without_trailing_zeros | replace: '$', '$ ' }} </div>
+                <div>
+                  {%- form 'product', gs, class: 'w-commerce-commerceaddtocartform' -%}
+                    <input type="hidden" name="id" value="{{ gs.first_available_variant.id | default: gs.variants.first.id }}"/>
+                    <input type="number" pattern="^[0-9]+$" inputmode="numeric" name="quantity" min="1" class="w-commerce-commerceaddtocartquantityinput quantity-2" value="1"/>
+                    {%- if gs.available -%}
+                      <input type="submit" class="w-commerce-commerceaddtocartbutton secondary-button" value="Add to Cart"/>
+                      <button type="submit" name="return_to" value="/checkout" class="w-commerce-commercebuynowbutton buy-now-button" style="border:0;">Buy now</button>
+                    {%- else -%}
+                      <div class="w-commerce-commerceaddtocartoutofstock" tabindex="0"><div>This product is out of stock.</div></div>
+                    {%- endif -%}
+                  {%- endform -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
