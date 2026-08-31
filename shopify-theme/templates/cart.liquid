@@ -1,48 +1,149 @@
 {%- comment -%}
-Minimal styled cart. The demo's buy paths go straight to checkout via
-cartCreate, but the nav cart icon lands here — it must not fall back to
-Shopify's bare default.
+Cart page, ported from the live /cart: items on the left, the summary panel
+with the gift add-ons on the right. The Wooden Gift Box and Bojagi Gift
+Wrapping toggles add or remove those products (as on the live site); the
+gift message is a cart attribute, so it reaches the order — on the live site
+it only ever lived in localStorage.
 {%- endcomment -%}
 {% render 'hyun-nav' %}
-<section class="section-35">
-  <div class="w-layout-blockcontainer container-17 w-container">
-    <h1 class="heading-12">Cart</h1>
-  </div>
-</section>
-<section style="padding: 0 5% 10vh;">
+
+<section class="section-24 cart-page">
   <div class="w-layout-blockcontainer main-container w-container">
-    {%- if cart.item_count == 0 -%}
-      <div class="body-copy" style="margin-bottom: 32px;">Your cart is empty.</div>
-      <a href="/products/curated-collection" class="primary-button w-button">Curated Collection</a>
-    {%- else -%}
-      <form action="{{ routes.cart_url }}" method="post" novalidate>
-        {%- for item in cart.items -%}
-          <div style="display:flex;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid #e5e2d8;">
-            {%- if item.image -%}
-              <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.image.alt | escape }}" width="80" style="object-fit:cover;"/>
-            {%- endif -%}
-            <div style="flex:1;">
-              <div class="body-copy">{{ item.product.title }}</div>
-              {%- unless item.variant.title == 'Default Title' -%}
-                <div class="body-copy" style="opacity:.65;">{{ item.variant.title }}</div>
-              {%- endunless -%}
-              {%- if item.selling_plan_allocation -%}
-                <div class="body-copy" style="opacity:.65;">{{ item.selling_plan_allocation.selling_plan.name }}</div>
-              {%- endif -%}
-              {%- for property in item.properties -%}
-                <div class="body-copy" style="opacity:.65;font-size:.85em;">{{ property.first }}: {{ property.last }}</div>
-              {%- endfor -%}
-            </div>
-            <div class="body-copy">{{ item.quantity }} × {{ item.final_price | money }}</div>
-            <a href="{{ item.url_to_remove }}" class="link" style="color:inherit;">Remove</a>
-          </div>
-        {%- endfor -%}
-        <div style="display:flex;justify-content:flex-end;align-items:center;gap:24px;margin-top:28px;">
-          <div class="body-copy">Subtotal: {{ cart.total_price | money }}</div>
-          <button type="submit" name="checkout" class="primary-button w-button" style="border:0;">Checkout</button>
-        </div>
-      </form>
-    {%- endif -%}
+    <div class="text-block-23">Review your collection and add any finishing touches before continuing to checkout</div>
+    <h1 class="heading-15">Your Collection</h1>
   </div>
 </section>
+
+<section class="section-25 cart-page">
+  <div class="w-layout-blockcontainer main-container cart-page w-container">
+    <div class="cart-layout" data-hyun-cart-page>
+      {%- comment -%} which add-ons are already lines, so the toggles can remove them {%- endcomment -%}
+      {%- assign wooden_key = '' -%}
+      {%- assign bojagi_key = '' -%}
+      {%- for item in cart.items -%}
+        {%- if item.product.handle == 'wooden-box' -%}{%- assign wooden_key = item.key -%}{%- endif -%}
+        {%- if item.product.handle == 'bojagi' -%}{%- assign bojagi_key = item.key -%}{%- endif -%}
+      {%- endfor -%}
+
+      <div class="cart-left">
+        {%- comment -%}
+        The live page nests this in Webflow's modal cart wrapper, which is a
+        fixed full-screen overlay (.w-commerce-commercecartcontainerwrapper);
+        Webflow's cart JS is what keeps it from covering the page. With that
+        runtime gone the list renders inline, so the wrapper is dropped and
+        .cart-page-container (transparent, block, max-width 1000px) carries
+        the layout.
+        {%- endcomment -%}
+        <div class="w-commerce-commercecartwrapper">
+          <div>
+            <div class="w-commerce-commercecartcontainer cart-page-container">
+              <div class="w-commerce-commercecartformwrapper">
+                {%- if cart.item_count > 0 -%}
+                  <form class="w-commerce-commercecartform" action="{{ routes.cart_url }}" method="post">
+                    <div class="w-commerce-commercecartlist">
+                      {% render 'hyun-cart-items', style: 'page' %}
+                    </div>
+                    <div class="w-commerce-commercecartfooter">
+                      <div aria-atomic="true" aria-live="polite" class="w-commerce-commercecartlineitem">
+                        <div>Subtotal</div>
+                        <div class="w-commerce-commercecartordervalue">{{ cart.total_price | money_without_trailing_zeros | replace: '$', '$ ' }}</div>
+                      </div>
+                    </div>
+                  </form>
+                {%- else -%}
+                  <div class="w-commerce-commercecartemptystate">
+                    <div aria-label="This cart is empty" aria-live="polite">Your collection is empty</div>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-right">
+        <div class="cart-summary-panel">
+          <div class="cart-addon-list">
+            <div class="cart-addon-item">
+              <div class="cart-addon-icon"><img src="{{ 'addon-wooden-box.svg' | asset_url }}" loading="lazy" alt=""/></div>
+              <div class="cart-addon-text-wrap">
+                <div class="cart-addon-title">Wooden Gift Box</div>
+                <div class="cart-addon-subtitle gift-box-summary">{% if wooden_key != blank %}Wooden Gift Box Added{% else %}No Wooden Gift Box{% endif %}</div>
+              </div>
+              {%- assign wooden = all_products['wooden-box'] -%}
+              {%- if wooden_key != blank -%}<span data-hyun-addon-line="wooden-box" data-line-key="{{ wooden_key }}"></span>{%- endif -%}
+              <div class="addon-toggle addon-toggle-wooden-box{% if wooden_key != blank %} is-selected{% endif %}"
+                   data-hyun-addon="wooden-box"
+                   data-variant-id="{{ wooden.first_available_variant.id | default: wooden.variants.first.id }}">
+                <div class="text-block-208">{% if wooden_key != blank %}✓ Added{% else %}+ Add{% endif %}</div>
+              </div>
+            </div>
+
+            <div class="cart-addon-item">
+              <div class="cart-addon-icon"><img src="{{ 'addon-bojagi.svg' | asset_url }}" loading="lazy" alt=""/></div>
+              <div class="cart-addon-text-wrap">
+                <div class="cart-addon-title">Bojagi Gift Wrapping</div>
+                <div class="cart-addon-subtitle bojagi-summary">{% if bojagi_key != blank %}Bojagi Gift Wrapping Added{% else %}No Bojagi Gift Wrapping{% endif %}</div>
+              </div>
+              {%- assign bojagi = all_products['bojagi'] -%}
+              {%- if bojagi_key != blank -%}<span data-hyun-addon-line="bojagi" data-line-key="{{ bojagi_key }}"></span>{%- endif -%}
+              <div class="addon-toggle addon-toggle-bojagi{% if bojagi_key != blank %} is-selected{% endif %}"
+                   data-hyun-addon="bojagi"
+                   data-variant-id="{{ bojagi.first_available_variant.id | default: bojagi.variants.first.id }}">
+                <div class="text-block-209">{% if bojagi_key != blank %}✓ Added{% else %}+ Add{% endif %}</div>
+              </div>
+            </div>
+
+            <div class="cart-addon-item cart-line">
+              <div class="cart-addon-icon"><img src="{{ 'addon-message.svg' | asset_url }}" loading="lazy" alt=""/></div>
+              <div class="cart-addon-text-wrap">
+                <div class="cart-addon-title">Gift Message</div>
+                <div class="cart-addon-subtitle gift-message-summary">{{ cart.attributes['Gift Message'] | default: 'No Gift Message' }}</div>
+              </div>
+              <a href="#" class="cart-addon-edit gift-message-edit">Edit</a>
+            </div>
+          </div>
+
+          <div class="cart-summary-row">
+            <div class="text-block-212">subtotal</div>
+            <div class="cart-summary-value">{{ cart.total_price | money }}</div>
+          </div>
+          <form action="{{ routes.cart_url }}" method="post">
+            <button type="submit" name="checkout" class="cart-checkout-button checkout-button-style w-inline-block" style="border:0;">
+              <div class="cart-checkout-text">Continue to Checkout</div>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="w-embed">
+  <div class="gift-message-modal" id="giftMessageModal">
+    <div class="gift-message-modal-bg"></div>
+    <div class="gift-message-modal-content">
+      <a href="#" class="gift-message-close" aria-label="Close">×</a>
+      <div class="gift-message-modal-title">Gift Message Service</div>
+      <div class="gift-message-modal-icon"><img src="{{ 'addon-message.svg' | asset_url }}" alt="Gift message icon"/></div>
+      <p class="gift-message-modal-description">
+        Share your gratitude, celebration, or warm wishes with a personal gift message. All online gift orders may include an optional message card, presented with a complimentary THE HYUN linen bag.
+      </p>
+      {%- assign gift_message = cart.attributes['Gift Message'] -%}
+      <label class="gift-message-option">
+        <input type="radio" name="gift-message-option" id="gift-message-no" value="no"{% if gift_message == blank %} checked{% endif %}/>
+        <span>don&#8217;t need a card</span>
+      </label>
+      <label class="gift-message-option">
+        <input type="radio" name="gift-message-option" id="gift-message-yes" value="yes"{% if gift_message != blank %} checked{% endif %}/>
+        <span>need a card with a personal gift message</span>
+      </label>
+      <textarea class="gift-message-textarea" placeholder="Enter your message" rows="5">{{ gift_message }}</textarea>
+      <button type="button" class="gift-message-update">update</button>
+    </div>
+  </div>
+</div>
+
+{% render 'hyun-cart-css' %}
+
 {% render 'hyun-footer' %}

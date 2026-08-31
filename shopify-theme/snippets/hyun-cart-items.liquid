@@ -1,0 +1,64 @@
+{%- comment -%}
+The cart line items, in the live markup. Shared by the drawer and the cart
+page; `style` picks the class set the live site uses in each place
+('drawer' or 'page').
+
+Subscription lines show their selling plan, and the quiz's preferences ride
+along as line item properties — both in the same option list Webflow used
+for SKU options.
+{%- endcomment -%}
+{%- if style == 'page' -%}
+  {%- assign item_class = 'w-commerce-commercecartitem' -%}
+  {%- assign info_class = 'w-commerce-commercecartiteminfo' -%}
+  {%- assign name_class = 'w-commerce-commercecartproductname' -%}
+  {%- assign options_class = 'w-commerce-commercecartoptionlist' -%}
+  {%- assign price_class = '' -%}
+  {%- assign remove_class = 'text-block-210 cart-remove-link' -%}
+  {%- assign qty_class = 'w-commerce-commercecartquantity cart-quantity-3 cart-qty-readonly' -%}
+{%- else -%}
+  {%- assign item_class = 'w-commerce-commercecartitem cart-item' -%}
+  {%- assign info_class = 'w-commerce-commercecartiteminfo div-block-13' -%}
+  {%- assign name_class = 'w-commerce-commercecartproductname text-block-31' -%}
+  {%- assign options_class = 'w-commerce-commercecartoptionlist option-list-2' -%}
+  {%- assign price_class = 'text-block-32' -%}
+  {%- assign remove_class = 'text-block-33' -%}
+  {%- assign qty_class = 'w-commerce-commercecartquantity cart-quantity-2 cart-qty-readonly' -%}
+{%- endif -%}
+
+{%- for item in cart.items -%}
+  <div class="{{ item_class }}">
+    {%- if style == 'page' -%}
+      <img src="{{ item.image | image_url: width: 142 }}" alt="{{ item.title | escape }}" class="w-commerce-commercecartitemimage"/>
+    {%- else -%}
+      <img loading="lazy" width="71" alt="{{ item.title | escape }}" src="{{ item.image | image_url: width: 142 }}"/>
+    {%- endif -%}
+    <div class="{{ info_class }}">
+      <div class="{{ name_class }}">{{ item.product.title }}</div>
+      {%- if style == 'page' -%}
+        <div>{{ item.final_line_price | money_without_trailing_zeros | replace: '$', '$ ' }} </div>
+      {%- endif -%}
+      <ul class="{{ options_class }}">
+        {%- unless item.variant.title == 'Default Title' -%}
+          {%- for option in item.options_with_values -%}
+            <li{% if style != 'page' %} class="option"{% endif %}><span>{{ option.name }}</span><span>: </span><span>{{ option.value }}</span></li>
+          {%- endfor -%}
+        {%- endunless -%}
+        {%- if item.selling_plan_allocation -%}
+          <li{% if style != 'page' %} class="option"{% endif %}><span>{{ item.selling_plan_allocation.selling_plan.name }}</span></li>
+        {%- endif -%}
+        {%- for property in item.properties -%}
+          {%- unless property.last == blank -%}
+            <li{% if style != 'page' %} class="option"{% endif %}><span>{{ property.first }}</span><span>: </span><span>{{ property.last }}</span></li>
+          {%- endunless -%}
+        {%- endfor -%}
+      </ul>
+      {%- unless style == 'page' -%}
+        <div class="{{ price_class }}">{{ item.final_line_price | money_without_trailing_zeros | replace: '$', '$ ' }} </div>
+      {%- endunless -%}
+      <a href="{{ item.url_to_remove }}" role="button" class="{% if style != 'page' %}remove-button {% endif %}w-inline-block" data-hyun-cart-remove="{{ item.key }}" aria-label="Remove item from cart">
+        <div class="{{ remove_class }}">Remove</div>
+      </a>
+    </div>
+    <input aria-label="Update quantity" class="{{ qty_class }}" required="" pattern="^[0-9]+$" inputmode="numeric" type="number" name="quantity" autocomplete="off" value="{{ item.quantity }}" data-hyun-cart-qty="{{ item.key }}"/>
+  </div>
+{%- endfor -%}

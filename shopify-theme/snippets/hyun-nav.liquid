@@ -47,10 +47,11 @@ w--open / data-nav-menu-open CSS contract. Cart icon links to the Shopify cart.
         <img src="{{ 'thehyun.svg' | asset_url }}" loading="lazy" width="105" alt="" class="image-9"/>
       </a>
       <div class="w-commerce-commercecartwrapper">
-        <a class="w-commerce-commercecartopenlink cart-button w-inline-block" role="button" aria-label="Open cart" href="{{ routes.cart_url }}">
+        <a class="w-commerce-commercecartopenlink cart-button w-inline-block" role="button" aria-haspopup="dialog" aria-label="Open cart" href="{{ routes.cart_url }}" data-hyun-cart-open>
           <img src="{{ 'cartsq.svg' | asset_url }}" loading="lazy" width="16" alt=""/>
           <div class="w-commerce-commercecartopenlinkcount cart-quantity">{{ cart.item_count }}</div>
         </a>
+        {% render 'hyun-cart-drawer' %}
       </div>
     </div>
   </div>

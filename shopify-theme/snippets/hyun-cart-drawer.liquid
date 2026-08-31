@@ -1,0 +1,37 @@
+{%- comment -%}
+The right-side cart drawer, 1:1 with the live Webflow cart dropdown
+("Your Collection"). Rendered inside the nav's cart wrapper on every page;
+assets/cart.js opens it after an add-to-cart and re-renders it from the
+server after every cart change.
+{%- endcomment -%}
+<div style="display:none" class="w-commerce-commercecartcontainerwrapper w-commerce-commercecartcontainerwrapper--cartType-rightDropdown cart-wrapper" data-hyun-cart-drawer>
+  <div role="dialog" class="w-commerce-commercecartcontainer cart-container">
+    <div class="w-commerce-commercecartheader cart-header">
+      <h3 class="w-commerce-commercecartheading heading-20">Your Collection</h3>
+      <a class="w-commerce-commercecartcloselink w-inline-block" role="button" aria-label="Close cart" data-hyun-cart-close>
+        <svg class="icon" width="16px" height="16px" viewBox="0 0 16 16"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g fill-rule="nonzero" fill="#333333"><polygon points="6.23223305 8 0.616116524 13.6161165 2.38388348 15.3838835 8 9.76776695 13.6161165 15.3838835 15.3838835 13.6161165 9.76776695 8 15.3838835 2.38388348 13.6161165 0.616116524 8 6.23223305 2.38388348 0.616116524 0.616116524 2.38388348 6.23223305 8"></polygon></g></g></svg>
+      </a>
+    </div>
+    <div class="w-commerce-commercecartformwrapper">
+      <form class="w-commerce-commercecartform"{% if cart.item_count == 0 %} style="display:none"{% endif %} action="{{ routes.cart_url }}" method="post">
+        <div class="w-commerce-commercecartlist">
+          {% render 'hyun-cart-items', style: 'drawer' %}
+        </div>
+        <div class="w-commerce-commercecartfooter cart-footer">
+          <div aria-atomic="true" aria-live="polite" class="w-commerce-commercecartlineitem cart-line-item">
+            <div class="text-block-30">Subtotal</div>
+            <div class="w-commerce-commercecartordervalue text-block-29">{{ cart.total_price | money_without_trailing_zeros | replace: '$', '$ ' }}</div>
+          </div>
+          <div>
+            <a href="{{ routes.cart_url }}" class="checkout-button checkout-button-checkout-method-cart-button w-button">View Your Collection</a>
+          </div>
+        </div>
+      </form>
+      {%- if cart.item_count == 0 -%}
+        <div class="w-commerce-commercecartemptystate">
+          <div aria-label="This cart is empty" aria-live="polite">No items found.</div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

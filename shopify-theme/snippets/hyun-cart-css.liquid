@@ -1,0 +1,450 @@
+{%- comment -%}
+The cart page's own CSS, taken verbatim from the live /cart page's Webflow
+embed (it is not in the compiled site stylesheet). Covers the summary panel,
+the add-on toggles and the gift-message modal.
+{%- endcomment -%}
+<style>
+/* Cart page: hide default cart open button */
+  .cart-page .w-commerce-commercecartopenlink {
+    display: none !important;
+  }
+
+  /* Cart page: force Webflow cart to display as page content */
+  .cart-page .w-commerce-commercecartwrapper {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .cart-page .w-commerce-commercecartcontainerwrapper {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: transparent !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    z-index: 1 !important;
+  }
+
+  .cart-page .w-commerce-commercecartcontainer {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .cart-page .w-commerce-commercecartformwrapper,
+  .cart-page .w-commerce-commercecartform {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Hide default cart footer on left side */
+  .cart-page .w-commerce-commercecartfooter,
+  .cart-page .w-commerce-commercecartcheckoutbutton,
+  .cart-page .w-commerce-commercecartapplepaybutton {
+    display: none !important;
+  }
+
+  /* Prevent cart from breaking inside left column */
+  .cart-page .cart-left,
+  .cart-page .cart-right {
+    min-width: 0 !important;
+  }
+
+  .cart-page .cart-left .w-commerce-commercecartwrapper,
+  .cart-page .cart-left .w-commerce-commercecartcontainerwrapper,
+  .cart-page .cart-left .w-commerce-commercecartcontainer,
+  .cart-page .cart-left .w-commerce-commercecartformwrapper,
+  .cart-page .cart-left .w-commerce-commercecartform {
+    width: 100% !important;
+  }
+
+  /* Subscription cart mode */
+  .cart-subscription-panel {
+    display: none;
+  }
+
+  body.hyun-subscription-cart .cart-right {
+    display: none !important;
+  }
+
+  body.hyun-subscription-cart .cart-subscription-panel {
+    display: block !important;
+  }
+
+  body.hyun-subscription-cart .cart-edit-subscription-button {
+    cursor: pointer !important;
+  }
+
+  body.hyun-subscription-cart .cart-edit-subscription-button,
+  body.hyun-subscription-cart .cart-edit-subscription-button:visited,
+  body.hyun-subscription-cart .cart-edit-subscription-button:hover,
+  body.hyun-subscription-cart .cart-edit-subscription-button:active {
+    background-color: #212222 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+
+  body.hyun-subscription-cart .cart-edit-subscription-button *,
+  body.hyun-subscription-cart .cart-edit-subscription-button-text {
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+
+  /* Hidden add-on Product Collection List / Add to Cart area */
+  .cart-addon-hidden {
+    position: absolute !important;
+    left: -9999px !important;
+    top: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: -1 !important;
+  }
+
+  .cart-addon-hidden * {
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .cart-addon-hidden .w-dyn-list,
+  .cart-addon-hidden .w-dyn-items,
+  .cart-addon-hidden .w-dyn-item,
+  .cart-addon-hidden .w-commerce-commerceaddtocartform {
+    display: block !important;
+    position: static !important;
+    width: 1px !important;
+    height: 1px !important;
+    min-width: 0 !important;
+    max-width: 1px !important;
+    min-height: 0 !important;
+    max-height: 1px !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .cart-addon-hidden form,
+  .cart-addon-hidden input,
+  .cart-addon-hidden button,
+  .cart-addon-hidden select,
+  .cart-addon-hidden .addon-product-button {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  /* Gift Message Modal */
+  .gift-message-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gift-message-modal.is-open {
+    display: flex;
+  }
+
+  .gift-message-modal-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(33, 34, 34, 0.55);
+  }
+
+  .gift-message-modal-content {
+    position: relative;
+    z-index: 2;
+    width: 504px;
+    max-width: calc(100vw - 40px);
+    background: #fbf9ee;
+    padding: 78px 52px 48px;
+    box-sizing: border-box;
+    text-align: center;
+    color: #212222;
+  }
+
+  .gift-message-close {
+    display: none !important;
+  }
+
+  .gift-message-modal-title {
+    margin: 0 0 36px;
+    font-family: classico-urw, serif;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 400;
+    color: #212222;
+    text-align: center;
+  }
+
+  .gift-message-modal-icon {
+    width: 108px;
+    margin: 0 auto 36px;
+    line-height: 0;
+    color: #212222;
+    text-align: center;
+    font-size: 0;
+  }
+
+  .gift-message-modal-icon img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .gift-message-modal-icon:not(:has(img)) {
+    font-size: 68px;
+    line-height: 1;
+  }
+
+  .gift-message-modal-description {
+    max-width: 355px;
+    margin: 0 auto 30px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 400;
+    color: #212222;
+    text-align: center;
+  }
+
+  .gift-message-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 355px;
+    margin: 0 auto 12px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 400;
+    color: #212222;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .gift-message-option input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 11px;
+    height: 11px;
+    min-width: 11px;
+    border: 1px solid #212222;
+    border-radius: 0;
+    background: transparent;
+    margin: 0;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .gift-message-option input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    background: #212222;
+  }
+
+  .gift-message-option span {
+    display: block;
+    color: #212222;
+  }
+
+  .gift-message-textarea {
+    display: none;
+    width: 355px;
+    max-width: 100%;
+    min-height: 110px;
+    margin: 20px auto 0;
+    padding: 12px 14px;
+    border: 1px solid #212222;
+    background: transparent;
+    color: #212222;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+
+  .gift-message-textarea::placeholder {
+    color: rgba(33, 34, 34, 0.45);
+  }
+
+  .gift-message-update {
+    display: block;
+    width: 245px;
+    max-width: 100%;
+    height: 42px;
+    margin: 42px auto 0;
+    border: none;
+    background: #212222;
+    color: #fbf9ee;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 42px;
+    font-weight: 400;
+    text-transform: lowercase;
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .gift-message-update:hover {
+    opacity: 0.92;
+  }
+
+  /* Add-on toggle pill */
+  .addon-toggle,
+  .addon-toggle *,
+  .addon-toggle a,
+  .addon-toggle div,
+  .addon-toggle span {
+    color: #212222 !important;
+    text-decoration: none !important;
+  }
+
+  .addon-toggle {
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 78px !important;
+    height: 34px !important;
+    padding: 0 14px !important;
+    border: 1px solid #212222 !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    user-select: none !important;
+    transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease, color 0.15s ease !important;
+  }
+
+  .addon-toggle:active {
+    transform: scale(0.97) !important;
+  }
+
+  .addon-toggle.is-selected {
+    background: #212222 !important;
+    border-color: #212222 !important;
+  }
+
+  .addon-toggle.is-selected,
+  .addon-toggle.is-selected *,
+  .addon-toggle.is-selected a,
+  .addon-toggle.is-selected div,
+  .addon-toggle.is-selected span {
+    color: #ffffff !important;
+  }
+
+  /* Continue to Checkout button */
+  .cart-checkout-button,
+  .cart-checkout-button:visited,
+  .cart-checkout-button:hover,
+  .cart-checkout-button:active {
+    background-color: #212222 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+
+  .cart-checkout-button *,
+  .cart-checkout-text {
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+
+  /* Gift Message Edit text */
+  .gift-message-edit,
+  .gift-message-edit:visited,
+  .gift-message-edit:hover,
+  .gift-message-edit:active,
+  .cart-addon-edit,
+  .cart-addon-edit:visited,
+  .cart-addon-edit:hover,
+  .cart-addon-edit:active {
+    color: #212222 !important;
+    text-decoration: none !important;
+  }
+
+  /* Force remove link style */
+  .cart-page .w-commerce-commercecartremovebutton,
+  .cart-page .w-commerce-commercecartremovebutton *,
+  .cart-page .w-commerce-commercecartremovebutton::before,
+  .cart-page .w-commerce-commercecartremovebutton::after,
+  .cart-page [data-node-type="commerce-cart-remove-link"],
+  .cart-page [data-node-type="commerce-cart-remove-link"] *,
+  .cart-page [data-node-type="commerce-cart-remove-link"]::before,
+  .cart-page [data-node-type="commerce-cart-remove-link"]::after {
+    color: #947900 !important;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+
+  /* Fallback: cart item links */
+  .cart-page .w-commerce-commercecartitem a,
+  .cart-page .w-commerce-commercecartitem a *,
+  .cart-page .w-commerce-commercecartitem a::before,
+  .cart-page .w-commerce-commercecartitem a::after {
+    color: #947900 !important;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+
+  @media screen and (max-width: 767px) {
+    .gift-message-modal-content {
+      width: calc(100vw - 28px);
+      padding: 52px 24px 34px;
+    }
+
+    .gift-message-modal-title {
+      font-size: 22px;
+      margin-bottom: 28px;
+    }
+
+    .gift-message-modal-icon {
+      width: 90px;
+      margin-bottom: 28px;
+    }
+
+    .gift-message-modal-description,
+    .gift-message-option,
+    .gift-message-textarea {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .gift-message-update {
+      width: 100%;
+    }
+  }
+</style>
