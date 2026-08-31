@@ -1,21 +1,48 @@
 {%- comment -%}
-Generic page template. A page whose handle is `subscription-builder` renders
-the quiz directly — no template assignment or ?view= parameter needed; just
-creating the page in admin is enough.
+Generic page template: dispatches ported page designs by handle, so creating
+a page in admin with the matching handle is all it takes. Anything unlisted
+falls back to a plain title + content rendering.
 {%- endcomment -%}
 {% render 'hyun-nav' %}
-{%- if page.handle == 'subscription-builder' -%}
-  {% render 'hyun-quiz' %}
-{%- else -%}
-  <section class="section-35">
-    <div class="w-layout-blockcontainer container-17 w-container">
-      <h1 class="heading-12">{{ page.title }}</h1>
-    </div>
-  </section>
-  <section style="padding: 0 5% 10vh;">
-    <div class="w-layout-blockcontainer main-container w-container">
-      <div class="body-copy">{{ page.content }}</div>
-    </div>
-  </section>
-{%- endif -%}
+{%- case page.handle -%}
+  {%- when 'subscription-builder' -%}
+    {% render 'hyun-quiz' %}
+  {%- when 'japanese-wagyu' -%}
+    {% render 'hyun-page-japanese-wagyu' %}
+  {%- when 'our-story' -%}
+    {% render 'hyun-page-our-story' %}
+  {%- when 'brand-philosophy' -%}
+    {% render 'hyun-page-brand-philosophy' %}
+  {%- when 'design-philosophy' -%}
+    {% render 'hyun-page-design-philosophy' %}
+  {%- when 'bojagi' -%}
+    {% render 'hyun-page-bojagi' %}
+  {%- when 'local-delivery' -%}
+    {% render 'hyun-page-local-delivery' %}
+  {%- when 'store' -%}
+    {% render 'hyun-page-store' %}
+  {%- when 'contact' -%}
+    {% render 'hyun-page-contact' %}
+  {%- when 'shipping-delivery' -%}
+    {% render 'hyun-page-shipping-delivery' %}
+  {%- when 'wholesale-inquiry' -%}
+    {% render 'hyun-page-wholesale-inquiry' %}
+  {%- when 'corporate-gifts' -%}
+    {% render 'hyun-page-corporate-gifts' %}
+  {%- when 'corporate-gifts-inquiry' -%}
+    {% render 'hyun-page-corporate-gifts-inquiry' %}
+  {%- when 'subscription' -%}
+    {% render 'hyun-page-subscription' %}
+  {%- else -%}
+    <section class="section-35">
+      <div class="w-layout-blockcontainer container-17 w-container">
+        <h1 class="heading-12">{{ page.title }}</h1>
+      </div>
+    </section>
+    <section style="padding: 0 5% 10vh;">
+      <div class="w-layout-blockcontainer main-container w-container">
+        <div class="body-copy">{{ page.content }}</div>
+      </div>
+    </section>
+{%- endcase -%}
 {% render 'hyun-footer' %}

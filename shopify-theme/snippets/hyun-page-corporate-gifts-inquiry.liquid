@@ -1,0 +1,11 @@
+{%- comment -%}
+Ported 1:1 from https://www.thehyun.com/corporate-gifts-inquiry (crawled 2026-08-31).
+Webflow runtime attributes and srcset variants dropped; images
+rehosted to theme assets. Rendered by templates/page.liquid.
+{%- endcomment -%}
+<section class="section-24"><div class="w-layout-blockcontainer main-container w-container"><div class="title-upper-text">Let us share our collection with your business														</div><h1 class="heading-12">Corporate Gifts Inquiry</h1></div></section><section class="section-25"><div class="w-layout-blockcontainer main-container w-container"><div class="form-block-2 w-form"><p class="paragraph-13">Thank you for your interest in partnership with THE HYUN. We are always happy to accept new corporate gifts inquiry, and to make it easier for us to help you, we ask that you please fill out the inquiry form below. Our sales team member will reach out to you shortly. If you have additional questions, please feel free to contact us at info@thehyun.com														</p>{%- form 'contact', class: 'form-4' -%}
+<input type="hidden" name="contact[subject]" value="Corporate gifts inquiry"/>
+<input class="contact_field w-input" maxlength="256" name="contact[name]" placeholder="Name" type="text" required=""/><input class="contact_field w-input" maxlength="256" name="contact[company]" placeholder="Company" type="text"/><input class="contact_field w-input" maxlength="256" name="contact[phone]" placeholder="Phone" type="tel"/><input class="contact_field w-input" maxlength="256" name="contact[email]" placeholder="Email address" type="email" required=""/><textarea name="contact[body]" maxlength="5000" placeholder="Tell us about your gifting needs" class="contact_field w-input"></textarea>
+<input type="submit" data-wait="Please wait..." class="secondary-button w-button" value="Submit"/>
+{%- if form.posted_successfully? -%}<div class="text-block-54" style="margin-top:12px;">Thank you! Your submission has been received!</div>{%- elsif form.errors -%}<div class="text-block-55" style="margin-top:12px;">Oops! Something went wrong while submitting the form.</div>{%- endif -%}
+{%- endform -%}</div></div></section>
