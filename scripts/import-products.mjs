@@ -40,6 +40,15 @@ for (const sku of cms['SKUs'].items) {
 
 const money = (price) => (price?.value != null ? (price.value / 100).toFixed(2) : null);
 
+// Two CMS product names carry a stray backspace control character (U+0008):
+// "\bBottom Round" and "\bUpper Oyster Blade". Browsers swallow it, so it is
+// invisible on the live site, but it rides into Shopify titles, exports and
+// order confirmations. Strip control characters and collapse whitespace.
+const clean = (s) =>
+  typeof s === 'string'
+    ? s.replace(/[\u0000-\u001F\u007F]/g, ' ').replace(/\s+/g, ' ').trim()
+    : s;
+
 const products = [];
 for (const item of cms['Products'].items) {
   const f = item.fieldData;
@@ -84,7 +93,7 @@ for (const item of cms['Products'].items) {
 
   products.push({
     input: {
-      title: f.name,
+      title: clean(f.name),
       handle: f.slug,
       descriptionHtml: f.description || '',
       vendor: 'THE HYUN',
