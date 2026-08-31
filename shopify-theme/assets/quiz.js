@@ -83,9 +83,30 @@
       );
     }
 
+    // The legacy script never filled the review list, so every line stayed
+    // "—" even after a completed quiz. Fill it from the answers.
+    var REVIEW_LABELS = {
+      frequency: 'Frequency',
+      'collection-size': 'Collection Size',
+      experience: 'Experience',
+      'cooking-style': 'Preferred Style',
+      'preferred-cuts': 'Preferred Cuts',
+      avoid: 'Avoid',
+    };
+
+    function updateReview() {
+      document.querySelectorAll('[data-review]').forEach(function (el) {
+        var q = el.getAttribute('data-review');
+        var value = answers[q];
+        if (Array.isArray(value)) value = value.join(', ');
+        el.textContent = (REVIEW_LABELS[q] || q) + ': ' + (value || '—');
+      });
+    }
+
     function showNextStep(currentStep) {
       var next = steps[steps.indexOf(currentStep) + 1];
       if (next) next.classList.add('is-active');
+      updateReview();
       if (isComplete() && review) review.classList.add('is-active');
     }
 

@@ -161,12 +161,22 @@ from templates/page.liquid — so the quiz renders as soon as a page with handle
       <div class="curated-review">
         <div class="curated-step-number review-number">07</div>
         <div class="curated-step-title review-title">Review Your Collection</div>
+        {%- comment -%}
+        The live page's review list names five categories — Frequency,
+        Occasion, Cooking Style, Experience, Selection Style — but the quiz
+        asks six, and two of those five ("Occasion", "Selection Style") are
+        never asked while Collection Size, Preferred Cuts and Avoid are
+        missing. Nothing fills them either, so every line reads "—" after a
+        completed quiz. Corrected here to the six real questions, filled by
+        assets/quiz.js.
+        {%- endcomment -%}
         <div class="curated-review-list">
-          <div class="curated-review-item is-frequency">Frequency: —</div>
-          <div class="curated-review-item is-occasion">Occasion: —</div>
-          <div class="curated-review-item is-cooking-style">Cooking Style: —</div>
-          <div class="curated-review-item is-experience">Experience: —</div>
-          <div class="curated-review-item is-selection-style">Selection Style: —</div>
+          <div class="curated-review-item is-frequency" data-review="frequency">Frequency: —</div>
+          <div class="curated-review-item is-collection-size" data-review="collection-size">Collection Size: —</div>
+          <div class="curated-review-item is-experience" data-review="experience">Experience: —</div>
+          <div class="curated-review-item is-cooking-style" data-review="cooking-style">Preferred Style: —</div>
+          <div class="curated-review-item is-preferred-cuts" data-review="preferred-cuts">Preferred Cuts: —</div>
+          <div class="curated-review-item is-avoid" data-review="avoid">Avoid: —</div>
         </div>
         <a href="{{ routes.cart_url }}" class="curated-add-to-cart w-button">Continue to Checkout</a>
       </div>
