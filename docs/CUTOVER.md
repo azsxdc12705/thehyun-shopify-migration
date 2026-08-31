@@ -8,13 +8,16 @@ configuration, and the domain move — in that order.
 
 ## 1. Store content (scripted, run once)
 
-With `SHOPIFY_DEV_STORE` / `SHOPIFY_DEV_TOKEN` in `.env` (same as the
-import scripts):
+Either over the Admin API, with `SHOPIFY_DEV_STORE` / `SHOPIFY_DEV_TOKEN`
+set (see **Provisioning without an Admin API token** below — the store can no
+longer mint one from the old Develop-apps screen):
 
 ```
-node scripts/make-pages.mjs --apply       # creates the 14 admin pages
-node scripts/make-redirects.mjs --apply   # ~100 legacy-path redirects
+node scripts/make-pages.mjs --apply       # creates the 16 admin pages
+node scripts/make-redirects.mjs --apply   # 112 legacy-path redirects
 ```
+
+…or entirely from the admin UI, which needs no token at all — same section.
 
 - Pages activate the ported designs by handle — no template assignment
   needed.
@@ -64,8 +67,6 @@ optional for the Curated Collection.
       `snippets/hyun-page-store.liquid` (+1.000.000.0000) and
       `snippets/hyun-page-contact.liquid` ((000) 000-0000)
 - [ ] Real Instagram URL in the footer (currently `#`)
-- [ ] `/available-cuts` page (54-item availability grid) — not ported yet;
-      redirect currently points it at `/collections/all`
 - [ ] Optional: quiz `pageshow` reset (bfcache) — known gap from the port
 
 ## 4. Fonts
