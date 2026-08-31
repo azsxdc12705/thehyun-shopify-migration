@@ -21,7 +21,7 @@ stock to Shopify over the Admin API.
 | path | what |
 | --- | --- |
 | `audit/` | Frozen snapshot of the Webflow site: CMS export (`cms.json`), all 103 pages' script inventory (`pages.json`), compiled stylesheet, the 16 custom scripts. API keys and contact details are redacted from the snapshot; catalog data is what the public site already serves |
-| `docs/` | Audit findings, migration plan |
+| `docs/` | Audit findings, migration plan, the cutover checklist (`CUTOVER.md`), defects found in the live Webflow site (`LIVE-SITE-BUGS.md`) and in this port (`PORT-FIXES.md`) |
 | `scripts/` | Webflow → Shopify migration tooling |
 | `webflow-embed/` | JS embedded into Webflow (Storefront API buy widget) |
 | `theme-port/` | Option B demo: the Curated Collection product page and the subscription-builder quiz ported off Webflow entirely (local CSS/assets, vanilla-JS nav, buy widget + quiz in mock mode) — proof the design survives a full Shopify theme migration |
