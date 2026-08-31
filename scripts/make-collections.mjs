@@ -8,7 +8,9 @@
 // maintains itself when products are added later, the same way the Webflow
 // site derived category pages from references.
 
-import 'dotenv/config';
+// dotenv is a convenience, not a requirement: exported env vars work too,
+// and --csv/dry runs need no credentials at all.
+try { await import('dotenv/config'); } catch { /* not installed */ }
 import fs from 'node:fs';
 
 const APPLY = process.argv.includes('--apply');

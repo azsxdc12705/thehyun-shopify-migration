@@ -97,3 +97,64 @@ optional for the Curated Collection.
 - [ ] Webflow: disable ecommerce/site publish after DNS settles
 - [ ] Announce / monitor analytics, checkout conversion, 404 logs
       (Shopify's URL redirect report catches misses)
+
+---
+
+## Provisioning without an Admin API token
+
+Shopify has retired admin-created custom apps, so the old
+*Settings → Apps and sales channels → Develop apps* route no longer issues new
+tokens. Both provisioning steps can be done from the admin UI instead:
+
+### Redirects — CSV import (2 minutes, 112 redirects)
+
+```
+node scripts/make-redirects.mjs --csv     # writes redirects.csv, no credentials
+```
+
+Then in admin: **Online Store → Navigation → URL redirects → Import**, upload
+`redirects.csv`. The columns are Shopify's own (`Redirect from`,
+`Redirect to`).
+
+### Pages — 16 by hand
+
+**Online Store → Pages → Add page**. Only the title and the handle matter;
+the theme renders each design by handle, so leave the body empty. Two handles
+do not match what Shopify derives from the title and must be set by hand in
+the page's **Search engine listing → Edit** section:
+
+| Title | Handle |
+| --- | --- |
+| Subscription Builder | `subscription-builder` |
+| Japanese Wagyu | `japanese-wagyu` |
+| Our Story | `our-story` |
+| Brand Philosophy | `brand-philosophy` |
+| Design Philosophy | `design-philosophy` |
+| Bojagi Wrapping | **`bojagi`** (not `bojagi-wrapping`) |
+| Local Delivery | `local-delivery` |
+| Store | `store` |
+| Contact | `contact` |
+| Shipping and Returns | **`shipping-delivery`** (not `shipping-and-returns`) |
+| Wholesale Inquiry | `wholesale-inquiry` |
+| Corporate Gifts | `corporate-gifts` |
+| Corporate Gifts Inquiry | `corporate-gifts-inquiry` |
+| Subscription | `subscription` |
+| Available Cuts | `available-cuts` |
+| Gift Sets | `gift-sets` |
+
+### If you do want a token (for re-runs and the product import)
+
+Create the app in the **Dev Dashboard** (partners.shopify.com → Apps → Create
+app → the API-only option), give it these Admin API scopes, install it on the
+store, and copy the Admin API access token into `.env` as
+`SHOPIFY_DEV_TOKEN` (with `SHOPIFY_DEV_STORE=d903wc-8k.myshopify.com`):
+
+| Scope | Needed for |
+| --- | --- |
+| `write_products` | `import-products.mjs`, `make-collections.mjs` |
+| `write_content` | `make-pages.mjs` (pages) |
+| `write_online_store_navigation` | `make-redirects.mjs` (URL redirects) |
+
+The token the earlier product import used already has `write_products`; the
+other two scopes have to be added to that app and the app reinstalled before
+the pages and redirects scripts will work.

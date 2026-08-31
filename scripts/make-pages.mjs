@@ -7,7 +7,9 @@
 // page only needs to exist with the right handle — no template assignment.
 // Idempotent: existing handles are skipped.
 
-import 'dotenv/config';
+// dotenv is a convenience, not a requirement: exported env vars work too,
+// and --csv/dry runs need no credentials at all.
+try { await import('dotenv/config'); } catch { /* not installed */ }
 
 const APPLY = process.argv.includes('--apply');
 const STORE = process.env.SHOPIFY_DEV_STORE, TOKEN = process.env.SHOPIFY_DEV_TOKEN;

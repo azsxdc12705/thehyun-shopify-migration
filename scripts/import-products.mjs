@@ -9,7 +9,9 @@
 // Idempotent by handle: a product whose handle already exists is updated, not
 // duplicated, so the script can re-run after a partial failure.
 
-import 'dotenv/config';
+// dotenv is a convenience, not a requirement: exported env vars work too,
+// and --csv/dry runs need no credentials at all.
+try { await import('dotenv/config'); } catch { /* not installed */ }
 import fs from 'node:fs';
 
 const APPLY = process.argv.includes('--apply');

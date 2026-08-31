@@ -2,15 +2,22 @@
 // home, so existing links and SEO survive the cutover.
 //
 //   node scripts/make-redirects.mjs            # dry run (default)
-//   node scripts/make-redirects.mjs --apply
+//   node scripts/make-redirects.mjs --apply     # create them over the Admin API
+//   node scripts/make-redirects.mjs --csv       # emit redirects.csv instead
+//
+// --csv needs no credentials: the file imports in admin under Online Store >
+// Navigation > URL redirects > Import.
 //
 // Product paths come from the frozen CMS snapshot (audit/cms.json); the
 // rest is the fixed site structure. Idempotent: existing paths are skipped.
 
-import 'dotenv/config';
+// dotenv is a convenience, not a requirement: exported env vars work too,
+// and --csv/dry runs need no credentials at all.
+try { await import('dotenv/config'); } catch { /* not installed */ }
 import fs from 'node:fs';
 
 const APPLY = process.argv.includes('--apply');
+const CSV = process.argv.includes('--csv');
 const STORE = process.env.SHOPIFY_DEV_STORE, TOKEN = process.env.SHOPIFY_DEV_TOKEN;
 
 const gql = async (query, variables = {}) => {
@@ -65,6 +72,15 @@ redirects.set('/sign-up', '/account/register');
 redirects.set('/s/sub-primal/offal', '/collections/offal');
 redirects.set('/sub/sub-primal/rump', '/collections/rump');
 redirects.set('/subc/sub-primal/rump', '/collections/rump');
+
+if (CSV) {
+  const rows = ['Redirect from,Redirect to'];
+  for (const [path, target] of redirects) rows.push(`${path},${target}`);
+  fs.writeFileSync('redirects.csv', rows.join('\n') + '\n');
+  console.log(`wrote redirects.csv — ${redirects.size} redirects`);
+  console.log('Import it in admin: Online Store > Navigation > URL redirects > Import');
+  process.exit(0);
+}
 
 const existing = new Set();
 let cursor = null;

@@ -6,7 +6,9 @@
 // their own - status ACTIVE is not the same thing - so a freshly imported
 // catalog is invisible on the storefront until this runs.
 
-import 'dotenv/config';
+// dotenv is a convenience, not a requirement: exported env vars work too,
+// and --csv/dry runs need no credentials at all.
+try { await import('dotenv/config'); } catch { /* not installed */ }
 
 const gql = async (query, variables = {}) => {
   const r = await fetch(`https://${process.env.SHOPIFY_DEV_STORE}/admin/api/2025-07/graphql.json`, {
