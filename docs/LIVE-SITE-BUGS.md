@@ -283,10 +283,69 @@ description or a canonical link.
 **Fixed in the port** — Shopify titles each page, and product pages get a
 description from the product copy.
 
-## 28. `/available-cuts` hides the sold-out state
+## 28. Available Cuts drops every cut down to its last unit
 
-`/available-cuts` and `/all-japanese-wagyu` render the same 54 products, but
-`/available-cuts` has no sold-out markup at all. On `/all-japanese-wagyu` 41
-of those 54 show "sold out"; on the page actually called "Available cuts"
-every one of them looks available. Both are linked side by side from every
-category page.
+Webflow renders all 54 cuts into `/available-cuts` and hides the ones that
+fail an inventory condition with `w-condition-invisible`
+(`display: none !important`), so the page works for customers even though a
+crawl of the HTML sees all 54. What the condition asks is the bug. On the
+category grids the "sold out" badge is suppressed when the cut's quantity is
+`> 0`; on `/available-cuts` the card is shown only when the same quantity is
+`> 1`:
+
+```
+/forequarter     data-wf-sku-conditions  default-sku:ecSkuInventoryQuantity  gt: 0
+/available-cuts  data-wf-sku-conditions  default-sku:ecSkuInventoryQuantity  gt: 1
+```
+
+A cut with exactly one unit left is therefore for sale, is not marked sold
+out, and is missing from the page called "Available cuts". Today that is 7 of
+the 54 — brisket, brisket-point, chuck-short-rib, tri-chuck, tri-rib,
+chateaubriand and filet-mignon. Six of those are the $0 products of #9 and
+cannot be bought anyway, but **Tri Chuck is $32.55 with a working Add to
+Cart** and does not appear on Available Cuts. The page shows 6 cuts; 7 are
+buyable.
+
+It is the last unit of anything — the one worth selling before it ages — that
+this rule hides.
+
+**Fixed in the port** — `snippets/hyun-cut-group.liquid` shows a cut when
+Shopify says it is available and it has a price, so the boundary is at zero,
+not one, and one page decides it for the whole site.
+
+## 29. The sold-out badge only appears on hover
+
+The badge on the category grids is laid out but painted at `opacity: 0`, and
+a Webflow interaction fades it to `0.45` on card hover. At rest — which is how
+the grid is read, and the only way it is read on a phone, where there is no
+hover — none of the 41 sold-out cuts on `/all-japanese-wagyu` look any
+different from the 13 that are in stock.
+
+```
+/all-japanese-wagyu   badge display:none (in stock) = 13   badge opacity:0 (sold out) = 41
+brisket card: at rest opacity 0 -> on hover opacity 0.45
+```
+
+So the sold-out state is real in the markup and effectively invisible in the
+page. Customers find out at the product page, or in the cart.
+
+**Fixed in the port** — the badge renders at full opacity, no hover needed.
+
+---
+
+## What the live site actually has in stock
+
+The two conditions above read out the quantity per cut, which the CMS export
+does not carry (`available-stock` in `audit/cms.json` is a separate, stale
+field — it says 0 for cuts that are on sale). Captured 2026-08-31 into
+`audit/live-stock.json`:
+
+| Quantity | Cuts |
+| --- | --- |
+| 2 or more | chuck-cap, chuck-flap-tail, ribeye-center, striploin, culotte-head, tri-tip |
+| exactly 1 | brisket, brisket-point, chuck-short-rib, tri-chuck, tri-rib, chateaubriand, filet-mignon |
+| 0 | the other 41 |
+
+`scripts/set-inventory.mjs` writes this onto the Shopify variants, so the
+ported store stops treating the whole catalog as buyable before the real POS
+sync is connected.

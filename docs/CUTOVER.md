@@ -47,16 +47,22 @@ optional for the Curated Collection.
 
 The Webflow CMS export carries no stock numbers, so every variant imported
 with no quantity. The import now sets variants to track inventory and deny
-oversell, but until real quantities land — from the `TheHyunInventory` sync or
-a one-off stock import — Shopify believes everything is in stock.
+oversell, but until real quantities land Shopify believes everything is in
+stock: the ported store treats 46 cuts as buyable where the live site sells 7.
 
-Concretely, today: **41 of the 54 cuts are sold out on the live site**, while
-the ported store treats 46 as buyable. The only cuts it currently marks
-unavailable are the 8 with no price, which the source catalog uses to mean
-"not sold online".
+The live grids do expose the quantity per cut — Webflow renders all 54 and
+hides what fails an inventory condition — so that reading is captured in
+`audit/live-stock.json` and can be written onto the store now:
 
-Until stock is loaded, `/pages/available-cuts` and the sold-out badges on the
-category grids are structurally right but numerically wrong.
+```
+node scripts/set-inventory.mjs            # dry run
+node scripts/set-inventory.mjs --apply    # write the quantities
+```
+
+That is a stopgap with a real ceiling: it is a snapshot from one day, and a
+cut in stock reads as "2 or more" because the page never says how many. Point
+the store at the `TheHyunInventory` sync (or a stock CSV from the POS) before
+launch; this only stops the storefront from over-offering in the meantime.
 
 ## 2. Commerce configuration (owner)
 
@@ -170,6 +176,7 @@ store, and copy the Admin API access token into `.env` as
 | `write_products` | `import-products.mjs`, `make-collections.mjs` |
 | `write_content` | `make-pages.mjs` (pages) |
 | `write_online_store_navigation` | `make-redirects.mjs` (URL redirects) |
+| `write_inventory` | `set-inventory.mjs` (stock levels) |
 
 The token the earlier product import used already has `write_products`; the
 other two scopes have to be added to that app and the app reinstalled before
