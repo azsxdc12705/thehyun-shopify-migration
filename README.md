@@ -39,9 +39,14 @@ stock to Shopify over the Admin API.
 - [x] HTML/CSS port (option B demo): `theme-port/` — Curated Collection and
       subscription-builder quiz pages running off Webflow entirely, live at
       http://localhost:8123/theme-port/
-- [x] **Shopify Liquid theme**: `shopify-theme/` — production-ready theme with
-      Liquid templates, asset pipeline, and configuration. Ready to deploy to
-      dev store or production domain. See `DEPLOYMENT_GUIDE.md`
+- [x] **Shopify Liquid theme**: `shopify-theme/` — the full site ported and
+      deployed to the dev store as *THE HYUN (option B port)*: home, product
+      template (65 products, native cart + subscription buy widget with no
+      Storefront token), category/sub-primal/bundles/gift-sets pages, the
+      subscription-builder quiz, 13 static pages, styled utility templates.
+      Verified page-by-page against the live site with Playwright.
+- [ ] Store provisioning: `scripts/make-pages.mjs` + `scripts/make-redirects.mjs`
+      (run with `--apply`), then the cutover checklist in `docs/CUTOVER.md`
 - [ ] Buy widget in Webflow, checkout on Shopify — widget must pair the
       Frequency variant with the matching selling plan, so the mismatch
       possible on the Shopify product page cannot happen in front of customers
