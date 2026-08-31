@@ -7,7 +7,7 @@
  *  - hidden Webflow add-to-cart form sync  -> Storefront cartCreate
  *  - separate preferences form submission  -> cart line attributes (land on
  *    the order, visible in checkout and Admin)
- *  - localStorage one-subscription-per-cart guards -> each buy is a fresh cart
+ *  - localStorage one-subscription-per-cart guards -> Shopify's own cart
  *
  * Expects window.HYUN_QUIZ = { shop, token } to be defined first; no-ops
  * otherwise (that is how the staging gate works).
@@ -181,7 +181,9 @@
       if (!variant || !plan) {
         return Promise.reject(new Error('no variant/plan for ' + JSON.stringify(wanted)));
       }
-      return fetch('/cart/clear.js', { method: 'POST' })
+      // Adds to the shopper's existing cart; clearing it here would drop
+      // whatever else they were buying (see buy-widget.js).
+      return Promise.resolve()
         .then(function () {
           return fetch('/cart/add.js', {
             method: 'POST',

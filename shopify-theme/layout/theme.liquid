@@ -2,7 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>{{ page_title }}</title>
+  {%- comment -%}
+  Shopify's defaults regress a few titles against the live site
+  (/collections/all -> "Products", /cart -> "Your Shopping Cart"), so the
+  handful the live site named differently are set explicitly.
+  {%- endcomment -%}
+  {%- assign doc_title = page_title -%}
+  {%- if request.page_type == 'collection' and collection.handle == 'all' -%}
+    {%- assign doc_title = 'All Japanese Wagyu' -%}
+  {%- elsif request.page_type == 'cart' -%}
+    {%- assign doc_title = 'Your Collection' -%}
+  {%- endif -%}
+  <title>{{ doc_title }}</title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   {{ content_for_header }}
 
@@ -96,7 +107,7 @@
     }
   </style>
 </head>
-<body class="{% if template contains 'subscription-builder' %}body-17{% else %}body-9{% endif %}">
+<body class="{% if page.handle == 'subscription-builder' %}body-17{% else %}body-9{% endif %}">
   {{ content_for_layout }}
 
   <!-- Site navigation and interactions -->

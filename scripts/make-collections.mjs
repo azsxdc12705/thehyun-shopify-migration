@@ -46,6 +46,8 @@ const MUT = `mutation collectionCreate($input: CollectionInput!) {
 for (const title of missing) {
   const d = await gql(MUT, { input: {
     title,
+    // the live category grids are alphabetical; Shopify's default is not
+    sortOrder: 'ALPHA_ASC',
     ruleSet: { appliedDisjunctively: false, rules: [{ column: 'TAG', relation: 'EQUALS', condition: title }] },
   }});
   const errs = d.collectionCreate.userErrors;

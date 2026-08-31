@@ -59,8 +59,10 @@ optional for the Curated Collection.
 
 ## 3. Theme polish before publish
 
-- [ ] Restore the real phone number in `snippets/hyun-footer.liquid`
-      (redacted to 000.000.0000 for the public repo)
+- [ ] Restore the real phone number in three places, all redacted for the
+      public repo: `snippets/hyun-footer.liquid` (000.000.0000),
+      `snippets/hyun-page-store.liquid` (+1.000.000.0000) and
+      `snippets/hyun-page-contact.liquid` ((000) 000-0000)
 - [ ] Real Instagram URL in the footer (currently `#`)
 - [ ] `/available-cuts` page (54-item availability grid) — not ported yet;
       redirect currently points it at `/collections/all`

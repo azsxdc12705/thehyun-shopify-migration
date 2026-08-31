@@ -142,6 +142,24 @@
       });
   });
 
+  /* ---------------- quantity ---------------- */
+
+  // The live cart's quantity input updated the line (Webflow's
+  // update-item-quantity action). Without this the field accepts input on the
+  // cart page and silently changes nothing.
+  document.addEventListener('change', function (e) {
+    var input = e.target.closest('[data-hyun-cart-qty]');
+    if (!input) return;
+    var quantity = Math.max(0, parseInt(input.value, 10) || 0);
+    var wasOpen = isOpen();
+    cartRequest('/cart/change.js', { id: input.getAttribute('data-hyun-cart-qty'), quantity: quantity })
+      .then(function () { return refresh(wasOpen); })
+      .catch(function (err) {
+        console.error('[hyun-cart]', err);
+        window.location.href = '/cart';
+      });
+  });
+
   /* ---------------- cart page add-ons ---------------- */
 
   // Wooden Gift Box and Bojagi Gift Wrapping are real products on the live

@@ -60,32 +60,42 @@ Frequency choice drives both the variant and the selling plan.
             {%- comment -%}
             Same classes as the live Webflow commerce form so thyun.css keeps
             styling it (quantity-5 stays hidden, secondary-button look).
+
+            The price shown is the selected variant's, not price_min: with a
+            weight picker those differ, and the live page rebound the price on
+            every change (Webflow's commerce runtime). assets/site.js does the
+            same here, so the number on screen is always the one that will be
+            charged.
+
+            A product with no price is not sold online in the source catalog;
+            like the live template it shows no price and no form, but it still
+            gets the unavailable notice rather than an empty column.
             {%- endcomment -%}
-            {%- comment -%}
-            Zero price means "not sold online" in the source catalog — the
-            live template hides the price and form for those, so do we.
-            {%- endcomment -%}
-            {%- if product.price_min > 0 -%}
-            <div class="text-block-37 product-price">{{ product.price_min | money_without_trailing_zeros | replace: '$', '$ ' }} </div>
-            {%- if product.available -%}
+            {%- assign shown = product.selected_or_first_available_variant | default: product.variants.first -%}
+            {%- if shown.price > 0 -%}
+              <div class="text-block-37 product-price" data-price-display>{{ shown.price | money_without_trailing_zeros | replace: '$', '$ ' }} </div>
+            {%- endif -%}
+            {%- if product.available and shown.price > 0 -%}
               {%- form 'product', product, class: 'w-commerce-commerceaddtocartform default-state-3' -%}
                 {%- unless product.has_only_default_variant -%}
-                  <select name="id" class="option-select-field hyun-buy-select">
+                  <select name="id" class="option-select-field hyun-buy-select" data-variant-select>
                     {%- for variant in product.variants -%}
-                      <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                      <option value="{{ variant.id }}"
+                              data-price="{{ variant.price | money_without_trailing_zeros | replace: '$', '$ ' }}"
+                              {% if variant.id == shown.id %}selected{% endif %}
+                              {% unless variant.available %}disabled{% endunless %}>
                         {{ variant.title }} — {{ variant.price | money }}
                       </option>
                     {%- endfor -%}
                   </select>
                 {%- else -%}
-                  <input type="hidden" name="id" value="{{ product.first_available_variant.id | default: product.variants.first.id }}"/>
+                  <input type="hidden" name="id" value="{{ shown.id }}"/>
                 {%- endunless -%}
                 <input type="number" pattern="^[0-9]+$" inputmode="numeric" name="quantity" min="1" class="w-commerce-commerceaddtocartquantityinput quantity-5" value="1"/>
                 <input type="submit" class="w-commerce-commerceaddtocartbutton secondary-button" value="Add to Cart"/>
               {%- endform -%}
             {%- else -%}
               <div class="w-commerce-commerceaddtocartoutofstock out-of-stock-state" tabindex="0"><div class="text-block-100">This cut is currently unavailable</div></div>
-            {%- endif -%}
             {%- endif -%}
           {%- endif -%}
         </div>

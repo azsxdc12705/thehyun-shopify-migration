@@ -115,34 +115,33 @@ it only ever lived in localStorage.
           </form>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<div class="w-embed">
-  <div class="gift-message-modal" id="giftMessageModal">
-    <div class="gift-message-modal-bg"></div>
-    <div class="gift-message-modal-content">
+      <div class="w-embed">
+      <div class="gift-message-modal" id="giftMessageModal">
+      <div class="gift-message-modal-bg"></div>
+      <div class="gift-message-modal-content">
       <a href="#" class="gift-message-close" aria-label="Close">×</a>
       <div class="gift-message-modal-title">Gift Message Service</div>
       <div class="gift-message-modal-icon"><img src="{{ 'addon-message.svg' | asset_url }}" alt="Gift message icon"/></div>
       <p class="gift-message-modal-description">
-        Share your gratitude, celebration, or warm wishes with a personal gift message. All online gift orders may include an optional message card, presented with a complimentary THE HYUN linen bag.
+      Share your gratitude, celebration, or warm wishes with a personal gift message. All online gift orders may include an optional message card, presented with a complimentary THE HYUN linen bag.
       </p>
       {%- assign gift_message = cart.attributes['Gift Message'] -%}
       <label class="gift-message-option">
-        <input type="radio" name="gift-message-option" id="gift-message-no" value="no"{% if gift_message == blank %} checked{% endif %}/>
-        <span>don&#8217;t need a card</span>
+      <input type="radio" name="gift-message-option" id="gift-message-no" value="no"{% if gift_message == blank %} checked{% endif %}/>
+      <span>don&#8217;t need a card</span>
       </label>
       <label class="gift-message-option">
-        <input type="radio" name="gift-message-option" id="gift-message-yes" value="yes"{% if gift_message != blank %} checked{% endif %}/>
-        <span>need a card with a personal gift message</span>
+      <input type="radio" name="gift-message-option" id="gift-message-yes" value="yes"{% if gift_message != blank %} checked{% endif %}/>
+      <span>need a card with a personal gift message</span>
       </label>
       <textarea class="gift-message-textarea" placeholder="Enter your message" rows="5">{{ gift_message }}</textarea>
       <button type="button" class="gift-message-update">update</button>
+      </div>
+      </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 {% render 'hyun-cart-css' %}
 

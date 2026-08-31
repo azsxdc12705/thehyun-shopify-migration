@@ -132,6 +132,22 @@
   });
 })();
 
+/* ---------------- product price follows the weight picker ----------------
+ * The live page rebound the price whenever the SKU changed (Webflow commerce).
+ * Without this the headline keeps the first variant's price while the shopper
+ * picks another weight, and the cart charges the other one. */
+(function () {
+  'use strict';
+  var select = document.querySelector('[data-variant-select]');
+  var price = document.querySelector('[data-price-display]');
+  if (!select || !price) return;
+  select.addEventListener('change', function () {
+    var opt = select.options[select.selectedIndex];
+    var p = opt && opt.getAttribute('data-price');
+    if (p) price.textContent = p + ' ';
+  });
+})();
+
 /* ---------------- w-tabs (category pages' primal tabs) ---------------- */
 (function () {
   'use strict';

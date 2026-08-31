@@ -68,6 +68,12 @@ for (const item of cms['Products'].items) {
     }));
     return {
       optionValues: optionValues.length ? optionValues : [{ optionName: 'Title', name: 'Default Title' }],
+      // The CMS snapshot carries no stock numbers, so quantities come from the
+      // inventory app after import. Track inventory and refuse oversell, or
+      // every variant stays permanently "available" and the sold-out state the
+      // category grids render can never appear.
+      inventoryItem: { tracked: true },
+      inventoryPolicy: 'DENY',
       price: money(sf.price) ?? '0.00',
       compareAtPrice: money(sf['compare-at-price']),
       sku: sf.sku || undefined,

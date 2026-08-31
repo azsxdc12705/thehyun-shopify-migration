@@ -60,8 +60,7 @@
 
   // Native mode (on-theme): product data is Liquid-rendered into
   // #hyun-product-json (same shape as the Storefront query) and checkout goes
-  // through the Cart AJAX API — no Storefront token needed. A fresh cart per
-  // buy mirrors cartCreate semantics.
+  // through the Cart AJAX API — no Storefront token needed.
   function nativeCreateCart(lines) {
     const line = lines[0];
     const item = { id: line.merchandiseId, quantity: line.quantity };
@@ -70,12 +69,14 @@
       item.properties = {};
       line.attributes.forEach((a) => { item.properties[a.key] = a.value; });
     }
-    return fetch('/cart/clear.js', { method: 'POST' })
-      .then(() => fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: [item] }),
-      }))
+    // Do NOT clear the cart first: under the Storefront API cartCreate made a
+    // separate cart, but here this is the shopper's real one and clearing it
+    // would silently drop everything else they had.
+    return fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [item] }),
+    })
       .then((r) => r.json().then((data) => {
         if (!r.ok) throw new Error(data.description || data.message || 'cart add failed');
         return { data: { cartCreate: { cart: { checkoutUrl: '/checkout' }, userErrors: [] } } };
