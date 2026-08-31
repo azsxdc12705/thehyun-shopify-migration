@@ -1,0 +1,37 @@
+{%- comment -%}
+One cut group on a category page: heading + description on the left,
+product cards from the named collection on the right. 1:1 with the live
+category templates' .columns-33 / .columns-32 rows.
+
+Params: anchor, title, description, handle (collection), wrap_class,
+item_class.
+{%- endcomment -%}
+<div id="{{ anchor }}" class="{{ wrap_class }} w-row">
+  <div class="column-59 w-col w-col-4">
+    <h3 class="heading-50">{{ title }}</h3>
+    <p class="paragraph-34">{{ description }}</p>
+  </div>
+  <div class="column-54 w-col w-col-8">
+    <div class="w-dyn-list">
+      <div role="list" class="w-dyn-items w-row">
+        {%- for product in collections[handle].products -%}
+          <div role="listitem" class="{{ item_class }}">
+            <div class="label_wrap">
+              <a href="{{ product.url }}" class="bundlecardlink w-inline-block">
+                {%- if product.featured_image -%}
+                  <img loading="lazy" width="628" alt="{{ product.title | escape }}" src="{{ product.featured_image | image_url: width: 628 }}" sizes="(max-width: 479px) 96vw, (max-width: 767px) 97vw, (max-width: 991px) 160px, 207px"/>
+                {%- endif -%}
+                <div>{{ product.title }}</div>
+                {%- unless product.available -%}
+                  <div class="soldout"><div class="text-block-206">sold out</div></div>
+                {%- endunless -%}
+              </a>
+            </div>
+          </div>
+        {%- else -%}
+          <div class="body-copy">Coming soon.</div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>

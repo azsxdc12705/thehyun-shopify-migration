@@ -1,24 +1,90 @@
+{%- comment -%}
+Collection pages, ported from the live category templates (crawled
+2026-08-31). Primal handles (forequarter/loin/plate/round/offal) render the
+sub-primal-grouped layout of the live /<primal> pages; /collections/all
+renders the primal-grouped layout of /all-japanese-wagyu. Group headings and
+descriptions come from the frozen CMS snapshot (audit/cms.json) and the
+crawled pages. Everything else falls back to a plain grid.
+{%- endcomment -%}
 {% render 'hyun-nav' %}
-<section class="section-35">
-  <div class="w-layout-blockcontainer container-17 w-container">
-    <h1 class="heading-12">{{ collection.title }}</h1>
-  </div>
-</section>
-<section style="padding: 0 5% 10vh;">
-  <div class="w-layout-blockcontainer main-container w-container">
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;">
-      {%- for product in collection.products -%}
-        <a href="{{ product.url }}" style="text-decoration:none;color:inherit;">
-          {%- if product.featured_image -%}
-            <img src="{{ product.featured_image | image_url: width: 440 }}" alt="{{ product.featured_image.alt | escape }}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:10px;"/>
-          {%- endif -%}
-          <div class="body-copy">{{ product.title }}</div>
-          <div class="body-copy">{{ product.price_min | money }}{% if product.price_varies %}+{% endif %}</div>
-        </a>
-      {%- else -%}
-        <div class="body-copy">No products in this collection yet.</div>
-      {%- endfor -%}
+
+{%- if collection.handle == 'forequarter' -%}
+  {% render 'hyun-cuts-tabs', current: 1 %}
+  <section id="Forequarter" class="section-49">
+    <div class="w-layout-blockcontainer main-container w-container">
+    {% render 'hyun-cut-group', anchor: 'fore-brisket', title: 'Brisket', handle: 'brisket', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Brisket, with its strong umami from the abundant marbling and thick layer of fat, boasts a rich juiciness and exceptionally savory fat flavor. It offers a unique texture - tender yet satisfyingly chewy.' %}
+    {% render 'hyun-cut-group', anchor: 'fore-chuckroll', title: 'Chuck Roll', handle: 'chuck-roll', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Chuck roll is renowned for its high protein content, rich juiciness, and robust beefy aroma. Its distinct flavor intensifies with each chew, delivering a savory and satisfying taste.' %}
+    {% render 'hyun-cut-group', anchor: 'fore-clod', title: 'Clod', handle: 'clod', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Clod is characterized by lower fat content but abundant juiciness, providing a robust beefy aroma. Its excellent chewability makes it an ideal cut to savor the taste of beef protein.' %}
+    {% render 'hyun-cut-group', anchor: 'fore-shank', title: 'Shank', handle: 'shank', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Known for its high collagen and elastin content, Shank presents a dense concentration of beefy aroma and a subtly rich flavor. Its characteristic chewiness enhances the overall dining experience.' %}
     </div>
-  </div>
-</section>
+  </section>
+{%- elsif collection.handle == 'loin' -%}
+  {% render 'hyun-cuts-tabs', current: 2 %}
+  <section id="Loin" class="section-49">
+    <div class="w-layout-blockcontainer main-container w-container">
+    {% render 'hyun-cut-group', anchor: 'loin-ribloin', title: 'Ribloin', handle: 'ribloin', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Ribloin features finely marbled, tender meat with a deep beefy juiciness and the delightful flavor of marbling. It stands out among Wagyu cuts for its rich and savory taste.' %}
+    {% render 'hyun-cut-group', anchor: 'loin-striploin', title: 'Striploin', handle: 'striploin', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Striploin offers a delightful combination of tender beef protein and the savory aroma of intramuscular fat. Comprising a single muscle, it boasts a fine and tender texture.' %}
+    {% render 'hyun-cut-group', anchor: 'loin-tenderloin', title: 'Tenderloin', handle: 'tenderloin', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Tenderloin, the most tender cut, is distinguished by its velvety texture and minimal connective tissue. Obtained in small quantities from a single Japanese Wagyu, it epitomizes tenderness.' %}
+    </div>
+  </section>
+{%- elsif collection.handle == 'plate' -%}
+  {% render 'hyun-cuts-tabs', current: 3 %}
+  <section id="Plate" class="section-49">
+    <div class="w-layout-blockcontainer main-container w-container">
+    {% render 'hyun-cut-group', anchor: 'shortplate', title: 'Short Plate', handle: 'short-plate', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Short Plate, characterized by alternating layers of fat and muscle, showcases a coarse but marbled texture. The intramuscular fat acts as marbling, resulting in unparalleled juiciness among beef cuts.' %}
+    {% render 'hyun-cut-group', anchor: 'shortrib', title: 'Short Rib', handle: 'short-rib', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Short Rib, renowned for its rich juiciness and intense beefy aroma, complements marbling for a superbly flavorful experience. Its tenderness and chewy texture make it a favorite, especially in skirt steak cuts.' %}
+    </div>
+  </section>
+{%- elsif collection.handle == 'round' -%}
+  {% render 'hyun-cuts-tabs', current: 4 %}
+  <section id="Round" class="section-49">
+    <div class="w-layout-blockcontainer main-container w-container">
+    {% render 'hyun-cut-group', anchor: 'round-gooseneck', title: 'Gooseneck Round', handle: 'gooseneck-round', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Gooseneck round, nearly devoid of fat, boasts intense juiciness and a robust flavor profile. Its lean composition contributes to an excellent chewy texture.' %}
+    {% render 'hyun-cut-group', anchor: 'round-knuckle', title: 'Knuckle', handle: 'knuckle', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Knuckle, featuring the highest protein content and a beefy aroma, boasts thin and tender muscle fibers. Its fine texture and tenderness make it a delightful choice for those seeking a flavorful Wagyu beef experience.' %}
+    {% render 'hyun-cut-group', anchor: 'round-rump', title: 'Rump', handle: 'rump', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Rump, with its deep color and rich beefy aroma, exhibits a surprisingly tender and flavorful texture. Despite its robust appearance, the meat is tender and juicy.' %}
+    {% render 'hyun-cut-group', anchor: 'round-topround', title: 'Top Round', handle: 'top-round', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Top round, with low intramuscular fat and a high protein-to-fat ratio, offers a lean and subtly flavorful profile. Among hindquarter cuts, it stands out for its tenderness and clean taste.' %}
+    </div>
+  </section>
+{%- elsif collection.handle == 'offal' -%}
+  {% render 'hyun-cuts-tabs', current: 5 %}
+  <section id="Offal" class="section-49">
+    <div class="w-layout-blockcontainer main-container w-container">
+    {% render 'hyun-cut-group', anchor: 'offal-group', title: 'Offal', handle: 'offal', wrap_class: 'columns-33', item_class: 'collection-item-4 w-dyn-item w-col w-col-4', description: 'Delve into bovine treasures - tongues, stomachs, intestines, and tails. Explore the offal kingdom, from Mountain Chain Tripe, Honey Comb Tripe, Omasum, and Abomasum, each revealing a unique gastronomic tale.' %}
+    </div>
+  </section>
+{%- elsif collection.handle == 'all' -%}
+  {% render 'hyun-cuts-tabs', current: 0 %}
+  <section id="Forequarter" class="section-49">
+    <div class="w-layout-blockcontainer main-container w-container">
+    {% render 'hyun-cut-group', anchor: 'forequarter_section', title: 'Forequarter', handle: 'forequarter', wrap_class: 'columns-32', item_class: 'collection-item-3 w-dyn-item w-col w-col-4', description: 'In the beef realm, savor four distinguished cuts: Brisket, Chuck Roll, Clod, and Shank. Witness the marbled masterpiece of sirloin, where pink hues and white blossoms adorn the surface.' %}
+    {% render 'hyun-cut-group', anchor: 'loin_Section', title: 'Loin', handle: 'loin', wrap_class: 'columns-32', item_class: 'collection-item-3 w-dyn-item w-col w-col-4', description: 'Experience beef perfection in three acts: Ribloin&#x27;s savory symphony, the tender marvel of Tenderloin, and the pinnacle of gastronomic excellence.' %}
+    {% render 'hyun-cut-group', anchor: 'plate-section', title: 'Plate', handle: 'plate', wrap_class: 'columns-32', item_class: 'collection-item-3 w-dyn-item w-col w-col-4', description: 'Ascend to beef royalty with Short Rib reigning above, and the primal essence of Outside Skirt and Hanging Tender below, delivering unparalleled taste.' %}
+    {% render 'hyun-cut-group', anchor: 'round-section', title: 'Round', handle: 'round', wrap_class: 'columns-32', item_class: 'collection-item-3 w-dyn-item w-col w-col-4', description: 'Journey to the rounded haven of Gooseneck Round, Top Round, Rump, and Knuckle. Discover lean elegance, with occasional marbled treasures like tenderloin head.' %}
+    {% render 'hyun-cut-group', anchor: 'offal-section', title: 'Offal', handle: 'offal', wrap_class: 'columns-32', item_class: 'collection-item-3 w-dyn-item w-col w-col-4', description: 'Delve into bovine treasures—tongues, stomachs, intestines, and tails. Explore the offal kingdom, from Mountain Chain Tripe, Honey Comb Tripe, Omasum, and Abomasum, each revealing a unique gastronomic tale.' %}
+    </div>
+  </section>
+{%- else -%}
+  <section class="section-35">
+    <div class="w-layout-blockcontainer container-17 w-container">
+      <h1 class="heading-12">{{ collection.title }}</h1>
+    </div>
+  </section>
+  <section style="padding: 0 5% 10vh;">
+    <div class="w-layout-blockcontainer main-container w-container">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;">
+        {%- for product in collection.products -%}
+          <a href="{{ product.url }}" style="text-decoration:none;color:inherit;">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 440 }}" alt="{{ product.featured_image.alt | escape }}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:10px;"/>
+            {%- endif -%}
+            <div class="body-copy">{{ product.title }}</div>
+            <div class="body-copy">{{ product.price_min | money }}{% if product.price_varies %}+{% endif %}</div>
+          </a>
+        {%- else -%}
+          <div class="body-copy">No products in this collection yet.</div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
 {% render 'hyun-footer' %}

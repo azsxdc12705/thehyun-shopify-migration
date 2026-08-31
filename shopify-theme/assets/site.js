@@ -132,6 +132,22 @@
   });
 })();
 
+/* ---------------- w-tabs (category pages' primal tabs) ---------------- */
+(function () {
+  'use strict';
+  document.querySelectorAll('.w-tabs').forEach(function (tabs) {
+    var links = Array.prototype.slice.call(tabs.querySelectorAll('.w-tab-link'));
+    var panes = Array.prototype.slice.call(tabs.querySelectorAll('.w-tab-pane'));
+    links.forEach(function (link, i) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        links.forEach(function (l, j) { l.classList.toggle('w--current', j === i); });
+        panes.forEach(function (p, j) { p.classList.toggle('w--tab-active', j === i); });
+      });
+    });
+  });
+})();
+
 /* ---------------- w-slider (home category carousel) ----------------
  * Same contract as webflow.js: slides shift together via translateX, the
  * nav renders numbered dots (.w-num), autoplay/delay/duration come from the

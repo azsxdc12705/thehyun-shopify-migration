@@ -1,0 +1,68 @@
+{%- comment -%}
+The cuts navigation bar on the category pages: "All Japanese Wagyu" link,
+the primal tab strip with sub-primal links, and the "Available cuts" link.
+1:1 with the live pages' .div-block-44 block (Webflow cart form dropped).
+Tab switching is driven by the w-tabs handler in assets/site.js.
+
+Param: current — 1 Forequarter, 2 Loin, 3 Plate, 4 Round, 5 Offal,
+0 none (the all page). The pane matching `current` starts active (pane 1
+when current is 0).
+{%- endcomment -%}
+{%- assign active_pane = current | at_least: 1 -%}
+<div class="div-block-44">
+  <div class="w-layout-blockcontainer main-container w-container">
+    <div class="w-layout-hflex flex-block">
+      <a href="/collections/all" class="link-block-10 w-inline-block"><div class="text-block-90">All Japanese Wagyu</div></a>
+      <div data-current="Tab {{ active_pane }}" data-easing="ease" data-duration-in="300" data-duration-out="100" class="w-tabs">
+        <div class="tabs-menu-4 w-tab-menu">
+          <a data-w-tab="Tab 1" class="tab-link-tab-1-2 w-inline-block w-tab-link{% if current == 1 %} w--current{% endif %}"><div class="text-block-92">Forequarter</div></a>
+          <a data-w-tab="Tab 2" class="tab-link-tab-2-2 w-inline-block w-tab-link{% if current == 2 %} w--current{% endif %}"><div class="text-block-93">Loin</div></a>
+          <a data-w-tab="Tab 3" class="tab-link-tab-3-2 w-inline-block w-tab-link{% if current == 3 %} w--current{% endif %}"><div class="text-block-94">Plate</div></a>
+          <a data-w-tab="Tab 4" class="tab-link-tab-4-2 w-inline-block w-tab-link{% if current == 4 %} w--current{% endif %}"><div class="text-block-95">Round</div></a>
+          <a data-w-tab="Tab 5" class="tab-link-tab-5-2 w-inline-block w-tab-link{% if current == 5 %} w--current{% endif %}"><div class="text-block-96">Offal</div></a>
+        </div>
+        <div class="w-tab-content">
+          <div data-w-tab="Tab 1" class="w-tab-pane{% if active_pane == 1 %} w--tab-active{% endif %}">
+            <div class="div-block-46">
+              <a href="/collections/forequarter" class="link-5{% if current == 1 %} w--current{% endif %}">All</a>
+              <a href="/sub-primal/brisket" class="link-5">Brisket</a>
+              <a href="/sub-primal/chuck-roll" class="link-5">Chuck Roll</a>
+              <a href="/sub-primal/clod" class="link-5">Clod</a>
+              <a href="/sub-primal/shank" class="link-5">Shank</a>
+            </div>
+          </div>
+          <div data-w-tab="Tab 2" class="w-tab-pane{% if active_pane == 2 %} w--tab-active{% endif %}">
+            <div class="div-block-46">
+              <a href="/collections/loin" class="link-5{% if current == 2 %} w--current{% endif %}">All</a>
+              <a href="/sub-primal/ribloin" class="link-5">Ribloin</a>
+              <a href="/sub-primal/striploin" class="link-5">Striploin</a>
+              <a href="/sub-primal/tenderloin" class="link-5">Tenderloin</a>
+            </div>
+          </div>
+          <div data-w-tab="Tab 3" class="w-tab-pane{% if active_pane == 3 %} w--tab-active{% endif %}">
+            <div class="div-block-46">
+              <a href="/collections/plate" class="link-5{% if current == 3 %} w--current{% endif %}">All</a>
+              <a href="/sub-primal/short-plate" class="link-5">Short Plate</a>
+              <a href="/sub-primal/short-rib" class="link-5">Short Rib</a>
+            </div>
+          </div>
+          <div data-w-tab="Tab 4" class="w-tab-pane{% if active_pane == 4 %} w--tab-active{% endif %}">
+            <div class="div-block-46">
+              <a href="/collections/round" class="link-5{% if current == 4 %} w--current{% endif %}">All</a>
+              <a href="/sub-primal/gooseneck-round" class="link-5">Gooseneck Round</a>
+              <a href="/sub-primal/knuckle" class="link-5">Knuckle</a>
+              <a href="/sub-primal/rump" class="link-5">Rump</a>
+              <a href="/sub-primal/top-round" class="link-5">Top Round</a>
+            </div>
+          </div>
+          <div data-w-tab="Tab 5" class="w-tab-pane{% if active_pane == 5 %} w--tab-active{% endif %}">
+            <div class="div-block-46">
+              <a href="/sub-primal/offal" class="link-5">Offal</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="/available-cuts" class="link-block-11 w-inline-block"><div class="text-block-91">|  Available cuts  |</div></a>
+    </div>
+  </div>
+</div>
