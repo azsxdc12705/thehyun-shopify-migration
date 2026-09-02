@@ -71,6 +71,28 @@ launch; this only stops the storefront from over-offering in the meantime.
       subscription-compatible payment methods
 - [ ] Taxes (NY nexus), shipping zones/rates, local delivery + pickup
       (Store POS stays Square; `TheHyunInventory` syncs stock)
+- [ ] **Decide where the shipping-rate logic lives — it constrains the plan.**
+      Live rates do not come from Webflow: `/checkout` POSTs the cart to
+      `https://shipping.thehyun.com/api/get-shipping-rates` with `zip`,
+      `isDeliver` and, per item, `weight`, `isBundle` and `isGift`, then paints
+      the returned cost over the summary total. Bundles and gift sets branching
+      separately is perishable-shipping logic (box, coolant, service level), not
+      a plain carrier quote. Three ways to keep it:
+
+  | Option | What it needs |
+  | --- | --- |
+  | Shopify's own rates: zones x weight/price tiers, plus a shipping profile for bundles and gift sets | nothing — every plan. **Start here** |
+  | A Carrier Service API app pointing at the existing `shipping.thehyun.com` endpoint (logic preserved exactly) | carrier-calculated shipping: Advanced plan, or the annual-billing add-on |
+  | ShipStation's own real-time rates through its Shopify integration | same carrier-calculated shipping entitlement |
+
+- [ ] Google Places autocomplete (`audit/custom-js/0f6c5eaa4e.js`) is **not**
+      ported and should not be: it drives `#wf-ecom-shipping-*` fields that stop
+      existing, and Shopify's checkout has address autocomplete and validation
+      built in on every plan. After cutover, delete or restrict the Google Maps
+      Platform API key so an unused key cannot be billed or abused.
+- [ ] ShipStation stays for labels and fulfilment — it has a first-party
+      Shopify integration and orders flow into it automatically. Only the rate
+      call above moves.
 - [ ] **Enable Local Pickup** for the Gramercy store. This replaces the live
       site's `/checkout-method` interstitial ("Deliver to Your Doorstep" vs
       "In-Store Pickup"), which is deliberately not ported: Shopify's checkout
