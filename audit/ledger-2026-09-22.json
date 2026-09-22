@@ -412,5 +412,9 @@
   "M.Piriformis": 1,
   "Oyster blade Cap": 17,
   "Pencil": 14
- }
+ },
+ "unlistedByOwner": {
+  "Pencil": "the shop does not list this cut online - owner, 2026-09-22"
+ },
+ "unmatchedPolicy": "A ledger name with no Shopify product is left off the store while it has no stock. None of them do: all 20 pieces are striploin, rib cap, ribeye center and chateaubriand. If one is ever stocked, decide then whether it is an existing product under another name or a new one."
 }
