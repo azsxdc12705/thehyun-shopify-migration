@@ -1,0 +1,457 @@
+[
+ {
+  "slug": "bojagi",
+  "name": "Bojagi",
+  "korean": "",
+  "category": "",
+  "ratePerLb": null
+ },
+ {
+  "slug": "wooden-box",
+  "name": "Wooden Box",
+  "korean": "",
+  "category": "",
+  "ratePerLb": null
+ },
+ {
+  "slug": "babys-first-bites",
+  "name": "Baby's first bites",
+  "korean": "",
+  "category": "Bundles",
+  "ratePerLb": null
+ },
+ {
+  "slug": "innards-selection",
+  "name": "Innards Selection",
+  "korean": "",
+  "category": "Bundles",
+  "ratePerLb": null
+ },
+ {
+  "slug": "prime-bbq-collection",
+  "name": "Prime BBQ Collection",
+  "korean": "",
+  "category": "Bundles",
+  "ratePerLb": null
+ },
+ {
+  "slug": "the-hyuns-special-cuts",
+  "name": "THE HYUN's Special Cuts",
+  "korean": "",
+  "category": "Bundles",
+  "ratePerLb": null
+ },
+ {
+  "slug": "brisket",
+  "name": "Brisket",
+  "korean": "양지머리",
+  "category": "Forequarter",
+  "ratePerLb": null
+ },
+ {
+  "slug": "brisket-point",
+  "name": "Brisket Point",
+  "korean": "차돌박이",
+  "category": "Forequarter",
+  "ratePerLb": null
+ },
+ {
+  "slug": "chuck-cap",
+  "name": "Chuck Cap",
+  "korean": "멍에덮개살",
+  "category": "Forequarter",
+  "ratePerLb": 80
+ },
+ {
+  "slug": "chuck-eye-log",
+  "name": "Chuck Eye Log",
+  "korean": "멍에살",
+  "category": "Forequarter",
+  "ratePerLb": 98
+ },
+ {
+  "slug": "chuck-flap-tail",
+  "name": "Chuck Flap Tail",
+  "korean": "살치살",
+  "category": "Forequarter",
+  "ratePerLb": null
+ },
+ {
+  "slug": "chuck-short-rib",
+  "name": "Chuck Short Rib",
+  "korean": "본갈비",
+  "category": "Forequarter",
+  "ratePerLb": null
+ },
+ {
+  "slug": "chuck-tender",
+  "name": "Chuck Tender",
+  "korean": "꾸리살",
+  "category": "Forequarter",
+  "ratePerLb": 11.63
+ },
+ {
+  "slug": "clod-heart",
+  "name": "Clod Heart",
+  "korean": "앞다리살",
+  "category": "Forequarter",
+  "ratePerLb": 8.75
+ },
+ {
+  "slug": "conical-meat",
+  "name": "Conical Meat",
+  "korean": "상박살",
+  "category": "Forequarter",
+  "ratePerLb": 5.25
+ },
+ {
+  "slug": "digital-muscle",
+  "name": "Digital Muscle",
+  "korean": "아롱사태",
+  "category": "Forequarter",
+  "ratePerLb": 5.25
+ },
+ {
+  "slug": "heel",
+  "name": "Heel",
+  "korean": "뭉치사태",
+  "category": "Forequarter",
+  "ratePerLb": 5.25
+ },
+ {
+  "slug": "oyster-blade",
+  "name": "Oyster Blade",
+  "korean": "부채살",
+  "category": "Forequarter",
+  "ratePerLb": 120
+ },
+ {
+  "slug": "tri-chuck",
+  "name": "Tri Chuck",
+  "korean": "갈비덧살",
+  "category": "Forequarter",
+  "ratePerLb": 105
+ },
+ {
+  "slug": "tri-rib",
+  "name": "Tri Rib",
+  "korean": "척갈비",
+  "category": "Forequarter",
+  "ratePerLb": null
+ },
+ {
+  "slug": "flat-iron-cap",
+  "name": "\bUpper Oyster Blade",
+  "korean": "부채덮개살",
+  "category": "Forequarter",
+  "ratePerLb": 88
+ },
+ {
+  "slug": "epicurean-collection",
+  "name": "Epicurean Collection",
+  "korean": "",
+  "category": "Gift Sets",
+  "ratePerLb": null
+ },
+ {
+  "slug": "maestro-collection",
+  "name": "Maestro Collection",
+  "korean": "",
+  "category": "Gift Sets",
+  "ratePerLb": null
+ },
+ {
+  "slug": "primordial-collection",
+  "name": "Primordial Collection",
+  "korean": "",
+  "category": "Gift Sets",
+  "ratePerLb": null
+ },
+ {
+  "slug": "chateaubriand",
+  "name": "Chateaubriand",
+  "korean": "안심몸통살",
+  "category": "Loin",
+  "ratePerLb": null
+ },
+ {
+  "slug": "filet-mignon",
+  "name": "Filet Mignon",
+  "korean": "안심몸통살",
+  "category": "Loin",
+  "ratePerLb": null
+ },
+ {
+  "slug": "rib-cap",
+  "name": "Rib Cap",
+  "korean": "등심덧살",
+  "category": "Loin",
+  "ratePerLb": 105
+ },
+ {
+  "slug": "ribeye-cap",
+  "name": "Ribeye Cap",
+  "korean": "새우살",
+  "category": "Loin",
+  "ratePerLb": 138
+ },
+ {
+  "slug": "ribeye-center",
+  "name": "Ribeye Center",
+  "korean": "꽃등심",
+  "category": "Loin",
+  "ratePerLb": 142
+ },
+ {
+  "slug": "ribeye-sidestrap",
+  "name": "Ribeye Sidestrap",
+  "korean": "등심추리",
+  "category": "Loin",
+  "ratePerLb": 86
+ },
+ {
+  "slug": "striploin",
+  "name": "Striploin",
+  "korean": "채끝살",
+  "category": "Loin",
+  "ratePerLb": 142
+ },
+ {
+  "slug": "striploin-sidestrap",
+  "name": "Striploin Sidestrap",
+  "korean": "채끝추리",
+  "category": "Loin",
+  "ratePerLb": 5.25
+ },
+ {
+  "slug": "tenderloin-head",
+  "name": "Tenderloin Head",
+  "korean": "안심머리살",
+  "category": "Loin",
+  "ratePerLb": 17.25
+ },
+ {
+  "slug": "tenderloin-sidestrap",
+  "name": "Tenderloin Sidestrap",
+  "korean": "안심추리",
+  "category": "Loin",
+  "ratePerLb": 5.25
+ },
+ {
+  "slug": "tenderloin-wing",
+  "name": "Tenderloin Wing",
+  "korean": "안심날개살",
+  "category": "Loin",
+  "ratePerLb": 93
+ },
+ {
+  "slug": "abomasum",
+  "name": "Abomasum",
+  "korean": "홍창",
+  "category": "Offal",
+  "ratePerLb": 5.94
+ },
+ {
+  "slug": "large-intestine",
+  "name": "Large Intestine",
+  "korean": "대창",
+  "category": "Offal",
+  "ratePerLb": 5.94
+ },
+ {
+  "slug": "mountain-chain-tripe",
+  "name": "Mountain Chain Tripe",
+  "korean": "양",
+  "category": "Offal",
+  "ratePerLb": 5.94
+ },
+ {
+  "slug": "omasum",
+  "name": "Omasum",
+  "korean": "천엽",
+  "category": "Offal",
+  "ratePerLb": null
+ },
+ {
+  "slug": "small-intenstine",
+  "name": "Small Intenstine",
+  "korean": "소창",
+  "category": "Offal",
+  "ratePerLb": 5.94
+ },
+ {
+  "slug": "tail",
+  "name": "Tail",
+  "korean": "소꼬리",
+  "category": "Offal",
+  "ratePerLb": 5.94
+ },
+ {
+  "slug": "tongue",
+  "name": "Tongue",
+  "korean": "혀",
+  "category": "Offal",
+  "ratePerLb": 100
+ },
+ {
+  "slug": "flank-steak",
+  "name": "Flank Steak",
+  "korean": "앞치마살",
+  "category": "Plate",
+  "ratePerLb": 9
+ },
+ {
+  "slug": "flap-meat",
+  "name": "Flap Meat",
+  "korean": "치마살",
+  "category": "Plate",
+  "ratePerLb": 14.63
+ },
+ {
+  "slug": "flap-meat-cap",
+  "name": "Flap Meat Cap",
+  "korean": "치마양지",
+  "category": "Plate",
+  "ratePerLb": 5.25
+ },
+ {
+  "slug": "hanging-tener",
+  "name": "Hanging Tender",
+  "korean": "토시살",
+  "category": "Plate",
+  "ratePerLb": 12
+ },
+ {
+  "slug": "head-rib",
+  "name": "Head Rib",
+  "korean": "꽃갈비",
+  "category": "Plate",
+  "ratePerLb": 125
+ },
+ {
+  "slug": "inside-skirt",
+  "name": "Inside Skirt",
+  "korean": "업진안살",
+  "category": "Plate",
+  "ratePerLb": 8.25
+ },
+ {
+  "slug": "outside-skirt",
+  "name": "Outside Skirt",
+  "korean": "안창살",
+  "category": "Plate",
+  "ratePerLb": 12
+ },
+ {
+  "slug": "rib-finger",
+  "name": "Rib Finger",
+  "korean": "늑간살",
+  "category": "Plate",
+  "ratePerLb": 5.25
+ },
+ {
+  "slug": "rib-plate",
+  "name": "Rib Plate",
+  "korean": "양지갈비",
+  "category": "Plate",
+  "ratePerLb": 5.25
+ },
+ {
+  "slug": "short-plate",
+  "name": "Short Plate",
+  "korean": "업진살",
+  "category": "Plate",
+  "ratePerLb": 8.63
+ },
+ {
+  "slug": "outside-round",
+  "name": "\bBottom Round",
+  "korean": "볼기살",
+  "category": "Round",
+  "ratePerLb": 6.57
+ },
+ {
+  "slug": "culotte-body",
+  "name": "Culotte Body",
+  "korean": "설깃살",
+  "category": "Round",
+  "ratePerLb": 11.63
+ },
+ {
+  "slug": "culotte-head",
+  "name": "Culotte Head",
+  "korean": "\b설깃머리살",
+  "category": "Round",
+  "ratePerLb": 112
+ },
+ {
+  "slug": "eye-of-round",
+  "name": "Eye of Round",
+  "korean": "홍두깨살",
+  "category": "Round",
+  "ratePerLb": 6.57
+ },
+ {
+  "slug": "inside-knuckle",
+  "name": "Inside Knuckle",
+  "korean": "도가니안살",
+  "category": "Round",
+  "ratePerLb": 9.38
+ },
+ {
+  "slug": "main-knuckle",
+  "name": "Main Knuckle",
+  "korean": "\b도가니살",
+  "category": "Round",
+  "ratePerLb": 8.75
+ },
+ {
+  "slug": "outside-knuckle",
+  "name": "Outside Knuckle",
+  "korean": "도가니바깥살",
+  "category": "Round",
+  "ratePerLb": 9
+ },
+ {
+  "slug": "top-round",
+  "name": "Top Round",
+  "korean": "우둔살",
+  "category": "Round",
+  "ratePerLb": null
+ },
+ {
+  "slug": "top-round-cap",
+  "name": "Top Round Cap",
+  "korean": "우둔덧살",
+  "category": "Round",
+  "ratePerLb": 5
+ },
+ {
+  "slug": "top-sirloin-butt",
+  "name": "Top Sirloin Butt",
+  "korean": "보섭살",
+  "category": "Round",
+  "ratePerLb": 9.38
+ },
+ {
+  "slug": "tri-tip",
+  "name": "Tri Tip",
+  "korean": "삼각살",
+  "category": "Round",
+  "ratePerLb": 118
+ },
+ {
+  "slug": "curated-collection",
+  "name": "Curated Collection",
+  "korean": "",
+  "category": "Subscriptions",
+  "ratePerLb": null
+ },
+ {
+  "slug": "custom-collection",
+  "name": "Custom Collection",
+  "korean": "",
+  "category": "Subscriptions",
+  "ratePerLb": null
+ }
+]
