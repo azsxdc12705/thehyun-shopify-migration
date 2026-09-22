@@ -128,7 +128,10 @@ crawled pages. Everything else falls back to a plain grid.
               <img src="{{ product.featured_image | image_url: width: 440 }}" alt="{{ product.featured_image.alt | escape }}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:10px;"/>
             {%- endif -%}
             <div class="body-copy">{{ product.title }}</div>
-            <div class="body-copy">{{ product.price_min | money }}{% if product.price_varies %}+{% endif %}</div>
+            {%- assign buyable = product.first_available_variant -%}
+            {%- if buyable and buyable.price > 0 -%}
+              <div class="body-copy">{{ buyable.price | money }}{% if product.price_varies %}+{% endif %}</div>
+            {%- endif -%}
           </a>
         {%- else -%}
           <div class="body-copy">No products in this collection yet.</div>

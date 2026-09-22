@@ -22,7 +22,8 @@ the Available Cuts page).
         {%- assign shown_count = 0 -%}
         {%- for product in collections[handle].products -%}
           {%- assign purchasable = false -%}
-          {%- if product.available and product.price > 0 -%}{%- assign purchasable = true -%}{%- endif -%}
+          {%- assign buyable = product.first_available_variant -%}
+          {%- if buyable and buyable.price > 0 -%}{%- assign purchasable = true -%}{%- endif -%}
           {%- if only_available and purchasable == false -%}{%- continue -%}{%- endif -%}
           {%- assign shown_count = shown_count | plus: 1 -%}
           <div role="listitem" class="{{ item_class }}">

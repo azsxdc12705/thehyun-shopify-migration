@@ -76,12 +76,19 @@ SKUs and the shop's real stock, all from the repo's own snapshots:
 node scripts/make-catalog-csv.mjs      # -> catalog.csv
 ```
 
-Every cut carries a `0.01 lb` row pinned at zero. Shopify will not hold a
-product with no variants, so a cut that sells out would otherwise lose its
-Weight option and return as a plain "Default Title" product — the shape the
-catalog was found in on 2026-09-22. The placeholder keeps the axis open;
-`templates/product.liquid` leaves unavailable weights out of the select, so it
-never reaches a customer.
+No row is invented. A cut's weights are the ones it has really been cut at —
+the Webflow catalog's own list plus whatever the ledger holds today, each at the
+price really charged — and the ones with no stock come through at quantity 0.
+That is what keeps the Weight option alive: Shopify will not hold a product with
+no variants, and losing that option is how the catalog broke on 2026-09-22.
+`templates/product.liquid` leaves unavailable weights out of the select, so a
+sold weight is gone from the storefront while the row survives in admin.
+
+Eight cuts (`brisket`, `brisket-point`, `chuck-flap-tail`, `chuck-short-rib`,
+`tri-rib`, `filet-mignon`, `omasum`, `top-round`) have no priced weight in
+either source and keep a single untracked row at their source price, unbuyable,
+as on the old site. The first time one is stocked, its Weight option has to be
+created by hand before a weight can be added.
 
 It works from Shopify's own export because the importer matches a row to an
 existing variant on Handle plus the option values; retyping those risks

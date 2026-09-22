@@ -21,8 +21,15 @@
                 <img src="{{ item.featured_image | image_url: width: 440 }}" alt="{{ item.featured_image.alt | escape }}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:10px;"/>
               {%- endif -%}
               <div class="body-copy">{{ item.title }}</div>
-              {%- if item.price -%}
-                <div class="body-copy">{{ item.price | money }}</div>
+              {%- comment -%}
+              item.price is the cheapest variant on file, sold or not. A cut is
+              one piece per weight, so that is routinely a weight nobody can
+              buy - price the card from the cheapest one that is actually in
+              stock, which is what clicking through will offer.
+              {%- endcomment -%}
+              {%- assign buyable = item.first_available_variant -%}
+              {%- if buyable and buyable.price > 0 -%}
+                <div class="body-copy">{{ buyable.price | money }}</div>
               {%- endif -%}
             </a>
           {%- endfor -%}

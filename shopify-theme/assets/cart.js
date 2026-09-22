@@ -72,6 +72,21 @@
 
   /* ---------------- add to cart ---------------- */
 
+  // The product page has no element for an add-to-cart error, so put one
+  // directly under the form and keep a single instance per form.
+  function showFormError(form, message) {
+    var box = form.querySelector('[data-hyun-cart-error]');
+    if (!box) {
+      box = document.createElement('div');
+      box.setAttribute('data-hyun-cart-error', '');
+      box.setAttribute('role', 'alert');
+      box.className = 'text-block-100';
+      box.style.marginTop = '10px';
+      form.appendChild(box);
+    }
+    box.textContent = message || 'This cut is no longer available.';
+  }
+
   document.addEventListener('submit', function (e) {
     var form = e.target.closest('form[action*="/cart/add"]');
     if (!form) return;
@@ -87,7 +102,13 @@
     fetch('/cart/add.js', { method: 'POST', body: data, headers: { Accept: 'application/json' } })
       .then(function (r) {
         return r.json().then(function (out) {
-          if (!r.ok) throw new Error(out.description || out.message || 'Add to cart failed');
+          // A rejection and an outage are not the same thing. Shopify answering
+          // 422 means the shop said no - the piece went while this page sat
+          // open, which with one piece per weight is an ordinary Saturday - and
+          // re-posting the same form would only be told no again, on a page
+          // reload that loses the customer's place. Say so where they are
+          // looking instead. Only a request that never got an answer falls back.
+          if (!r.ok) { var e = new Error(out.description || out.message || 'Add to cart failed'); e.rejected = true; throw e; }
           return out;
         });
       })
@@ -96,10 +117,14 @@
         return refresh(true);
       })
       .catch(function (err) {
-        // If the AJAX API is unreachable (network, bot challenge), fall back
-        // to the plain form post so the item still lands in the cart.
-        console.error('[hyun-cart]', err);
-        form.submit();
+        if (!err || !err.rejected) {
+          // unreachable (network, bot challenge): the plain form post still works
+          console.error('[hyun-cart]', err);
+          form.submit();
+          return;
+        }
+        showFormError(form, err.message);
+        refresh(false);
       });
   });
 

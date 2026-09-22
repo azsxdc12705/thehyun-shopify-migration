@@ -36,7 +36,6 @@ for (const [cut, prices] of Object.entries(ledger.prices)) {
   rates.set(cut, Number((p / parseFloat(w)).toFixed(2)));
 }
 
-const PLACEHOLDER = 0.01;
 const ABBR = {
   'Monthly': 'M', 'Twice a Month': '2M',
   'Discovery Collection': 'DSC', 'Signature Collection': 'SIG', 'Grand Collection': 'GRD',
@@ -62,7 +61,7 @@ const rows = [COLS.map(csvCell).join(',')];
 const seen = new Set();
 const collisions = [];
 let cuts = 0, others = 0, pieces = 0;
-const stocked = [];
+const stocked = [], noWeights = [];
 
 for (const p of cms['Products'].items) {
   const f = p.fieldData;
@@ -78,27 +77,49 @@ for (const p of cms['Products'].items) {
 
   if (cut) {
     cuts++;
-    const rate = rates.get(handle) ?? null;
-    const counts = new Map();
-    for (const lb of ledger.pieces[handle] ?? []) counts.set(lb, (counts.get(lb) ?? 0) + 1);
-
-    // placeholder first, so it is the row staff see at the top of an empty cut
-    let first = true;
-    const placeholderPrice = rate ? Math.max(0.01, rate * PLACEHOLDER) : 0.01;
-    emit([handle, f.name, 'Weight', wLabel(PLACEHOLDER), '', '', '', '',
-      `HYUN-${handle.toUpperCase()}-${wCode(PLACEHOLDER)}`, money(placeholderPrice),
-      'shopify', '0', 'deny', 'TRUE', 'TRUE', 'manual']);
-    first = false;
-
-    for (const [lb, qty] of [...counts].sort((a, b) => b[0] - a[0])) {
+    // every weight this cut is known to have been cut at, priced as it was priced
+    const weights = new Map();   // lb -> { price, qty }
+    const props = f['sku-properties'] || [];
+    const weightProp = props.find((pr) => /weight/i.test(pr.name));
+    if (weightProp) {
+      const valueName = new Map();
+      for (const e of weightProp.enum || []) valueName.set(e.id, e.name);
+      for (const s of sourceSkus) {
+        const lb = parseFloat(valueName.get(s.fieldData['sku-values']?.[weightProp.id]) ?? '');
+        const price = s.fieldData.price ? s.fieldData.price.value / 100 : 0;
+        if (!(lb > 0) || !(price > 0)) continue;
+        weights.set(lb, { price, qty: 0 });
+      }
+    }
+    for (const lb of ledger.pieces[handle] ?? []) {
       const price = ledger.prices[handle]?.[lb.toFixed(2)];
       if (price == null) throw new Error(`${handle} ${lb} lb has no price in the ledger`);
-      emit([handle, '', 'Weight', wLabel(lb), '', '', '', '',
-        `HYUN-${handle.toUpperCase()}-${wCode(lb)}`, money(price),
-        'shopify', String(qty), 'deny', 'TRUE', 'TRUE', 'manual']);
-      pieces += qty;
+      const row = weights.get(lb) ?? { price, qty: 0 };
+      row.price = price;          // the ledger is today's price, the catalog is history
+      row.qty += 1;
+      weights.set(lb, row);
     }
-    if (counts.size) stocked.push(`${handle} ${[...counts.values()].reduce((a, b) => a + b, 0)}`);
+
+    if (!weights.size) {
+      // never sold online by weight: keep the single row the source describes,
+      // untracked, at its source price (zero for the cuts the shop sells in store only)
+      noWeights.push(handle);
+      emit([handle, f.name, 'Title', 'Default Title', '', '', '', '',
+        `HYUN-${handle.toUpperCase()}`,
+        money(sourceSkus[0].fieldData.price ? sourceSkus[0].fieldData.price.value / 100 : 0),
+        '', '', 'continue', 'TRUE', 'TRUE', 'manual']);
+    } else {
+      let first = true;
+      for (const [lb, row] of [...weights].sort((a, b) => a[0] - b[0])) {   // lightest first, so variants.first is the cheapest and the product page agrees with product.price
+        emit([handle, first ? f.name : '', 'Weight', wLabel(lb), '', '', '', '',
+          `HYUN-${handle.toUpperCase()}-${wCode(lb)}`, money(row.price),
+          'shopify', String(row.qty), 'deny', 'TRUE', 'TRUE', 'manual']);
+        pieces += row.qty;
+        first = false;
+      }
+      const inStock = [...weights.values()].reduce((a, b) => a + b.qty, 0);
+      if (inStock) stocked.push(`${handle} ${inStock}`);
+    }
   } else {
     others++;
     const props = f['sku-properties'] || [];
@@ -125,7 +146,6 @@ fs.writeFileSync('catalog.csv', rows.join('\n') + '\n');
 console.log(`catalog.csv — ${rows.length - 1} rows: ${cuts} cuts (tracked), ${others} bundles/gift sets/subscription (untracked)`);
 console.log(`stock from the ledger: ${pieces} pieces across ${stocked.length} cuts — ${stocked.join(', ')}`);
 if (collisions.length) { console.log(`COLLIDING SKUs: ${[...new Set(collisions)].join(', ')}`); process.exitCode = 1; }
-const noRate = [...cutHandles].filter((h) => !rates.has(h));
-if (noRate.length) console.log(`\n${noRate.length} cuts have no per-pound rate in the source, so their placeholder is $0.01:\n  ${noRate.join(', ')}`);
+if (noWeights.length) console.log(`\n${noWeights.length} cuts have no priced weight anywhere in the source or the ledger, so they keep a single untracked row at their source price and stay unbuyable, as on the old site:\n  ${noWeights.join(', ')}`);
 console.log('\nImport: Products > Import, tick "Overwrite any current products that have the same handle".');
-console.log('Cut the file to striploin first and check it comes back with 0.01 lb + six weights, 7 in stock.');
+console.log('Cut the file to striploin first and check it comes back with its weights and 7 in stock.');
