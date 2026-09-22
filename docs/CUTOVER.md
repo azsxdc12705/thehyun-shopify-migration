@@ -69,6 +69,20 @@ node scripts/fill-sku-inventory.mjs products_export.csv
 # -> products_sku_inventory.csv, import under Products > Import
 ```
 
+To rebuild the catalog itself rather than update it — the Weight axis, prices,
+SKUs and the shop's real stock, all from the repo's own snapshots:
+
+```
+node scripts/make-catalog-csv.mjs      # -> catalog.csv
+```
+
+Every cut carries a `0.01 lb` row pinned at zero. Shopify will not hold a
+product with no variants, so a cut that sells out would otherwise lose its
+Weight option and return as a plain "Default Title" product — the shape the
+catalog was found in on 2026-09-22. The placeholder keeps the axis open;
+`templates/product.liquid` leaves unavailable weights out of the select, so it
+never reaches a customer.
+
 It works from Shopify's own export because the importer matches a row to an
 existing variant on Handle plus the option values; retyping those risks
 creating duplicate variants instead of updating. SKUs come out as

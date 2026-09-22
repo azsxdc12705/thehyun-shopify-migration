@@ -71,7 +71,19 @@ Frequency choice drives both the variant and the selling plan.
             like the live template it shows no price and no form, but it still
             gets the unavailable notice rather than an empty column.
             {%- endcomment -%}
+            {%- comment -%}
+            A weight is one physical piece, so a sold one is not an option the
+            shopper can pick - it is gone. Unavailable weights are left out of
+            the select rather than disabled in it, which also keeps the 0.01 lb
+            placeholder row (the one that holds the Weight axis open while a cut
+            is out of stock) off the storefront entirely.
+            {%- endcomment -%}
             {%- assign shown = product.selected_or_first_available_variant | default: product.variants.first -%}
+            {%- unless shown.available -%}
+              {%- for v in product.variants -%}
+                {%- if v.available -%}{%- assign shown = v -%}{%- break -%}{%- endif -%}
+              {%- endfor -%}
+            {%- endunless -%}
             {%- if shown.price > 0 -%}
               <div class="text-block-37 product-price" data-price-display>{{ shown.price | money_without_trailing_zeros | replace: '$', '$ ' }} </div>
             {%- endif -%}
@@ -80,10 +92,10 @@ Frequency choice drives both the variant and the selling plan.
                 {%- unless product.has_only_default_variant -%}
                   <select name="id" class="option-select-field hyun-buy-select" data-variant-select>
                     {%- for variant in product.variants -%}
+                      {%- unless variant.available -%}{%- continue -%}{%- endunless -%}
                       <option value="{{ variant.id }}"
                               data-price="{{ variant.price | money_without_trailing_zeros | replace: '$', '$ ' }}"
-                              {% if variant.id == shown.id %}selected{% endif %}
-                              {% unless variant.available %}disabled{% endunless %}>
+                              {% if variant.id == shown.id %}selected{% endif %}>
                         {{ variant.title }} — {{ variant.price | money }}
                       </option>
                     {%- endfor -%}

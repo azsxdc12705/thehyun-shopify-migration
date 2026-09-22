@@ -1,0 +1,18 @@
+{
+  "capturedAt": "2026-09-22",
+  "source": "shop inventory spreadsheet, read from screenshots supplied by the owner",
+  "note": "One row per physical piece. Columns seen: cut, received, use-by, weight (lb), price. The summary tab header read 8/19 while the detail rows read 9/15-9/17 - the header looks stale, and the summary's per-cut counts match the detail rows exactly (20 pieces).",
+  "unresolved": "Only these four cuts carry rows. Every other cut on the sheet was blank, read here as zero stock.",
+  "pieces": {
+    "striploin":     [0.40, 0.56, 0.54, 0.44, 0.42, 0.39, 0.39],
+    "rib-cap":       [0.34, 0.32, 0.30, 0.29, 0.29],
+    "ribeye-center": [0.59, 0.57, 0.45, 0.43],
+    "chateaubriand": [0.41, 0.36, 0.35, 0.32]
+  },
+  "prices": {
+    "striploin":     {"0.40": 56.80, "0.56": 79.52, "0.54": 76.68, "0.44": 62.48, "0.42": 59.64, "0.39": 55.38},
+    "rib-cap":       {"0.34": 35.70, "0.32": 33.60, "0.30": 31.50, "0.29": 30.45},
+    "ribeye-center": {"0.59": 83.78, "0.57": 80.94, "0.45": 63.90, "0.43": 61.06},
+    "chateaubriand": {"0.41": 58.63, "0.36": 51.48, "0.35": 50.05, "0.32": 45.76}
+  }
+}
