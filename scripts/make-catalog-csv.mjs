@@ -69,12 +69,15 @@ for (const p of cms['Products'].items) {
   const sourceSkus = skusByProduct.get(p.id) || [];
   if (!sourceSkus.length) continue;
   const handle = f.slug;
-  // Left out on purpose. The live product lost its Frequency axis, so restoring
-  // the 12 source rows replaces all six existing variant ids - and a selling
-  // plan, and any subscription contract, is attached to a variant id. The
-  // product CSV has no selling-plan column to put them back. Restore this one
-  // through the admin or the API, with the contracts checked first.
-  if (handle === 'curated-collection') { skipped.push(handle); continue; }
+  // curated-collection was held back while it looked like restoring the Frequency
+  // axis would strand the selling plans on replaced variant ids. Two things
+  // settled it on 2026-09-22. The owner confirms every subscription contract on
+  // the store is a demo, so there is nothing live to break. And the plans are
+  // bound to the PRODUCT, not to variants: /products/curated-collection.js shows
+  // both groups with an empty applicable_variant_ids while all six variants carry
+  // allocations for both plans, which is how a product-level group reads - so
+  // variants created by the import inherit them. Verify that after importing
+  // rather than assuming it: all 12 variants should come back with both plans.
   const emit = (row) => {
     if (seen.has(row[8])) collisions.push(row[8]);
     seen.add(row[8]);
