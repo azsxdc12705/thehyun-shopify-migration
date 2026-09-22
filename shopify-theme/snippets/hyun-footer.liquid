@@ -1,6 +1,8 @@
 {%- comment -%}
-Site footer, 1:1 from the Webflow port. Phone number stays redacted
-(000.000.0000) per repo policy — restore at deploy. Newsletter form posts to
+Site footer, 1:1 from the Webflow port. The phone number is the shop's
+published storefront number, so it is kept here rather than redacted: the site
+is live, and a deploy-time substitution is what shipped 000.000.0000 to
+customers on cutover day. Newsletter form posts to
 Shopify's customer capture (contact form with customer[] fields), replacing the
 deleted Webflow form backend.
 {%- endcomment -%}
@@ -29,7 +31,7 @@ deleted Webflow form backend.
           <img src="{{ 'asset-33.svg' | asset_url }}" loading="lazy" width="527" alt="" class="image-2"/>
         </div>
         <div class="text-block-8">253 Third Ave<br/>New York, NY 10001</div>
-        <div class="text-block-8">000.000.0000<br/>info@thehyun.com</div>
+        <div class="text-block-8">646.927.3295<br/>info@thehyun.com</div>
       </div>
       <div class="column-5 w-col w-col-3">
         <a href="/pages/shipping-delivery" class="link">Shipping and Returns</a>
@@ -37,7 +39,7 @@ deleted Webflow form backend.
         <a href="/pages/corporate-gifts-inquiry" class="link">Corporate Gifts inquiry</a>
         <div class="div-block-17">
           <div class="text-block-42">Social Media</div>
-          <a href="#" class="link">Instagram</a>
+          <a href="https://www.instagram.com/thehyun_nyc/" target="_blank" rel="noopener" class="link">Instagram</a>
         </div>
         <div class="div-block-53">
           <div class="text-block-42">Family site</div>
