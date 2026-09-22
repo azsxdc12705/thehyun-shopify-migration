@@ -17,3 +17,4 @@ redirects.csv
 products_sku_inventory.csv
 products_export*.csv
 catalog.csv
+catalog_striploin_test.csv
