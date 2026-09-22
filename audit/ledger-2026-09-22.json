@@ -1,18 +1,416 @@
 {
-  "capturedAt": "2026-09-22",
-  "source": "shop inventory spreadsheet, read from screenshots supplied by the owner",
-  "note": "One row per physical piece. Columns seen: cut, received, use-by, weight (lb), price. The summary tab header read 8/19 while the detail rows read 9/15-9/17 - the header looks stale, and the summary's per-cut counts match the detail rows exactly (20 pieces).",
-  "unresolved": "Only these four cuts carry rows. Every other cut on the sheet was blank, read here as zero stock.",
-  "pieces": {
-    "striploin":     [0.40, 0.56, 0.54, 0.44, 0.42, 0.39, 0.39],
-    "rib-cap":       [0.34, 0.32, 0.30, 0.29, 0.29],
-    "ribeye-center": [0.59, 0.57, 0.45, 0.43],
-    "chateaubriand": [0.41, 0.36, 0.35, 0.32]
-  },
-  "prices": {
-    "striploin":     {"0.40": 56.80, "0.56": 79.52, "0.54": 76.68, "0.44": 62.48, "0.42": 59.64, "0.39": 55.38},
-    "rib-cap":       {"0.34": 35.70, "0.32": 33.60, "0.30": 31.50, "0.29": 30.45},
-    "ribeye-center": {"0.59": 83.78, "0.57": 80.94, "0.45": 63.90, "0.43": 61.06},
-    "chateaubriand": {"0.41": 58.63, "0.36": 51.48, "0.35": 50.05, "0.32": 45.76}
-  }
+ "capturedAt": "2026-09-22",
+ "source": "THE HYUN inventory workbook, sheets 2024/2025/2026 (one row per physical piece)",
+ "inStockRule": "a 2026 row with a weight and a price and no Sale date",
+ "rateRule": "the LAST row for a cut in sheet order, not by date: 59 rows carry a Date of Production of 2026-09-22 against sale dates in June and July, so that column cannot be trusted for ordering",
+ "aliases": {
+  "Chateaubrian": "chateaubriand",
+  "Rip plate": "rib-plate"
+ },
+ "rates": {
+  "chateaubriand": 143.0,
+  "chuck-cap": 92.0,
+  "chuck-eye-log": 98.0,
+  "chuck-flap-tail": 134.0,
+  "chuck-short-rib": 123.0,
+  "chuck-tender": 75.0,
+  "clod-heart": 93.0,
+  "culotte-body": 103.0,
+  "culotte-head": 112.0,
+  "filet-mignon": 143.0,
+  "flank-steak": 95.0,
+  "flap-meat": 114.0,
+  "flat-iron-cap": 92.0,
+  "head-rib": 125.0,
+  "inside-knuckle": 95.0,
+  "main-knuckle": 99.0,
+  "outside-knuckle": 93.0,
+  "outside-round": 65.0,
+  "oyster-blade": 120.0,
+  "rib-cap": 105.0,
+  "rib-plate": 89.0,
+  "ribeye-cap": 138.0,
+  "ribeye-center": 142.0,
+  "ribeye-sidestrap": 86.0,
+  "short-plate": 89.0,
+  "striploin": 142.0,
+  "tenderloin-head": 142.0,
+  "tenderloin-wing": 93.0,
+  "top-round": 89.0,
+  "top-sirloin-butt": 103.0,
+  "tri-chuck": 105.0,
+  "tri-rib": 120.0,
+  "tri-tip": 118.0
+ },
+ "stock": {
+  "chateaubriand": [
+   {
+    "lb": 0.41,
+    "price": 58.63
+   },
+   {
+    "lb": 0.36,
+    "price": 51.48
+   },
+   {
+    "lb": 0.35,
+    "price": 50.05
+   },
+   {
+    "lb": 0.32,
+    "price": 45.76
+   }
+  ],
+  "rib-cap": [
+   {
+    "lb": 0.34,
+    "price": 35.7
+   },
+   {
+    "lb": 0.32,
+    "price": 33.6
+   },
+   {
+    "lb": 0.3,
+    "price": 31.5
+   },
+   {
+    "lb": 0.29,
+    "price": 30.45
+   },
+   {
+    "lb": 0.29,
+    "price": 30.45
+   }
+  ],
+  "ribeye-center": [
+   {
+    "lb": 0.59,
+    "price": 83.78
+   },
+   {
+    "lb": 0.57,
+    "price": 80.94
+   },
+   {
+    "lb": 0.45,
+    "price": 63.9
+   },
+   {
+    "lb": 0.43,
+    "price": 61.06
+   }
+  ],
+  "striploin": [
+   {
+    "lb": 0.4,
+    "price": 56.8
+   },
+   {
+    "lb": 0.56,
+    "price": 79.52
+   },
+   {
+    "lb": 0.54,
+    "price": 76.68
+   },
+   {
+    "lb": 0.44,
+    "price": 62.48
+   },
+   {
+    "lb": 0.42,
+    "price": 59.64
+   },
+   {
+    "lb": 0.39,
+    "price": 55.38
+   },
+   {
+    "lb": 0.39,
+    "price": 55.38
+   }
+  ]
+ },
+ "recentWeights": {
+  "chateaubriand": [
+   0.28,
+   0.32,
+   0.35,
+   0.36,
+   0.38,
+   0.41
+  ],
+  "chuck-cap": [
+   0.29,
+   0.39,
+   0.41,
+   0.47,
+   0.49,
+   0.56,
+   0.57
+  ],
+  "chuck-eye-log": [
+   0.41,
+   0.43,
+   0.45,
+   0.46,
+   0.52,
+   0.53,
+   0.58
+  ],
+  "chuck-flap-tail": [
+   0.32,
+   0.38,
+   0.39,
+   0.46,
+   0.5,
+   0.52,
+   0.54
+  ],
+  "chuck-short-rib": [
+   0.29,
+   0.35,
+   0.36,
+   0.39,
+   0.4,
+   0.43,
+   0.44,
+   0.45
+  ],
+  "chuck-tender": [
+   0.28,
+   0.34,
+   0.37,
+   0.47,
+   0.49,
+   0.55,
+   0.6,
+   0.62
+  ],
+  "clod-heart": [
+   0.38,
+   0.41,
+   0.42,
+   0.44,
+   0.46,
+   0.53
+  ],
+  "culotte-body": [
+   0.26,
+   0.31,
+   0.33,
+   0.36,
+   0.39,
+   0.43,
+   0.47,
+   0.52
+  ],
+  "culotte-head": [
+   0.22,
+   0.28,
+   0.29,
+   0.39,
+   0.46,
+   0.48,
+   0.49,
+   0.52
+  ],
+  "filet-mignon": [
+   0.3,
+   0.32,
+   0.36,
+   0.38,
+   0.4,
+   0.42,
+   0.44,
+   0.47
+  ],
+  "flank-steak": [
+   0.32,
+   0.33,
+   0.34,
+   0.35,
+   0.38,
+   0.44
+  ],
+  "flap-meat": [
+   0.34,
+   0.38,
+   0.39,
+   0.41,
+   0.43,
+   0.47,
+   0.48,
+   0.5
+  ],
+  "flat-iron-cap": [
+   0.45,
+   0.67
+  ],
+  "head-rib": [
+   0.32,
+   0.34,
+   0.35,
+   0.36,
+   0.41,
+   0.43,
+   0.5
+  ],
+  "inside-knuckle": [
+   0.51
+  ],
+  "main-knuckle": [
+   0.25,
+   0.33,
+   0.36,
+   0.38,
+   0.4,
+   0.56,
+   0.6
+  ],
+  "outside-knuckle": [
+   0.31,
+   0.32,
+   0.33,
+   0.34,
+   0.35,
+   0.45
+  ],
+  "outside-round": [
+   0.38,
+   0.48
+  ],
+  "oyster-blade": [
+   0.29,
+   0.35,
+   0.36,
+   0.43,
+   0.54,
+   0.57,
+   0.59,
+   0.61
+  ],
+  "rib-cap": [
+   0.29,
+   0.3,
+   0.32,
+   0.34,
+   0.38,
+   0.49
+  ],
+  "rib-plate": [
+   0.41,
+   0.42,
+   0.45
+  ],
+  "ribeye-cap": [
+   0.21,
+   0.23,
+   0.25,
+   0.26,
+   0.44,
+   0.45
+  ],
+  "ribeye-center": [
+   0.43,
+   0.45,
+   0.57,
+   0.59,
+   0.67,
+   0.7,
+   0.71,
+   0.72
+  ],
+  "ribeye-sidestrap": [
+   0.36,
+   0.43,
+   0.49
+  ],
+  "short-plate": [
+   0.42,
+   0.45,
+   0.47,
+   0.48,
+   0.55
+  ],
+  "striploin": [
+   0.39,
+   0.4,
+   0.42,
+   0.44,
+   0.54,
+   0.56
+  ],
+  "tenderloin-head": [
+   0.3,
+   0.33,
+   0.34,
+   0.37,
+   0.38,
+   0.48,
+   0.55
+  ],
+  "tenderloin-wing": [
+   0.36,
+   0.38,
+   0.44,
+   0.5,
+   0.53,
+   0.55,
+   0.57
+  ],
+  "top-round": [
+   0.21,
+   0.33,
+   0.38,
+   0.56,
+   0.59
+  ],
+  "top-sirloin-butt": [
+   0.27,
+   0.28,
+   0.31,
+   0.32,
+   0.35,
+   0.36,
+   0.38,
+   0.47
+  ],
+  "tri-chuck": [
+   0.3,
+   0.31,
+   0.32,
+   0.36,
+   0.38,
+   0.41,
+   0.55
+  ],
+  "tri-rib": [
+   0.26,
+   0.3,
+   0.33,
+   0.36,
+   0.37,
+   0.52,
+   0.67
+  ],
+  "tri-tip": [
+   0.34,
+   0.36,
+   0.37,
+   0.4,
+   0.45,
+   0.46,
+   0.51
+  ]
+ },
+ "unmatchedLedgerNames": {
+  "Baby loin": 2,
+  "M.Gluters Medius": 12,
+  "M.Gluteus Profundus": 6,
+  "M.Piriformis": 1,
+  "Oyster blade Cap": 17,
+  "Pencil": 14
+ }
 }

@@ -14,8 +14,13 @@
 // never reaches a customer. Its price is the cut's per-pound rate x 0.01 rather
 // than zero, because the theme reads a zero price as "not sold online".
 //
-// Stock comes from audit/ledger-2026-09-22.json - the shop's own sheet, one row
-// per physical piece, with the ledger's own prices rather than recomputed ones.
+// Everything about meat comes from audit/ledger-2026-09-22.json, extracted from
+// the shop's own workbook: what is in stock (a 2026 row with no Sale date), and
+// each cut's current per-pound rate (the LAST row for that cut in sheet order -
+// the Date of Production column carries a broken TODAY() in 59 rows, so it
+// cannot order anything). A cut's rate reprices its weights, because the
+// Webflow catalog's prices are from the old site and the shop has moved on:
+// chuck flap tail last sold at $134.00/lb with no price in Webflow at all.
 // Two pieces at the same weight become one row with quantity 2.
 //
 // Bundles, gift sets and the subscription keep their single fixed-price variant
@@ -27,14 +32,10 @@ import fs from 'node:fs';
 const cms = JSON.parse(fs.readFileSync('audit/cms.json')).collections;
 const ledger = JSON.parse(fs.readFileSync('audit/ledger-2026-09-22.json'));
 const cutHandles = new Set(Object.keys(JSON.parse(fs.readFileSync('audit/live-stock.json')).quantities));
+// the ledger is what the shop charges today; the Webflow rate is the fallback
 const rates = new Map(JSON.parse(fs.readFileSync('docs/price-per-lb.json'))
   .filter((r) => r.ratePerLb).map((r) => [r.slug, r.ratePerLb]));
-// the ledger prices a cut the catalog never priced
-for (const [cut, prices] of Object.entries(ledger.prices)) {
-  if (rates.has(cut)) continue;
-  const [w, p] = Object.entries(prices)[0];
-  rates.set(cut, Number((p / parseFloat(w)).toFixed(2)));
-}
+for (const [cut, rate] of Object.entries(ledger.rates)) rates.set(cut, rate);
 
 const ABBR = {
   'Monthly': 'M', 'Twice a Month': '2M',
@@ -81,23 +82,30 @@ for (const p of cms['Products'].items) {
     const weights = new Map();   // lb -> { price, qty }
     const props = f['sku-properties'] || [];
     const weightProp = props.find((pr) => /weight/i.test(pr.name));
+    const rate = rates.get(handle) ?? null;
+    const priceAt = (lb) => (rate ? Number((rate * lb).toFixed(2)) : null);
+
     if (weightProp) {
       const valueName = new Map();
       for (const e of weightProp.enum || []) valueName.set(e.id, e.name);
       for (const s of sourceSkus) {
         const lb = parseFloat(valueName.get(s.fieldData['sku-values']?.[weightProp.id]) ?? '');
-        const price = s.fieldData.price ? s.fieldData.price.value / 100 : 0;
-        if (!(lb > 0) || !(price > 0)) continue;
+        const old = s.fieldData.price ? s.fieldData.price.value / 100 : 0;
+        if (!(lb > 0)) continue;
+        const price = priceAt(lb) ?? old;
+        if (!(price > 0)) continue;
         weights.set(lb, { price, qty: 0 });
       }
     }
-    for (const lb of ledger.pieces[handle] ?? []) {
-      const price = ledger.prices[handle]?.[lb.toFixed(2)];
-      if (price == null) throw new Error(`${handle} ${lb} lb has no price in the ledger`);
-      const row = weights.get(lb) ?? { price, qty: 0 };
-      row.price = price;          // the ledger is today's price, the catalog is history
+    // a cut the old site never sold by weight still has weights in the ledger
+    if (!weights.size && rate) {
+      for (const lb of ledger.recentWeights[handle] ?? []) weights.set(lb, { price: priceAt(lb), qty: 0 });
+    }
+    for (const piece of ledger.stock[handle] ?? []) {
+      const row = weights.get(piece.lb) ?? { price: piece.price, qty: 0 };
+      row.price = piece.price;    // the piece's own ticket price wins over the formula
       row.qty += 1;
-      weights.set(lb, row);
+      weights.set(piece.lb, row);
     }
 
     if (!weights.size) {
