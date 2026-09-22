@@ -59,6 +59,23 @@ node scripts/set-inventory.mjs            # dry run
 node scripts/set-inventory.mjs --apply    # write the quantities
 ```
 
+Without a token, go through CSV — and assign SKUs in the same pass, since the
+catalog imported with none and every later stock update, POS link and Uber
+listing needs one to match on:
+
+```
+# Admin > Products > Export > All products > CSV
+node scripts/fill-sku-inventory.mjs products_export.csv
+# -> products_sku_inventory.csv, import under Products > Import
+```
+
+It works from Shopify's own export because the importer matches a row to an
+existing variant on Handle plus the option values; retyping those risks
+creating duplicate variants instead of updating. SKUs come out as
+`HYUN-RIBEYE-CENTER-034` (handle, then the weight in hundredths of a pound).
+Subscriptions, bundles and gift sets are left untracked deliberately — turning
+tracking on with no quantity would take them out of stock on import.
+
 That is a stopgap with a real ceiling: it is a snapshot from one day, and a
 cut in stock reads as "2 or more" because the page never says how many. Point
 the store at the `TheHyunInventory` sync (or a stock CSV from the POS) before
