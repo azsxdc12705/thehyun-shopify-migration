@@ -70,7 +70,7 @@ this collection's product cards.
             {%- for product in collection.products -%}
               {%- assign purchasable = false -%}
               {%- assign buyable = product.first_available_variant -%}
-          {%- if buyable and buyable.price > 0 -%}{%- assign purchasable = true -%}{%- endif -%}
+              {%- if buyable and buyable.price > 0 -%}{%- assign purchasable = true -%}{%- endif -%}
               <div role="listitem" class="w-dyn-item w-col w-col-4">
                 <div class="label_wrap">
                   <a href="{{ product.url }}" class="bundlecardlink w-inline-block">
