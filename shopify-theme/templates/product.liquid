@@ -74,9 +74,8 @@ Frequency choice drives both the variant and the selling plan.
             {%- comment -%}
             A weight is one physical piece, so a sold one is not an option the
             shopper can pick - it is gone. Unavailable weights are left out of
-            the select rather than disabled in it, which also keeps the 0.01 lb
-            placeholder row (the one that holds the Weight axis open while a cut
-            is out of stock) off the storefront entirely.
+            the select rather than disabled in it. Those rows stay in admin at
+            quantity zero, which is what keeps the cut's Weight option alive.
             {%- endcomment -%}
             {%- assign shown = product.selected_or_first_available_variant | default: product.variants.first -%}
             {%- unless shown.available -%}

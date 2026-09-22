@@ -77,152 +77,36 @@ node scripts/make-catalog-csv.mjs      # -> catalog.csv
 ```
 
 No row is invented. A cut's weights are the ones it has really been cut at —
-the Webflow catalog's own list plus whatever the ledger holds today, each at the
-price really charged — and the ones with no stock come through at quantity 0.
-That is what keeps the Weight option alive: Shopify will not hold a product with
-no variants, and losing that option is how the catalog broke on 2026-09-22.
+the ledger's history plus whatever it holds today, each at the cut's current
+per-pound rate — and the ones with no stock come through at quantity 0. That is
+what keeps the Weight option alive: Shopify will not hold a product with no
+variants, and losing that option is how the catalog broke on 2026-09-22.
 `templates/product.liquid` leaves unavailable weights out of the select, so a
 sold weight is gone from the storefront while the row survives in admin.
 
-Eight cuts (`brisket`, `brisket-point`, `chuck-flap-tail`, `chuck-short-rib`,
-`tri-rib`, `filet-mignon`, `omasum`, `top-round`) have no priced weight in
-either source and keep a single untracked row at their source price, unbuyable,
-as on the old site. The first time one is stocked, its Weight option has to be
-created by hand before a weight can be added.
+Deliberate omissions, each of which would otherwise do damage:
 
-It works from Shopify's own export because the importer matches a row to an
-existing variant on Handle plus the option values; retyping those risks
-creating duplicate variants instead of updating. SKUs come out as
-`HYUN-RIBEYE-CENTER-034` (handle, then the weight in hundredths of a pound).
-Subscriptions, bundles and gift sets are left untracked deliberately — turning
-tracking on with no quantity would take them out of stock on import.
-
-That is a stopgap with a real ceiling: it is a snapshot from one day, and a
-cut in stock reads as "2 or more" because the page never says how many. Point
-the store at the `TheHyunInventory` sync (or a stock CSV from the POS) before
-launch; this only stops the storefront from over-offering in the meantime.
-
-## 2. Commerce configuration (owner)
-
-- [ ] Pick a Shopify plan (also unlocks removing the storefront password)
-- [ ] Shopify Payments with the real business details; enable the
-      subscription-compatible payment methods
-- [ ] Taxes (NY nexus), shipping zones/rates, local delivery + pickup
-      (Store POS stays Square; `TheHyunInventory` syncs stock)
-- [ ] **Decide where the shipping-rate logic lives — it constrains the plan.**
-      Live rates do not come from Webflow: `/checkout` POSTs the cart to
-      `https://shipping.thehyun.com/api/get-shipping-rates` with `zip`,
-      `isDeliver` and, per item, `weight`, `isBundle` and `isGift`, then paints
-      the returned cost over the summary total. Bundles and gift sets branching
-      separately is perishable-shipping logic (box, coolant, service level), not
-      a plain carrier quote. Three ways to keep it:
-
-  | Option | What it needs |
-  | --- | --- |
-  | Shopify's own rates: zones x weight/price tiers, plus a shipping profile for bundles and gift sets | nothing — every plan. **Start here** |
-  | A Carrier Service API app pointing at the existing `shipping.thehyun.com` endpoint (logic preserved exactly) | carrier-calculated shipping: Advanced plan, or the annual-billing add-on |
-  | ShipStation's own real-time rates through its Shopify integration | same carrier-calculated shipping entitlement |
-
-- [ ] Google Places autocomplete (`audit/custom-js/0f6c5eaa4e.js`) is **not**
-      ported and should not be: it drives `#wf-ecom-shipping-*` fields that stop
-      existing, and Shopify's checkout has address autocomplete and validation
-      built in on every plan. After cutover, delete or restrict the Google Maps
-      Platform API key so an unused key cannot be billed or abused.
-- [ ] ShipStation stays for labels and fulfilment — it has a first-party
-      Shopify integration and orders flow into it automatically. Only the rate
-      call above moves.
-- [ ] **Enable Local Pickup** for the Gramercy store. This replaces the live
-      site's `/checkout-method` interstitial ("Deliver to Your Doorstep" vs
-      "In-Store Pickup"), which is deliberately not ported: Shopify's checkout
-      picks the delivery method itself, so a pre-checkout page asking the same
-      question cannot drive it and would only add a step. `/checkout-method`
-      redirects to `/cart`.
-- [ ] Customer notification emails (order, shipping, subscription billing)
-- [ ] Newsletter: the footer form posts to Shopify customer capture
-      (tagged `newsletter`); connect Klaviyo/em ail tool if wanted
-
-## 3. Theme polish before publish
-
-- [ ] Restore the real phone number in three places, all redacted for the
-      public repo: `snippets/hyun-footer.liquid` (000.000.0000),
-      `snippets/hyun-page-store.liquid` (+1.000.000.0000) and
-      `snippets/hyun-page-contact.liquid` ((000) 000-0000)
-- [ ] Real Instagram URL in the footer (currently `#`)
-- [ ] Optional: quiz `pageshow` reset (bfcache) — known gap from the port
-
-## 4. Fonts
-
-- [ ] Adobe Typekit kit `ixk3mkf` → add `thehyun.com` and
-      `d903wc-8k.myshopify.com` (or the production myshopify domain) to
-      allowed domains
-- [ ] URW Classico / Neue Haas font files currently load from the Webflow
-      CDN inside `thyun.css` — re-host on Shopify's CDN before Webflow is
-      shut off (upload as theme assets, rewrite the `@font-face` URLs)
-
-## 5. Verify end to end (on the dev store first)
-
-- [ ] Subscription checkout: quiz → checkout shows *Recurring subtotal …
-      every 2 weeks*, preferences attached as line properties
-- [ ] Product page → Add to Cart → cart → checkout for a one-time cut
-- [ ] Gift set Buy now (return_to=/checkout)
-- [ ] Contact / inquiry forms deliver
-- [ ] Old-URL redirects resolve (spot check /product/brisket, /our-story,
-      /forequarter)
-
-## 6. Domain move
-
-- [ ] Publish the theme on the production store
-- [ ] Shopify admin → Domains → connect `thehyun.com` + `www`
-      (A 23.227.38.65 / CNAME shops.myshopify.com per Shopify's current
-      instructions)
-- [ ] Lower DNS TTL a day ahead; switch; watch certificate issuance
-- [ ] Webflow: disable ecommerce/site publish after DNS settles
-- [ ] Announce / monitor analytics, checkout conversion, 404 logs
-      (Shopify's URL redirect report catches misses)
-
----
-
-## Provisioning without an Admin API token
-
-Shopify has retired admin-created custom apps, so the old
-*Settings → Apps and sales channels → Develop apps* route no longer issues new
-tokens. Both provisioning steps can be done from the admin UI instead:
-
-### Redirects — CSV import (2 minutes, 112 redirects)
-
-```
-node scripts/make-redirects.mjs --csv     # writes redirects.csv, no credentials
-```
-
-Then in admin: **Online Store → Navigation → URL redirects → Import**, upload
-`redirects.csv`. The columns are Shopify's own (`Redirect from`,
-`Redirect to`).
-
-### Pages — 16 by hand
-
-**Online Store → Pages → Add page**. Only the title and the handle matter;
-the theme renders each design by handle, so leave the body empty. Two handles
-do not match what Shopify derives from the title and must be set by hand in
-the page's **Search engine listing → Edit** section:
-
-| Title | Handle |
+| Left out | Why |
 | --- | --- |
-| Subscription Builder | `subscription-builder` |
-| Japanese Wagyu | `japanese-wagyu` |
-| Our Story | `our-story` |
-| Brand Philosophy | `brand-philosophy` |
-| Design Philosophy | `design-philosophy` |
-| Bojagi Wrapping | **`bojagi`** (not `bojagi-wrapping`) |
-| Local Delivery | `local-delivery` |
-| Store | `store` |
-| Contact | `contact` |
-| Shipping and Returns | **`shipping-delivery`** (not `shipping-and-returns`) |
-| Wholesale Inquiry | `wholesale-inquiry` |
-| Corporate Gifts | `corporate-gifts` |
-| Corporate Gifts Inquiry | `corporate-gifts-inquiry` |
-| Subscription | `subscription` |
-| Available Cuts | `available-cuts` |
-| Gift Sets | `gift-sets` |
+| `Variant Taxable`, `Variant Requires Shipping` | 64 of 71 live variants are `taxable:false` and that split is per-product, so someone set it. An omitted column is preserved; a blank cell in a column that is present is not. |
+| `curated-collection` | Its six live variant ids carry the selling plans and any subscription contract. Restoring the Frequency axis replaces those ids, and the product CSV has no selling-plan column to put them back. Restore it through the admin or the API, contracts checked first. |
+| the `2lb` weight | The untouched Webflow default on 31 unrelated cuts — tongue, tail, heel, rib finger. Shipping it invents a two-pound cut nobody weighed. |
+| `norigae-tassel` | Created in Shopify after the Webflow export, so `cms.json` cannot produce it. Not in the file, therefore untouched by the import. |
+
+Every cut is tracked at `deny`, including the 21 with no weight at all. An
+untracked variant is unconditionally available in Liquid, so an untracked cut
+would be orderable without limit — top-round's source row is priced $49.84 and
+the shop holds none. Inventory gates a cut; price must never be what holds it
+back. Those 21 have no Weight option until one is stocked and added by hand.
+
+**The Overwrite checkbox differs per file, and it matters.** `catalog.csv` needs
+it ticked: with it, the importer replaces the variant set in place. The 9/22
+forensics show this — `curated-collection` went from 12 variants to 6 while
+every surviving variant kept `created_at 2026-08-25`, so variants absent from
+the file were removed and none were recreated, which is also why no stray
+"Default Title" row will survive this import. `products_sku_inventory.csv` from
+`fill-sku-inventory.mjs` needs it **un**ticked: that file only adds SKUs to
+variants that already exist.
 
 ### If you do want a token (for re-runs and the product import)
 

@@ -56,19 +56,25 @@ for (const s of cms['SKUs'].items) {
 
 const COLS = ['Handle', 'Title', 'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value',
   'Option3 Name', 'Option3 Value', 'Variant SKU', 'Variant Price', 'Variant Inventory Tracker',
-  'Variant Inventory Qty', 'Variant Inventory Policy', 'Variant Requires Shipping', 'Variant Taxable',
-  'Variant Fulfillment Service'];
+  'Variant Inventory Qty', 'Variant Inventory Policy', 'Variant Fulfillment Service',
+  'Variant Grams', 'Variant Weight Unit'];
 const rows = [COLS.map(csvCell).join(',')];
 const seen = new Set();
 const collisions = [];
 let cuts = 0, others = 0, pieces = 0;
-const stocked = [], noWeights = [];
+const stocked = [], noWeights = [], skipped = [];
 
 for (const p of cms['Products'].items) {
   const f = p.fieldData;
   const sourceSkus = skusByProduct.get(p.id) || [];
   if (!sourceSkus.length) continue;
   const handle = f.slug;
+  // Left out on purpose. The live product lost its Frequency axis, so restoring
+  // the 12 source rows replaces all six existing variant ids - and a selling
+  // plan, and any subscription contract, is attached to a variant id. The
+  // product CSV has no selling-plan column to put them back. Restore this one
+  // through the admin or the API, with the contracts checked first.
+  if (handle === 'curated-collection') { skipped.push(handle); continue; }
   const emit = (row) => {
     if (seen.has(row[8])) collisions.push(row[8]);
     seen.add(row[8]);
@@ -92,6 +98,11 @@ for (const p of cms['Products'].items) {
         const lb = parseFloat(valueName.get(s.fieldData['sku-values']?.[weightProp.id]) ?? '');
         const old = s.fieldData.price ? s.fieldData.price.value / 100 : 0;
         if (!(lb > 0)) continue;
+        // "2lb" is the untouched Webflow default on 31 unrelated cuts - tongue,
+        // tail, heel, rib finger - not a piece anyone weighed. Shipping it as a
+        // buyable option invents a two-pound cut, and the staff format is
+        // "2.00 lb", so a real one would land as a second row anyway.
+        if (lb === 2 && !(ledger.stock[handle] ?? []).some((x) => x.lb === 2)) continue;
         const price = priceAt(lb) ?? old;
         if (!(price > 0)) continue;
         weights.set(lb, { price, qty: 0 });
@@ -109,19 +120,22 @@ for (const p of cms['Products'].items) {
     }
 
     if (!weights.size) {
-      // never sold online by weight: keep the single row the source describes,
-      // untracked, at its source price (zero for the cuts the shop sells in store only)
+      // No weight anywhere, so the cut keeps its single row - but TRACKED at zero,
+      // never untracked. An untracked variant is unconditionally available in
+      // Liquid, and top-round's source row is priced $49.84, so shipping it
+      // untracked would have made a cut the shop does not hold orderable without
+      // limit. Inventory gates a cut; price must not be what holds it back.
       noWeights.push(handle);
       emit([handle, f.name, 'Title', 'Default Title', '', '', '', '',
         `HYUN-${handle.toUpperCase()}`,
         money(sourceSkus[0].fieldData.price ? sourceSkus[0].fieldData.price.value / 100 : 0),
-        '', '', 'continue', 'TRUE', 'TRUE', 'manual']);
+        'shopify', '0', 'deny', 'manual', '', '']);
     } else {
       let first = true;
       for (const [lb, row] of [...weights].sort((a, b) => a[0] - b[0])) {   // lightest first, so variants.first is the cheapest and the product page agrees with product.price
         emit([handle, first ? f.name : '', 'Weight', wLabel(lb), '', '', '', '',
           `HYUN-${handle.toUpperCase()}-${wCode(lb)}`, money(row.price),
-          'shopify', String(row.qty), 'deny', 'TRUE', 'TRUE', 'manual']);
+          'shopify', String(row.qty), 'deny', 'manual', String(Math.round(lb * 453.592)), 'g']);
         pieces += row.qty;
         first = false;
       }
@@ -144,7 +158,7 @@ for (const p of cms['Products'].items) {
         opts[1]?.name ?? '', opts[1]?.value ?? '', opts[2]?.name ?? '', opts[2]?.value ?? '',
         ['HYUN', handle.toUpperCase(), ...tail].join('-'),
         money(s.fieldData.price ? s.fieldData.price.value / 100 : 0),
-        '', '', 'continue', 'TRUE', 'TRUE', 'manual']);
+        '', '', 'continue', 'manual', '', '']);
       first = false;
     }
   }
@@ -154,6 +168,10 @@ fs.writeFileSync('catalog.csv', rows.join('\n') + '\n');
 console.log(`catalog.csv — ${rows.length - 1} rows: ${cuts} cuts (tracked), ${others} bundles/gift sets/subscription (untracked)`);
 console.log(`stock from the ledger: ${pieces} pieces across ${stocked.length} cuts — ${stocked.join(', ')}`);
 if (collisions.length) { console.log(`COLLIDING SKUs: ${[...new Set(collisions)].join(', ')}`); process.exitCode = 1; }
-if (noWeights.length) console.log(`\n${noWeights.length} cuts have no priced weight anywhere in the source or the ledger, so they keep a single untracked row at their source price and stay unbuyable, as on the old site:\n  ${noWeights.join(', ')}`);
+if (noWeights.length) console.log(`\n${noWeights.length} cuts have no weight worth shipping - no ledger history, and in the old catalog only the untouched "2lb" default. They keep one row, tracked at zero, so they read sold out rather than orderable, and they have no Weight option until one is stocked and added by hand:\n  ${noWeights.join(', ')}`);
+if (skipped.length) console.log(`\nleft out deliberately: ${skipped.join(', ')} — subscription variant ids carry the selling plans`);
+console.log('\nNot in the file and therefore untouched: norigae-tassel, created in Shopify after the Webflow export.');
+console.log('Variant Taxable and Variant Requires Shipping are omitted on purpose: 64 of 71 live variants are taxable:false,');
+console.log('and an omitted column is preserved while a blank cell in a present column is not.');
 console.log('\nImport: Products > Import, tick "Overwrite any current products that have the same handle".');
 console.log('Cut the file to striploin first and check it comes back with its weights and 7 in stock.');
